@@ -1,0 +1,7 @@
+{
+  "name": "HMSTEAM",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
