@@ -1,4 +1,42 @@
+
 <ion-header>
+  <ion-navbar>
+    <ion-title>
+      Ionic Blank
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+      <button detail-none (click)="expandItem(item)" ion-item *ngFor="let item of items">
+        <ion-thumbnail item-start>
+          <img src="http://placehold.it/100">
+        </ion-thumbnail>
+        <h2>My Neighbor Totoro</h2>
+        <p>Hayao Miyazaki • 1988</p>
+        <expandable item-content [expandHeight]="itemExpandHeight" [expanded]="item.expanded">
+            <ion-list>
+              <!-- <ion-list-header>
+                PlayList
+              </ion-list-header>-->
+              <ion-item *ngFor="let item of playerItems">
+                <ion-thumbnail item-start>
+                  <img src="http://placehold.it/64">
+                </ion-thumbnail>
+                <h2>{{item.title}}</h2>
+                <p item-end>00:00</p>
+              </ion-item>
+            </ion-list>
+        </expandable>
+        <!-- <button ion-button clear item-end>View</button> -->
+        <ion-badge  clear item-end>7</ion-badge>
+      </button>
+    </ion-list>
+
+</ion-content>
+<!--<ion-header>
 
   <ion-navbar primary>
     <button ion-button menuToggle="left" start>
@@ -7,9 +45,6 @@
     <button ion-button menuToggle="right" end>
       <ion-icon name="more"></ion-icon>
     </button>
-    <!--<ion-title>
-      Title
-    </ion-title>-->
 
     <ion-searchbar></ion-searchbar>
 
@@ -28,3 +63,4 @@
     <button ion-button secondary>Toggle Menu Right</button>
 
 </ion-content>
+-->

@@ -1,13 +1,45 @@
 <ion-menu side="left" [content]="content" id="mLeft">
   <ion-header>
-    <ion-toolbar>
-      <ion-title>Menu</ion-title>
+    <ion-toolbar class="user-profile">
+
+      <ion-grid>
+        <ion-row>
+          <ion-col col-4>
+              <div class="user-avatar">
+                <img src="../assets/imgs/avatar.jpeg">
+              </div>
+          </ion-col>
+          <ion-col padding-top col-8>
+            <h2 ion-text class="no-margin bold text-white">
+              Julio
+            </h2>
+            <span ion-text color="light">Administrador</span>
+          </ion-col>
+        </ion-row>
+
+        <ion-row no-padding class="other-data">
+          <ion-col no-padding class="column">
+            <button ion-button icon-left small full color="light" menuClose disabled>
+              <ion-icon name="contact"></ion-icon>
+              Edit Profile
+            </button>
+          </ion-col>
+          <ion-col no-padding class="column">
+            <button ion-button icon-left small full color="light" menuClose (click)="logout()">
+              <ion-icon name="log-out"></ion-icon>
+              Log Out
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </ion-grid>
+
     </ion-toolbar>
   </ion-header>
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <button menuClose ion-item *ngFor="let p of pages" (click)="openRootPage(p)">
         {{p.title}}
       </button>
     </ion-list>
@@ -26,8 +58,21 @@
     <ion-list>
       <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
-      </button>-->
-      <button ion-button secondary menuToggle="right">Toggle Menu</button>
+      </button>
+      <button ion-button secondary menuToggle="right">Toggle Menu</button>-->
+      <ion-list-header>
+        PlayList
+        <ion-badge item-end>10</ion-badge>
+      </ion-list-header>
+      <ion-item-group reorder="true">
+        <ion-item *ngFor="let item of playerItems">
+          <ion-thumbnail item-start>
+            <img src="http://placehold.it/94">
+          </ion-thumbnail>
+          <h2>{{item.title}}</h2>
+          <p>Hayao Miyazaki • 1988</p>
+        </ion-item>
+      </ion-item-group>
     </ion-list>
   </ion-content>
 
