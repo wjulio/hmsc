@@ -38,11 +38,28 @@
   </ion-header>
 
   <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openRootPage(p)">
-        {{p.title}}
+    <!--<ion-list>
+      <button menuClose ion-item *ngFor="let p of gvProvider.gvListaMenu" *ngIf="p.TipoMenuAppJsonDto==0; else elsePart" (click)="openRootPage(p)">
+        {{p.Descricao}}
       </button>
+    </ion-list>-->
+
+    <!--<ion-item *ngFor="let p of gvProvider.gvListaMenu">
+      <button menuClose ion-button full (click)="openRootPage(p)">
+        {{p.Descricao}}
+      </button>
+    </ion-item>-->
+
+    <ion-list>
+      <button menuClose detail-push ion-item *ngFor="let p of gvProvider.gvListaMenu" (click)="ExecutaConsulta()">
+        <ion-label>{{p.Descricao}}</ion-label>
+        <ion-select okText="Confirma" cancelText="Cancela" *ngIf="p.TipoMenuAppJsonDto==1" (ionChange)="onEmpSelected(lsMarcadores)"  [(ngModel)]="lsMarcadores" multiple="true">
+          <ion-option menuClose *ngFor="let tag of p.Tags" [value]="tag">{{tag.NomeTag}}</ion-option>
+        </ion-select>
+      </button>
+
     </ion-list>
+
   </ion-content>
 
 </ion-menu>

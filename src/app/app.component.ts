@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 
 import { RestApiProvider } from './../providers/rest-api/rest-api';
+import { GlobalvarProvider } from './../providers/globalvar/globalvar';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,8 +21,9 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
   playerItems:any = [];
   usuarioIde:string= '1';
+  listaMenu:any = [];
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private restApiProvider: RestApiProvider) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -33,17 +35,8 @@ export class MyApp {
     this.playerItems = [
         {title: 'item1'},
         {title: 'item2'},
-        {title: 'item3'},
-        {title: 'item4'},
-        {title: 'item5'},
-        {title: 'item6'},
-        {title: 'item7'},
-        {title: 'item8'},
-        {title: 'item9'},
-        {title: 'item10'}
+        {title: 'item3'}
     ];
-
-    //this.ObtemMenu();
 
   }
 
@@ -53,6 +46,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       console.log("Passou aqui1");
       this.ObtemMenu();
+      //this.getAll();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -61,26 +55,52 @@ export class MyApp {
   openRootPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    //this.nav.setRoot(page.component);
+    this.nav.setRoot(this.pages[0].component)
   }
 
   ObtemMenu() {
-
+    console.log(this.usuarioIde);
+    this.gvProvider.gvListaMenu = [];
     this.restApiProvider.ObterMenu(this.usuarioIde)
+
       .then((result: any) => {
         //this.toast.create({ message: 'Usuário logado com sucesso. Token: ' + result.token, position: 'botton', duration: 3000 }).present();
 
-  console.log("Passou ObtemMenu()");
-
+        console.log(this.usuarioIde);
+        console.log("Entrou no ObtemMenu()");
+        console.log(result.length);
+        for (var i = 0; i < result.length; i++) {
+          console.log(result[i].TipoMenuAppJsonDto);
+          //var _listaDeObjetos = result.ListaDeObjetos[i];
+          //this.listaMenu.push(result[i]);
+          this.gvProvider.gvListaMenu.push(result[i]);
+            //this.sendSMS(interessado.numero,interessado.chave);
+        }
+        console.log(this.listaMenu.length);
         //Salvar o token no Ionic Storage para usar em futuras requisições.
         //Redirecionar o usuario para outra tela usando o navCtrl
         //this.navCtrl.pop();
         //this.navCtrl.setRoot()
       })
       .catch((error: any) => {
-          console.log("Passou erroo ObtemMenu()");
+          console.log('Erro : ObtemMenu()' + error.erro);
         //this.toast.create({ message: 'Erro ao efetuar login. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
       });
   }
+
+  onEmpSelected(_lsMarcadores:any) {
+
+    console.log(_lsMarcadores);
+    //this.nav.setRoot(this.pages[1].component);
+
+  }
+
+  ExecutaConsulta() {
+
+    console.log('Executa Consulta');
+
+  }
+
 
 }

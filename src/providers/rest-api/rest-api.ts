@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http'; //Response,
 import 'rxjs/add/operator/map';
 
 /*
@@ -12,7 +12,11 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  private API_URL = 'http://disclosure-001-site1.gtempurl.com/'
+  //private API_URL = 'http://disclosure-001-site1.gtempurl.com/jservico.asmx/'
+  //private API_URL = 'http://localhost:26223/wscloud/jservico.asmx/'
+  private API_URL = 'http://127.0.0.1/clouddj/jservico.asmx/'
+
+  //private API_URL2 = 'http://disclosure-001-site1.gtempurl.com/appmob/dados.json'
 
   /*constructor(public http: HttpClient) {
     console.log('Hello RestApiProvider Provider');
@@ -22,19 +26,27 @@ export class RestApiProvider {
 
   ObterMenu(idMembro: string) {
      return new Promise((resolve, reject) => {
-       var data = {
-         idMembro: idMembro
-       };
+       // var data = {
+       //   idMembro: idMembro
+       // };
+
+       // let headers = new Headers();
+       //    headers.append('Access-Control-Allow-Origin' , '*');
+       //    headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+       //    headers.append('Accept','application/x-www-form-urlencoded');
+       //    headers.append('content-type','application/x-www-form-urlencoded');
 
        //var idMembro = "idMembro=" + idMembro;
-       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
+       //--//let options = new RequestOptions({ headers: this.headers.getXMLHeader()});
+       //let options = new RequestOptions({ headers:headers,withCredentials: true});
        let options = new RequestOptions({ headers: headers });
-       let body = 'idMembro=' + idMembro;;
+       let body = 'idMembro=' + idMembro;
 
        console.log("Passou o post ObterMenu()");
 
        //this.http.post(this.API_URL + 'ObterListaDeComandos',body, options)
-       this.http.post(this.API_URL + 'ObterListaDeComandos',data)
+       this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
          .subscribe((result: any) => {
            resolve(result.json());
          },
@@ -43,14 +55,5 @@ export class RestApiProvider {
          });
      });
    }
-
-   // this.END_POINT = SERVER_URL + 'InsertNewUser';
-   //  let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-   //  let options = new RequestOptions({ headers: headers });
-   //  let body = 'SchoolName=' + data.SchoolName + '&FirstName=' + data.FirstName + '&LastName=' + data.LastName + '&SchoolPassword=' + data.SchoolPassword +
-   //             '&SchoolEmail=' + data.SchoolEmail + '&SchoolAddress=' + data.SchoolAddress + '&SchoolLogo=' + data.SchoolLogo + '&SchoolPhoneNumber=' + data.SchoolPhoneNumber +
-   //             '&SchoolGuid=' + data.SchoolGuid + '&AccountAcitve=' + false + '&SchoolCode=' + data.SchoolCode + '&BusinessTypeId=' + 1;
-   //  return this.http.post(`${this.END_POINT}`, body, options);
-   //
 
 }
