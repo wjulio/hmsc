@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Ionic Blank
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <timeline endIcon="call">
+    <timeline-item *ngFor="let item of gvProvider.gvMinhaLista.ListaDeObjetos">
+      <!-- <timeline-time [time]="lcDia"></timeline-time> -->
+      <timeline-time [time]="{subtitle:'Wanderson',title:'Julio'}"></timeline-time>
+      <ion-icon [name]="lcCalendarIcon"></ion-icon>
+      <ion-card>
+        <ion-card-header>
+          <!-- {{item.lcDia}} -->
+          <!-- {{lcDia}} -->
+          Meu nome
+        </ion-card-header>
+        <ion-card-content>
+          <!-- {{item.Nome}} -->
+          <!-- {{item.Artes}} -->
+          <!-- {{gvProvider.gvHostImageResize}}{{gvProvider.gvHost}}{{item.Artes}} -->
+          <span>
+            <!-- <ion-img [width]="gvProvider.gvMaxWidth" [height]="gvProvider.gvMaxWidth"  src="http://127.0.0.1/CloudDj/fx/getimage.aspx?w=200&filename=http://127.0.0.1:81/Storage/22-11-2017/3.1272424578/Andrey_Exx,_Sharapov,_Dave_Baron,_Chris_Montana_-_I_Feel_Your_Voice_(Chris_Montana_Remix).jpg"></ion-img> -->
+            <ion-img [width]="gvProvider.gvMaxWidth" [height]="gvProvider.gvMaxWidth" src="{{gvProvider.gvHostImageResize}}{{gvProvider.gvMaxWidth}}{{gvProvider.gvParamImgFile}}{{gvProvider.gvHost}}{{item.Artes}}"></ion-img>
+          </span>
+          <!-- <ion-img src="{{gvProvider.gvHostImageResize}}{{gvProvider.gvHost}}{{item.Artes}}"></ion-img> -->
+          <!-- Parsley amaranth tigernut silver beet maize fennel spinach. Ricebean black-eyed pea maize scallion green bean spinach cabbage jícama bell pepper carrot onion corn plantain garbanzo. Sierra leone bologi komatsuna celery peanut swiss chard silver beet squash dandelion maize chicory burdock tatsoi dulse radish wakame beetroot. -->
+        </ion-card-content>
+      </ion-card>
+    </timeline-item>
+
+  </timeline>
+</ion-content>

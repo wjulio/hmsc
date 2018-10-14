@@ -6,10 +6,16 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
 import { ExpandableComponent } from '../components/expandable/expandable';
+import { TimelineComponent } from '../components/timeline/timeline';
+import { TimelineTimeComponent } from '../components/timeline/timeline';
+import { TimelineItemComponent } from '../components/timeline/timeline';
+
 import { RestApiProvider } from '../providers/rest-api/rest-api';
 import { GlobalvarProvider } from '../providers/globalvar/globalvar';
 
@@ -18,7 +24,11 @@ import { GlobalvarProvider } from '../providers/globalvar/globalvar';
     MyApp,
     HomePage,
     ExpandableComponent,
-    ListPage
+    ListPage,
+    MinhaplaylistPage,
+    TimelineComponent,
+    TimelineItemComponent,
+    TimelineTimeComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +39,8 @@ import { GlobalvarProvider } from '../providers/globalvar/globalvar';
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    ListPage,
+    MinhaplaylistPage
   ],
   providers: [
     StatusBar,

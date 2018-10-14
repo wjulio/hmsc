@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 
 import { RestApiProvider } from './../providers/rest-api/rest-api';
 import { GlobalvarProvider } from './../providers/globalvar/globalvar';
@@ -16,7 +17,8 @@ import { GlobalvarProvider } from './../providers/globalvar/globalvar';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  //rootPage: any = HomePage;
+  rootPage: any = MinhaplaylistPage;
 
   pages: Array<{title: string, component: any}>;
   playerItems:any = [];
@@ -29,7 +31,8 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'List', component: ListPage },
+      { title: 'MinhaPlayList', component: MinhaplaylistPage }
     ];
 
     this.playerItems = [
