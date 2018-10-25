@@ -9,13 +9,18 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GlobalvarProvider {
 
+  public gvIdMembro:number = 1;
   public myGlobalVar: string;
   public gvListaMenu:any = [];
   public gvMinhaLista:any;
   public gvMaxWidth:any = "300";
-  public gvHost:any = 'http://127.0.0.1:81/';
-  public gvHostImageResize:any = 'http://127.0.0.1/CloudDj/fx/getimage.aspx?w=';
+  //public gvStorage:any = 'http://127.0.0.1:81/';
+  public gvStorage:any = 'http://179.218.153.242:81/';
+  //public gvHostImageResize:any = 'http://127.0.0.1/CloudDj/fx/getimage.aspx?w=';
+  public gvHostImageResize:any = 'http://179.218.153.242:81/getimage.php?w=';
   public gvParamImgFile = '&filename=';
+  public gvPaginaAtual:any = 1;
+  public gvItensPorPagina:any = 10;
 
 
   constructor() {

@@ -28,6 +28,9 @@ export class MyApp {
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
     this.initializeApp();
 
+    console.log('platform.width:'+platform.width());
+    gvProvider.gvMaxWidth = platform.width()<300?platform.width()-(platform.width()*0.25):300;
+    console.log('gvProvider.gvMaxWidth:'+gvProvider.gvMaxWidth);
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
@@ -48,7 +51,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       console.log("Passou aqui1");
-      this.ObtemMenu();
+      //this.ObtemMenu();
       //this.getAll();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
