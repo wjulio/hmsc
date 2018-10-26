@@ -12,15 +12,18 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RestApiProvider {
 
-  //private API_URL = 'http://disclosure-001-site1.gtempurl.com/jservico.asmx/'
-  private API_URL = 'http://localhost:26223/wscloud/jservico.asmx/'
+  private API_URL = 'http://disclosure-001-site1.gtempurl.com/jpservico.aspx'
+  //private API_URL = 'http://localhost:26223/wscloud/jpservico.aspx/'
   //private API_URL = 'http://127.0.0.1/clouddj/jservico.asmx/'
+  //private API_URL = 'http://179.218.153.242/clouddj/jservico.aspx';
+  private urlPost = '';
 
   constructor(public http: Http) { }
 
   ObterMenu(idMembro: string) {
      return new Promise((resolve, reject) => {
-       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
+       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
+       //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
        let options = new RequestOptions({ headers: headers });
        let body = 'idMembro=' + idMembro;
 
@@ -46,14 +49,19 @@ export class RestApiProvider {
 
    ObterColetaneasPrivadas(busca: string, idsTags:string, idMembro: string, nrPagina:string, numItems:string) {
       return new Promise((resolve, reject) => {
-        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
+        //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
+        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
-        let body = 'busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
+        let body = 'op=ObterColetaneasTodasPrivadasPaginadaComTag&' + busca + 'busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
+
+        //this.urlPost = this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag';
 
         console.log(body);
         console.log("Passou o post ObterColetaneasPrivadas()");
+        console.log("urlPost:"+this.urlPost);
 
-        this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
+        //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
+        this.http.post(this.API_URL, body, options)
           .subscribe((result: any) => {
             resolve(result.json());
           },

@@ -45,10 +45,10 @@ export class MinhaplaylistPage {
     this.restApiProvider.ObterColetaneasPrivadas('', '', '1', ''+PaginaAtual, ''+ItensPorPagina)
       .then((result: any) => {
         console.log('carregaColetaneasPrivadas tem resposta');
-        // for (var i = 0; i < result.ListaDeObjetos.length; i++) {
-        //   var itemColetaneaPrivada = result.ListaDeObjetos[i];
-        //   this.gvProvider.gvMinhaLista.ListaDeObjetos.push(itemColetaneaPrivada);
-        // }
+        for (var i = 0; i < result.ListaDeObjetos.length; i++) {
+          var itemColetaneaPrivada = result.ListaDeObjetos[i];
+          this.gvProvider.gvMinhaLista.ListaDeObjetos.push(itemColetaneaPrivada);
+        }
         //
         // if (this.infiniteScroll) {
         //   this.infiniteScroll.complete();
