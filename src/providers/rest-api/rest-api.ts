@@ -14,8 +14,8 @@ export class RestApiProvider {
 
   private API_URL = 'http://disclosure-001-site1.gtempurl.com/jpservico.aspx'
   //private API_URL = 'http://localhost:26223/wscloud/jpservico.aspx/'
-  //private API_URL = 'http://127.0.0.1/clouddj/jservico.asmx/'
-  //private API_URL = 'http://179.218.153.242/clouddj/jservico.aspx';
+  //private API_URL = 'http://127.0.0.1/clouddj/jpservico.asmx/'
+  //private API_URL = 'http://179.218.153.242/clouddj/jpservico.aspx';
   private urlPost = '';
 
   constructor(public http: Http) { }
@@ -25,11 +25,12 @@ export class RestApiProvider {
        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
        //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
        let options = new RequestOptions({ headers: headers });
-       let body = 'idMembro=' + idMembro;
+       let body = 'op=ObterListaDeComandos&idMembro=' + idMembro;
 
        console.log("Passou o post ObterMenu()");
 
-       this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
+       //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
+       this.http.post(this.API_URL, body, options)
          .subscribe((result: any) => {
            resolve(result.json());
          },

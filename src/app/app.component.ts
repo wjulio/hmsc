@@ -51,7 +51,7 @@ export class MyApp {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       console.log("Passou aqui1");
-      //this.ObtemMenu();
+      this.ObtemMenu();
       //this.getAll();
       this.statusBar.styleDefault();
       this.splashScreen.hide();

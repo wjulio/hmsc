@@ -14,8 +14,10 @@ export class MinhaplaylistPage {
   lcCalendarIcon = 'calendar';
   lcDia:any = new Date();
 
+  str:any = "";
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
-    console.log('ListaDeObjetos:'+gvProvider.gvMinhaLista.ListaDeObjetos.length);
+    console.log('ListaDeObjetos:'+ gvProvider.gvMinhaLista.ListaDeObjetos.length);
 
     // var date_string = '/Date(1233323754523)/';
     // var lcDia = new Date(parseInt(/\/Date\((\d+).*/.exec(date_string)[1]));
@@ -47,8 +49,14 @@ export class MinhaplaylistPage {
         console.log('carregaColetaneasPrivadas tem resposta');
         for (var i = 0; i < result.ListaDeObjetos.length; i++) {
           var itemColetaneaPrivada = result.ListaDeObjetos[i];
+          //"{{gvProvider.gvHostImageResize}}{{gvProvider.gvMaxWidth}}{{gvProvider.gvParamImgFile}}{{gvProvider.gvStorage}}{{item.Artes}}"
+          itemColetaneaPrivada.Artes = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + itemColetaneaPrivada.Artes;
+          this.str = itemColetaneaPrivada.Artes;
           this.gvProvider.gvMinhaLista.ListaDeObjetos.push(itemColetaneaPrivada);
         }
+
+          console.log(this.str);
+
         //
         // if (this.infiniteScroll) {
         //   this.infiniteScroll.complete();

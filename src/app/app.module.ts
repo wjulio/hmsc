@@ -12,9 +12,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { ExpandableComponent } from '../components/expandable/expandable';
-import { TimelineComponent } from '../components/timeline/timeline';
-import { TimelineTimeComponent } from '../components/timeline/timeline';
-import { TimelineItemComponent } from '../components/timeline/timeline';
+// import { TimelineComponent } from '../components/timeline/timeline';
+// import { TimelineTimeComponent } from '../components/timeline/timeline';
+// import { TimelineItemComponent } from '../components/timeline/timeline';
+import { FlashCardComponent } from '../components/flash-card/flash-card';
 
 import { RestApiProvider } from '../providers/rest-api/rest-api';
 import { GlobalvarProvider } from '../providers/globalvar/globalvar';
@@ -26,9 +27,10 @@ import { GlobalvarProvider } from '../providers/globalvar/globalvar';
     ExpandableComponent,
     ListPage,
     MinhaplaylistPage,
-    TimelineComponent,
-    TimelineItemComponent,
-    TimelineTimeComponent
+    FlashCardComponent
+    // TimelineComponent,
+    // TimelineItemComponent,
+    // TimelineTimeComponent
   ],
   imports: [
     BrowserModule,
