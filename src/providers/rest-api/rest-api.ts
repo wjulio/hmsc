@@ -72,4 +72,29 @@ export class RestApiProvider {
       });
     }
 
+
+       ObterColetaneas(op:string,busca: string, idsTags:string, idMembro: string, nrPagina:string, numItems:string) {
+          return new Promise((resolve, reject) => {
+            //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
+            let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+            let options = new RequestOptions({ headers: headers });
+            let body = 'op=' + op + '&' + busca + 'busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
+
+            //this.urlPost = this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag';
+
+            console.log(body);
+            console.log("Passou o post ObterColetaneasPrivadas()");
+            console.log("urlPost:"+this.urlPost);
+
+            //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
+            this.http.post(this.API_URL, body, options)
+              .subscribe((result: any) => {
+                resolve(result.json());
+              },
+              (error) => {
+                reject(error.json());
+              });
+          });
+        }
+
 }

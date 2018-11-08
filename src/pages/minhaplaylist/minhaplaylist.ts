@@ -16,8 +16,12 @@ export class MinhaplaylistPage {
 
   str:any = "";
 
+  imageProvider:any = "";
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
     console.log('ListaDeObjetos:'+ gvProvider.gvMinhaLista.ListaDeObjetos.length);
+
+    this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
 
     // var date_string = '/Date(1233323754523)/';
     // var lcDia = new Date(parseInt(/\/Date\((\d+).*/.exec(date_string)[1]));
@@ -57,13 +61,14 @@ export class MinhaplaylistPage {
 
           console.log(this.str);
 
-        //
-        // if (this.infiniteScroll) {
-        //   this.infiniteScroll.complete();
-        //   if (this.ListaDeObjetos.length == result.TotalDeRegistros) {
-        //     this.infiniteScroll.enable(false);
-        //   }
-        // }
+
+        if (this.infiniteScroll) {
+          this.infiniteScroll.complete();
+          if (this.gvProvider.gvMinhaLista.ListaDeObjetos.length == result.TotalDeRegistros) {
+            this.infiniteScroll.enable(false);
+          }
+        }
+
       })
       .catch((error: any) => {
         console.log('Erro na chamada de: carregaColetaneasPrivadas');
@@ -71,7 +76,7 @@ export class MinhaplaylistPage {
       });
   }
 
-  getUsers() {
+  pegaMaisItens() {
     setTimeout(() => {
       this.gvProvider.gvPaginaAtual += 1;
       this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);

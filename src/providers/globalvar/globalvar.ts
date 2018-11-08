@@ -13,6 +13,7 @@ export class GlobalvarProvider {
   public myGlobalVar: string;
   public gvListaMenu:any = [];
   public gvMinhaLista:any;
+  public gvColetaneas:any = [];
   public gvMaxWidth:any = "300";
   //public gvStorage:any = 'http://127.0.0.1:81/';
   public gvStorage:any = 'http://179.218.153.242:81/';

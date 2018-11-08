@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
+import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
 
 import { RestApiProvider } from './../providers/rest-api/rest-api';
 import { GlobalvarProvider } from './../providers/globalvar/globalvar';
@@ -35,7 +36,8 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: HomePage },
       { title: 'List', component: ListPage },
-      { title: 'MinhaPlayList', component: MinhaplaylistPage }
+      { title: 'MinhaPlayList', component: MinhaplaylistPage },
+      { title: 'EmqualqerdiaPage', component: EmqualqerdiaPage }
     ];
 
     this.playerItems = [
@@ -61,8 +63,8 @@ export class MyApp {
   openRootPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    //this.nav.setRoot(page.component);
-    this.nav.setRoot(this.pages[0].component)
+    this.nav.setRoot(page.component);
+    //this.nav.setRoot(this.pages[0].component)
   }
 
   ObtemMenu() {
@@ -102,9 +104,14 @@ export class MyApp {
 
   }
 
-  ExecutaConsulta() {
+  ExecutaConsulta(itemMenu) {
 
-    console.log('Executa Consulta');
+    console.log('Executa Consulta'+JSON.stringify(itemMenu));
+
+    if(itemMenu.Ordem==5){
+      console.log('Executa Consulta:EmqualqerdiaPage');
+      this.nav.setRoot(EmqualqerdiaPage);
+    }
 
   }
 
