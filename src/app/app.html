@@ -38,17 +38,6 @@
   </ion-header>
 
   <ion-content>
-    <!--<ion-list>
-      <button menuClose ion-item *ngFor="let p of gvProvider.gvListaMenu" *ngIf="p.TipoMenuAppJsonDto==0; else elsePart" (click)="openRootPage(p)">
-        {{p.Descricao}}
-      </button>
-    </ion-list>-->
-
-    <!--<ion-item *ngFor="let p of gvProvider.gvListaMenu">
-      <button menuClose ion-button full (click)="openRootPage(p)">
-        {{p.Descricao}}
-      </button>
-    </ion-item>-->
 
     <ion-list>
       <button menuClose detail-push ion-item *ngFor="let p of gvProvider.gvListaMenu" (click)="ExecutaConsulta(p)">
@@ -73,21 +62,52 @@
 
   <ion-content>
     <ion-list>
-      <!--<button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        {{p.title}}
-      </button>
-      <button ion-button secondary menuToggle="right">Toggle Menu</button>-->
-      <ion-list-header>
-        PlayList
-        <ion-badge item-end>10</ion-badge>
-      </ion-list-header>
+
+      <ion-card *ngIf="!(audioTrack && audioTrack.hasLoaded)">
+        <ion-thumbnail item-start>
+          <img src="{{gvProvider.gvStorage}}Storage/capa/padrao.jpg">
+        </ion-thumbnail>
+      </ion-card>
+
+      <ion-card *ngIf="audioTrack && audioTrack.hasLoaded">
+        <ion-thumbnail item-start width="50%" height="50%">
+          <img src="{{ audioTrack?.art }}">
+        </ion-thumbnail>
+      </ion-card>
+
+      <ion-card>
+        <audio-track #audioTrack [track]="currentTrack" [autoplay]="true" (onFinish)="onTrackFinished($event)">
+          <div style="display: flex; justify-content: center; height: 20px; width: 100%">
+          </div>
+          <audio-track-progress-bar duration progress [audioTrack]="audioTrack" style="width: 100%; margin: 0 10px"></audio-track-progress-bar>
+          <div style="display: flex; justify-content: center; height: 30px; width: 100%">
+            <div *ngIf="audioTrack && audioTrack.hasLoaded"><em>{{ audioTrack?.title }}</em></div>
+            <ion-spinner *ngIf="audioTrack && audioTrack.isLoading"></ion-spinner>
+          </div>
+          <div style="display: flex; justify-content: center">
+            <button ion-button icon-only (click)="audioTrack.canPlay ? audioTrack.play() : next()"><ion-icon name="play"></ion-icon></button>
+            <button ion-button icon-only (click)="audioTrack.pause()"><ion-icon name="pause"></ion-icon></button>
+            <button ion-button icon-only (click)="next()"><ion-icon name="skip-forward"></ion-icon></button>
+          </div>
+        </audio-track>
+        <div style="display: flex; justify-content: center; height: 10px; width: 100%">
+        </div>
+      </ion-card>
+
+      <ion-list>
+        <ion-list-header no-lines inset>
+          Na Lista
+          <ion-badge item-end>{{gvProvider.gvPlayListItens.length}}</ion-badge><button ion-button clear item-right (click)="clear()">zerar</button>
+        </ion-list-header>
+      </ion-list>
+
       <ion-item-group reorder="true">
-        <ion-item *ngFor="let item of playerItems">
+        <ion-item *ngFor="let item of gvProvider.gvPlayListItens; let i = index">
           <ion-thumbnail item-start>
-            <img src="http://placehold.it/94">
+            <img src="{{item.Artes}}">
           </ion-thumbnail>
-          <h2>{{item.title}}</h2>
-          <p>Hayao Miyazaki • 1988</p>
+          <h2>{{ item.Nome }}</h2>
+          <p>{{ item.Autores }}</p>
         </ion-item>
       </ion-item-group>
     </ion-list>

@@ -12,6 +12,9 @@ import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+// import { BackgroundMode } from '@ionic-native/background-mode';
+import { IonicAudioModule, WebAudioProvider, CordovaMediaProvider, defaultAudioProviderFactory } from 'ionic-audio';
+
 import { ExpandableComponent } from '../components/expandable/expandable';
 // import { TimelineComponent } from '../components/timeline/timeline';
 // import { TimelineTimeComponent } from '../components/timeline/timeline';
@@ -20,6 +23,10 @@ import { ExpandableComponent } from '../components/expandable/expandable';
 
 import { RestApiProvider } from '../providers/rest-api/rest-api';
 import { GlobalvarProvider } from '../providers/globalvar/globalvar';
+
+export function myCustomAudioProviderFactory() {
+  return (window.hasOwnProperty('cordova')) ? new CordovaMediaProvider() : new WebAudioProvider();
+}
 
 @NgModule({
   declarations: [
@@ -37,6 +44,7 @@ import { GlobalvarProvider } from '../providers/globalvar/globalvar';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicAudioModule.forRoot(defaultAudioProviderFactory),
     HttpModule
   ],
   bootstrap: [IonicApp],

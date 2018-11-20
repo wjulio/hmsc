@@ -58,7 +58,7 @@ export class RestApiProvider {
         //this.urlPost = this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag';
 
         console.log(body);
-        console.log("Passou o post ObterColetaneasPrivadas()");
+        //console.log("Passou o post ObterColetaneasPrivadas()");
         console.log("urlPost:"+this.urlPost);
 
         //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
@@ -83,7 +83,7 @@ export class RestApiProvider {
             //this.urlPost = this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag';
 
             console.log(body);
-            console.log("Passou o post ObterColetaneasPrivadas()");
+            //console.log("Passou o post ObterColetaneasPrivadas()");
             console.log("urlPost:"+this.urlPost);
 
             //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
