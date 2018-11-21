@@ -63,13 +63,13 @@
   <ion-content>
     <ion-list>
 
-      <ion-card *ngIf="!(audioTrack && audioTrack.hasLoaded)">
+      <ion-card *ngIf="imgPadrao">
         <ion-thumbnail item-start>
           <img src="{{gvProvider.gvStorage}}Storage/capa/padrao.jpg">
         </ion-thumbnail>
       </ion-card>
 
-      <ion-card *ngIf="audioTrack && audioTrack.hasLoaded">
+      <ion-card *ngIf="!(imgPadrao)">
         <ion-thumbnail item-start width="50%" height="50%">
           <img src="{{ audioTrack?.art }}">
         </ion-thumbnail>

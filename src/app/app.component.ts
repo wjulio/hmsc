@@ -35,6 +35,8 @@ export class MyApp {
   currentIndex: number = -1;
   currentTrack: ITrackConstraint;
 
+  imgPadrao:boolean = true;
+
 
   constructor(
                 public _cdRef: ChangeDetectorRef,
@@ -142,11 +144,13 @@ export class MyApp {
          play(track: ITrackConstraint, index: number) {
              this.currentTrack = track;
              this.currentIndex = index;
+             this.imgPadrao = false;
          }
 
          playPreview(track: ITrackConstraint) {
              this.currentTrack = track;
              this.currentIndex = -1;
+             this.imgPadrao = false;
          }
 
          next() {
@@ -160,9 +164,11 @@ export class MyApp {
              // if no track is playing then start with the first track on the list
              this.play(this.gvProvider.gvPlayListItens[0].track, 0);
            }
+           this.imgPadrao = false;
          }
 
          onTrackFinished(track: any) {
+           this.imgPadrao = true;
            this.next();
          }
 
