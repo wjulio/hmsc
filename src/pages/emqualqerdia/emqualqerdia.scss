@@ -1,7 +1,7 @@
 page-emqualqerdia {
 
   .pins {
-      column-count: 2;
+      column-count: 1;
   }
 
 
@@ -30,7 +30,7 @@ page-emqualqerdia {
   // Media queries
   @media (min-width: 480px) {
       .pins {
-          column-count: 2;
+          column-count: 1;
       }
       .item ion-avatar img {
           width:  7vw !important;
@@ -40,7 +40,7 @@ page-emqualqerdia {
 
   @media (min-width: 640px) {
       .pins {
-          column-count: 3;
+          column-count: 2;
       }
       .item ion-avatar img {
           width:  5vw !important;
@@ -54,6 +54,6 @@ page-emqualqerdia {
       max-width: 10.6rem !important;
       max-height: 10.6rem !important;
     }
-  }  
+  }
 
 }

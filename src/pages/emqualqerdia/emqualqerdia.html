@@ -62,7 +62,6 @@
         <button (click)="addTocaColetanea(i)" clear>
         <div style="position: absolute;">
           <img *ngIf="item.Artes" src="{{imgPlay}}">
-          <!-- <img *ngIf="item.Artes" src="http://179.218.153.242:81/getimagepng.php?w=300&filename=http://179.218.153.242:81/Storage/capa/play-button-icon-png-280x280.png">  -->
         </div>
         <div>
           <img *ngIf="item.Artes"  [src]="item.Artes" />
@@ -70,34 +69,68 @@
         </button>
       </ion-item>
       <div>
-        <!-- <small>{{item.Nome}}</small> -->
         <p><small>{{item.Nome}}</small></p>
-        <!-- <p><small>{{item.DtCriacao}}</small></p> -->
       </div>
-
+<div #divArea>
       <ion-list>
-        <ion-item-sliding *ngFor="let obra of item.Obras; let x = index;let lstx = last;">
+        <ion-item-sliding *ngFor="let obra of item.Obras  | slice:0:3; let x = index;let lstx = last;">
+        <!-- <ion-item-sliding *ngFor="let obra of item.Obras; let x = index;let lstx = last;"> -->
+
           <ion-item>
-            <button (click)="addTocaPreview(i,x)" clear>
-              <ion-thumbnail>
-                <div style="position: absolute;width: 100%;height: 100%;">
-                  <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
-                </div>
+            <!-- <button (click)="addTocaPreview(i,x)" clear> -->
+              <ion-thumbnail (click)="addTocaPreview(i,x)"  item-start>
                 <div>
+                  <div style="position: absolute;width: 100%;height: 100%;">
+                    <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
+                  </div>
                   <img *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}">
+                   <!-- {{melog(imageProvider+obra.Artes)}} -->
                 </div>
+                <!-- <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png"> -->
+                <!-- <img *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}"> -->
               </ion-thumbnail>
-            </button>
-            <p><small>{{obra.Nome}}</small></p>
+              <h2>{{obra.Nome}}</h2>
+              <p>{{obra.Autores}}</p>
+            <!-- </button> -->
+            <!-- <p><small>{{obra.Nome}}</small></p> -->
           </ion-item>
+
           <ion-item-options side="right">
+            <button ion-button  (click)="addToPlayList(i,x)"><ion-icon name="add">TAG</ion-icon></button>
             <button ion-button icon-only (click)="addToPlayList(i,x)"><ion-icon name="play"></ion-icon></button>
-            <!-- <button ion-button  (click)="viewPlayers(item)"><ion-icon name="contacts"></ion-icon>Players</button>
-            <button ion-button  (click)="delete(item)"><ion-icon name="trash"></ion-icon>Delete</button> -->
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>
 
+      <button detail-none (click)="expandItem(item)" ion-item>View</button>
+
+      <ion-list>
+        <ion-item-sliding *ngFor="let obra of item.Obras; let x = index;let lstx = last;">
+          <!-- <div #divArea *ngIf="x>=3"> -->
+
+            <expandable #myEx [expandHeight]="itemExpandHeight" [expanded]="item.expanded">
+                <ion-item>
+                  <button (click)="addTocaPreview(i,x)" clear>
+                    <ion-thumbnail>
+                      <div style="position: absolute;width: 100%;height: 100%;">
+                        <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
+                      </div>
+                      <div>
+                        <img *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}">
+                        <!-- {{melog(imageProvider+obra.Artes)}} -->
+                      </div>
+                    </ion-thumbnail>
+                  </button>
+                  <p><small>{{obra.Nome}}</small></p>
+                </ion-item>
+                <ion-item-options side="right">
+                  <button ion-button icon-only (click)="addToPlayList(i,x)"><ion-icon name="play"></ion-icon></button>
+                </ion-item-options>
+            </expandable>
+
+        </ion-item-sliding>
+      </ion-list>
+</div>
     </ion-card>
   </div>
 

@@ -1,10 +1,9 @@
-import { Component,ChangeDetectorRef} from '@angular/core';
+import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
-// import { BackgroundMode } from '@ionic-native/background-mode';
 import { ITrackConstraint} from 'ionic-audio';
 
 @IonicPage()
@@ -14,7 +13,8 @@ import { ITrackConstraint} from 'ionic-audio';
 })
 export class EmqualqerdiaPage {
   @ViewChild(InfiniteScroll) infiniteScroll: InfiniteScroll;
-
+  @ViewChild('divArea') divAreaRef: ElementRef;
+  @ViewChild('myEx') myExRef: ElementRef;
 
   lcCalendarIcon = 'calendar';
   lcDia:any = new Date();
@@ -24,6 +24,8 @@ export class EmqualqerdiaPage {
 
   imageProvider:any = "";
 
+  itemExpandHeight: number = 500;
+
   // constructor(private _cdRef: ChangeDetectorRef,private backgroundMode:BackgroundMode, public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
   constructor(
     private _cdRef: ChangeDetectorRef,
@@ -32,13 +34,15 @@ export class EmqualqerdiaPage {
     private toast: ToastController,
     private restApiProvider: RestApiProvider,
     public gvProvider: GlobalvarProvider,
-    public playEventGatilho: Events)
+    public renderer: Renderer,
+    public playEventGatilho: Events,
+    public expandHeightGatilho: Events)
     {
 
       this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
-      console.log(this.imageProvider);
-      this.imgPlay = 'http://179.218.153.242:81/getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename=http://179.218.153.242:81/Storage/capa/play-button-icon-png-280x280.png';
-      console.log(this.imgPlay);
+      //console.log(this.imageProvider);
+      this.imgPlay = this.gvProvider.gvStorage+'getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename='+this.gvProvider.gvStorage+'Storage/capa/play-button-icon-png-280x280.png';
+      //console.log(this.imgPlay);
 
 
     }
@@ -53,7 +57,7 @@ export class EmqualqerdiaPage {
     this.infiniteScroll.enable(true);
     //console.log('chamou carregaColetaneas');
     //this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
-    this.carregaColetaneas(1,10);
+    this.carregaColetaneas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
   }
 
 
@@ -67,10 +71,10 @@ export class EmqualqerdiaPage {
             itemColetaneaPrivada.Artes = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + itemColetaneaPrivada.Artes;
             this.str = itemColetaneaPrivada.Artes;
             this.gvProvider.gvColetaneas.ListaDeObjetos.push(itemColetaneaPrivada);
-            console.log(itemColetaneaPrivada.Artes);
+            //console.log(itemColetaneaPrivada.Artes);
           }
 
-            console.log(this.str);
+            //console.log(this.str);
 
 
           if (this.infiniteScroll) {
@@ -105,8 +109,8 @@ export class EmqualqerdiaPage {
     addToPlayList(itemColetanea,itemObra){
       console.log('click image addToPlayList');
       var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemColetanea].Obras[itemObra];
-      console.log('arq: ' + obra.Arquivo.substring(8, obra.Arquivo.length));
-      console.log('arte: ' + this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + obra.Artes);
+      //console.log('arq: ' + obra.Arquivo.substring(8, obra.Arquivo.length));
+      //console.log('arte: ' + this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + obra.Artes);
       this.gvProvider.gvPlayListItens.push({
         IdeObra: obra.IdeObra,
         Nome: obra.Nome,
@@ -142,7 +146,48 @@ export class EmqualqerdiaPage {
        this.playEventGatilho.publish('play-preview');
     }
 
+    melog(val){
+      console.log(val);
+    }
+
+    expandItem(item){
+
+       this.adjust();
+        this.gvProvider.gvColetaneas.ListaDeObjetos.map((listItem) => {
+            if(item == listItem){
+                //console.log(listItem);
+                this.expandHeightGatilho.publish('setExpandHeight');
+                listItem.expanded = !listItem.expanded;
+            } else {
+                this.expandHeightGatilho.publish('setExpandHeight');
+                listItem.expanded = false;
+            }
+            return listItem;
+
+        });
+
+    }
+
+    adjust() {
+
+      const ta = this.divAreaRef.nativeElement;
+      const ta2 = this.myExRef;//.nativeElement;
+
+      ta2.expandHeight = ta.offsetHeight;
+      this.itemExpandHeight = ta.offsetHeight;
+
+    }
 
 
+    toggleGroup(group) {
+      if (this.isGroupShown(group)) {
+        this.shownGroup = null;
+      } else {
+        this.shownGroup = group;
+      }
+    };
+    isGroupShown(group) {
+      return this.shownGroup === group;
+    };
 
 }

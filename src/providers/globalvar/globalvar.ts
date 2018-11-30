@@ -17,9 +17,9 @@ export class GlobalvarProvider {
   public gvColetaneas:any = [];
   public gvMaxWidth:any = "300";
   //public gvStorage:any = 'http://127.0.0.1:81/';
-  public gvStorage:any = 'http://179.218.166.176:81/';
+  public gvStorage:any = 'http://179.218.229.220:81/';
   //public gvHostImageResize:any = 'http://127.0.0.1/CloudDj/fx/getimage.aspx?w=';
-  public gvHostImageResize:any = 'http://179.218.166.176:81/getimage.php?w=';
+  public gvHostImageResize:any = 'http://179.218.229.220:81/getimage.php?w=';
   public gvParamImgFile = '&filename=';
   public gvPaginaAtual:any = 1;
   public gvItensPorPagina:any = 10;

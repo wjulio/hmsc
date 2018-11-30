@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component,ElementRef, Renderer } from '@angular/core';
+import { NavController,Events } from 'ionic-angular';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'page-home',
@@ -7,11 +8,14 @@ import { NavController } from 'ionic-angular';
 })
 export class HomePage {
 
+  @ViewChild('divArea') divAreaRef: ElementRef;
+  @ViewChild('myEx') myExRef: ElementRef;
+
   items: any = [];
   playerItems: any = [];
   itemExpandHeight: number = 500;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,renderer: Renderer,public expandHeightGatilho: Events) {
 
     this.items = [
         {expanded: false},
@@ -40,17 +44,28 @@ export class HomePage {
 
      expandItem(item){
 
+        this.adjust();
          this.items.map((listItem) => {
-
              if(item == listItem){
+                 this.expandHeightGatilho.publish('setExpandHeight');
                  listItem.expanded = !listItem.expanded;
              } else {
+                 this.expandHeightGatilho.publish('setExpandHeight');
                  listItem.expanded = false;
              }
-
              return listItem;
 
          });
+
+     }
+
+     adjust() {
+
+       const ta = this.divAreaRef.nativeElement;
+       const ta2 = this.myExRef;//.nativeElement;
+
+       //ta2.expandHeight = ta.offsetHeight;
+       //this.itemExpandHeight = ta.offsetHeight;
 
      }
 
