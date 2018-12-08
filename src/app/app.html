@@ -100,24 +100,23 @@
           <!-- Na Lista Há: -->
 
           <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="SalvaPlayList()">Editar</button> -->
-          <button ion-button clear item-right [disabled]="Vazio()" (click)="OrdenarOuRemoverChange()"><ion-icon name="reorder"></ion-icon></button>
-          <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="SalvaPlayList()">Salvar</button> -->
-          <button ion-button clear item-right [disabled]="Desabilitado()"><ion-icon name="magnet"></ion-icon></button>
-          <button ion-button clear item-right [disabled]="Desabilitado()"><ion-icon name="download"></ion-icon></button>
-          <button ion-button clear item-right [disabled]="Desabilitado()" (click)="clear()"><ion-icon name="remove-circle"></ion-icon></button>
-          <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="clear()">zerar</button> -->
+          <button ion-button clear item-right [disabled]="Desabilitado('ordenar')" (click)="HabilitaOrdenar()"><ion-icon name="reorder"></ion-icon></button>
+          <button ion-button clear item-right [disabled]="Desabilitado('salvar')" (click)="SalvaLista()"><ion-icon name="magnet"></ion-icon></button>
+          <button ion-button clear item-right [disabled]="Desabilitado('down')" (click)="DownloadLista()"><ion-icon name="download"></ion-icon></button>
+          <button ion-button clear item-right [disabled]="Desabilitado('remover')" (click)="HabilitaRemover()"><ion-icon name="remove-circle"></ion-icon></button>
+          <button ion-button clear item-right *ngIf="flgRemover" (click)="clear()">zerar</button>
           <ion-badge item-end>{{gvProvider.gvPlayListItens.length}}</ion-badge>
         </ion-list-header>
       </ion-list>
 
-      <ion-item-group [reorder]="Desabilitado()"  (ionItemReorder)="reorderItems($event)">
-        <ion-item *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (press)="pressEvent(i)">
+      <ion-item-group [reorder]="flgOrdenar" (press)="RemoveItem(i)"  (ionItemReorder)="reorderItems($event)">
+        <ion-item [class.highlight]="item.Selecionado" *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (click)="selectCP(i)">
           <ion-thumbnail item-start>
             <img src="{{item.Artes}}">
           </ion-thumbnail>
           <h2>{{ item.Nome }}</h2>
           <p>{{ item.Autores }}</p>
-          <button *ngIf="!Desabilitado()" ion-button clear item-right  [disabled]="true"><ion-icon name="reorder"></ion-icon></button>
+          <button *ngIf="!flgOrdenar" ion-button clear item-right  [disabled]="true"><ion-icon name="reorder"></ion-icon></button>
         </ion-item>
       </ion-item-group>
     </ion-list>

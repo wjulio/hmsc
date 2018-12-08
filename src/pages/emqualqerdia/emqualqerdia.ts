@@ -119,6 +119,7 @@ export class EmqualqerdiaPage {
           ArquivoStorage: this.gvProvider.gvStorage + obra.Arquivo,
           DtCriacao: obra.DtCriacao,
           ehPreview:true,
+          Selecionado:false,
           track:{
             src: this.gvProvider.gvStorage + obra.Arquivo,
             artist: obra.Autores,
@@ -150,6 +151,7 @@ export class EmqualqerdiaPage {
         ArquivoStorage: this.gvProvider.gvStorage + obra.Arquivo,
         DtCriacao: obra.DtCriacao,
         ehPreview:true,
+        Selecionado:false,
         track:{
           src: this.gvProvider.gvStorage + obra.Arquivo,
           artist: obra.Autores,

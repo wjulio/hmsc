@@ -25,6 +25,8 @@ export class GlobalvarProvider {
   public gvItensPorPagina:any = 10;
 
   public gvPlayListItens:any = [];
+  public gvPlayListUltimoIndexTocado:number = -1;
+  public gvPlayListIndexSelecionado:number = -1;
 
   public singleTrack: ITrackConstraint;
 

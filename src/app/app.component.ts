@@ -1,5 +1,5 @@
 import { Component, ViewChild,ChangeDetectorRef } from '@angular/core';
-import { Nav, Platform,Events} from 'ionic-angular';
+import { Nav, Platform,Events,ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -37,12 +37,14 @@ export class MyApp {
   currentTrack: ITrackConstraint;
 
   imgPadrao:boolean = true;
-  OrdenarOuRemover:boolean = false;
+  flgOrdenar:boolean = false;
+  flgRemover:boolean = false;
 
 
   constructor(
                 public _cdRef: ChangeDetectorRef,
                 public platform: Platform,
+                private toast: ToastController,
                 public statusBar: StatusBar,
                 public splashScreen: SplashScreen,
                 private restApiProvider: RestApiProvider,
@@ -55,7 +57,7 @@ export class MyApp {
 
         console.log('platform.width:'+platform.width());
         gvProvider.gvMaxWidth = platform.width()<300?platform.width()-(platform.width()*0.25):300;
-        console.log('gvProvider.gvMaxWidth:'+gvProvider.gvMaxWidth);
+        //console.log('gvProvider.gvMaxWidth:'+gvProvider.gvMaxWidth);
 
         this.pages = [
           { title: 'Home', component: HomePage },
@@ -98,7 +100,7 @@ export class MyApp {
       .then((result: any) => {
         //this.toast.create({ message: 'Menu ok.', position: 'botton', duration: 3000 }).present();
 
-        console.log(this.usuarioIde);
+        //console.log(this.usuarioIde);
         //console.log("Entrou no ObtemMenu()");
         console.log(result.length);
         for (var i = 0; i < result.length; i++) {
@@ -146,6 +148,15 @@ export class MyApp {
          play(track: ITrackConstraint, index: number) {
              this.currentTrack = track;
              this.currentIndex = index;
+             this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
+             this.gvProvider.gvPlayListIndexSelecionado = index;
+             if(this.gvProvider.gvPlayListUltimoIndexTocado > 0){
+               this.gvProvider.gvPlayListItens[this.gvProvider.gvPlayListUltimoIndexTocado].Selecionado = false;
+             }else{
+               this.gvProvider.gvPlayListItens[0].Selecionado = false;
+             }
+             this.gvProvider.gvPlayListItens[index].Selecionado = true;
+
              this.imgPadrao = false;
          }
 
@@ -160,11 +171,26 @@ export class MyApp {
            if (this.gvProvider.gvPlayListItens.length > 0 && this.currentIndex >= 0 && this.currentIndex < this.gvProvider.gvPlayListItens.length - 1) {
              let i = this.currentIndex + 1;
              let track = this.gvProvider.gvPlayListItens[i].track;
+             this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
+             this.gvProvider.gvPlayListIndexSelecionado = i;
+             if(this.gvProvider.gvPlayListUltimoIndexTocado > 0){
+               this.gvProvider.gvPlayListItens[this.gvProvider.gvPlayListUltimoIndexTocado].Selecionado = false;
+             }else{
+               this.gvProvider.gvPlayListItens[0].Selecionado = false;
+             }
+             this.gvProvider.gvPlayListItens[i].Selecionado = true;
              this.play(track, i);
              this._cdRef.detectChanges();  // needed to ensure UI update
            } else if (this.currentIndex == -1 && this.gvProvider.gvPlayListItens.length > 0) {
              // if no track is playing then start with the first track on the list
              this.play(this.gvProvider.gvPlayListItens[0].track, 0);
+             this.gvProvider.gvPlayListIndexSelecionado = 0;
+             if(this.gvProvider.gvPlayListUltimoIndexTocado > 0){
+               this.gvProvider.gvPlayListItens[this.gvProvider.gvPlayListUltimoIndexTocado].Selecionado = false;
+             }else{
+               this.gvProvider.gvPlayListItens[0].Selecionado = false;
+             }
+             this.gvProvider.gvPlayListItens[0].Selecionado = true;
            }
            this.imgPadrao = false;
          }
@@ -176,23 +202,98 @@ export class MyApp {
 
          clear() {
            this.gvProvider.gvPlayListItens = [];
+           this.flgRemover = false;
+           this.flgOrdenar = false;
          }
 
          SalvaPlayList(){}
 
-         Desabilitado(){
+         Desabilitado(origem){
            if(this.gvProvider.gvPlayListItens.length > 0) {
-             return  this.OrdenarOuRemover;
+             //return  this.OrdenarOuRemover;
+             //console.log(origem);
+
+             if(!this.flgOrdenar && !this.flgRemover){
+               return false;
+              }
+
+             if(this.flgOrdenar){
+               switch (origem) {
+                case 'ordenar':
+                    return false;
+                case 'salvar':
+                    return true;
+                case 'down':
+                    return true;
+                case 'remover':
+                    return true;
+                default: return false;
+              }
+             }
+
+             if(this.flgRemover){
+               switch (origem) {
+                case 'ordenar':
+                    return true;
+                case 'salvar':
+                    return true;
+                case 'down':
+                    return true;
+                case 'remover':
+                    return false;
+                default: return false;
+              }
+             }
+
            }
            return true;
          }
 
-         Vazio(){
-           if(this.gvProvider.gvPlayListItens.length > 0) {
-             return false;
-           }
-           return true;
+         // Vazio(){
+         //   if(this.gvProvider.gvPlayListItens.length > 0) {
+         //     return false;
+         //   }
+         //   return true;
+         // }
+
+         HabilitaOrdenar(){
+           this.flgOrdenar = !this.flgOrdenar;
+           this.flgRemover = false;
          }
+
+         HabilitaRemover(){
+           this.flgRemover = !this.flgRemover;
+           this.flgOrdenar = false;
+         }
+
+         DownloadLista(){
+           this.toast.create({ message:this.gvProvider.gvPlayListItens.length + 'itens marcados para download', position: 'botton', duration: 3000 }).present();
+         }
+
+         SalvaLista(){
+           this.toast.create({ message: ' foi criada', position: 'botton', duration: 3000 }).present();
+         }
+
+         selectCP(index){
+           this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
+           this.gvProvider.gvPlayListIndexSelecionado = index;
+           this.currentTrack = this.gvProvider.gvPlayListItens[index].track;;
+           this.currentIndex = index;
+           if(this.gvProvider.gvPlayListUltimoIndexTocado > 0){
+             this.gvProvider.gvPlayListItens[this.gvProvider.gvPlayListUltimoIndexTocado].Selecionado = false;
+           }else{
+             this.gvProvider.gvPlayListItens[0].Selecionado = false;
+           }
+           this.gvProvider.gvPlayListItens[index].Selecionado = true;
+         }
+
+         // DesfazSelect(){
+         //   if(this.gvProvider.gvPlayListUltimoIndexTocado > 0){
+         //     this.gvProvider.gvPlayListItens[this.gvProvider.gvPlayListUltimoIndexTocado].Selecionado = false;
+         //   }else{
+         //     this.gvProvider.gvPlayListItens[0].Selecionado = false;
+         //   }
+         // }
 
          ConfiguraEnderecoServidor() {
            this.restApiProvider.Conectar(this.usuarioIde)
@@ -206,15 +307,18 @@ export class MyApp {
 
              })
              .catch((error: any) => {
-               //this.toast.create({ message: 'Erro ao conectar.' + error.error, position: 'botton', duration: 3000 }).present();
+               this.toast.create({ message: 'Erro ao conectar.' + error.error, position: 'botton', duration: 3000 }).present();
              });
          }
 
         reorderItems(indexes) {
+          let nome = this.gvProvider.gvPlayListItens[index].Nome;
           if(this.OrdenarOuRemover){
             let element = this.gvProvider.gvPlayListItens[indexes.from];
             this.gvProvider.gvPlayListItens.splice(indexes.from, 1);
             this.gvProvider.gvPlayListItens.splice(indexes.to, 0, element);
+            this.gvProvider.gvPlayListUltimoIndexTocado = -1;
+            this.toast.create({ message: nome + ' foi reposicionado', position: 'botton', duration: 3000 }).present();
           }
         }
 
@@ -228,16 +332,14 @@ export class MyApp {
         //   }
         //  }
 
-        pressEvent(index){
-          if(this.OrdenarOuRemover){
+        RemoveItem(index){
+          let nome = this.gvProvider.gvPlayListItens[index].Nome;
+          if(this.Remover){
             this.gvProvider.gvPlayListItens.splice(index, 1);
+            this.gvProvider.gvPlayListUltimoIndexTocado = -1;
+            this.toast.create({ message: nome + ' foi removido', position: 'botton', duration: 3000 }).present();
           }
         }
-
-        OrdenarOuRemoverChange(){
-          this.OrdenarOuRemover = !this.OrdenarOuRemover;
-        }
-
 }
 
 // export class EnderecoServidor {
