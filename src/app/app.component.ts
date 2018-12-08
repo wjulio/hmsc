@@ -218,17 +218,21 @@ export class MyApp {
           }
         }
 
-        pressEvent(indexes) {
-           //this.press++
-          // let index = this.indexes.indexOf(post);
-          //
-          // if(index > -1){
-          //   this.indexes.splice(index, 1);
-          // }
+        // pressEvent(indexes) {
+        //   if(this.OrdenarOuRemover){
+        //     let index = this.indexes.indexOf(post);
+        //     if(index > -1){
+        //       this.indexes.splice(index, 1);
+        //     }
+        //     //console.log(indexes);
+        //   }
+        //  }
+
+        pressEvent(index){
           if(this.OrdenarOuRemover){
-            console.log(indexes);
+            this.gvProvider.gvPlayListItens.splice(index, 1);
           }
-         }
+        }
 
         OrdenarOuRemoverChange(){
           this.OrdenarOuRemover = !this.OrdenarOuRemover;

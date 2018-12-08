@@ -110,13 +110,14 @@
         </ion-list-header>
       </ion-list>
 
-      <ion-item-group reorder="true"  (ionItemReorder)="reorderItems($event)">
-        <ion-item *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (press)="pressEvent($event)">
+      <ion-item-group [reorder]="Desabilitado()"  (ionItemReorder)="reorderItems($event)">
+        <ion-item *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (press)="pressEvent(i)">
           <ion-thumbnail item-start>
             <img src="{{item.Artes}}">
           </ion-thumbnail>
           <h2>{{ item.Nome }}</h2>
           <p>{{ item.Autores }}</p>
+          <button *ngIf="!Desabilitado()" ion-button clear item-right  [disabled]="true"><ion-icon name="reorder"></ion-icon></button>
         </ion-item>
       </ion-item-group>
     </ion-list>
