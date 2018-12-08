@@ -61,8 +61,8 @@ export class HomePage {
 
      adjust() {
 
-       const ta = this.divAreaRef.nativeElement;
-       const ta2 = this.myExRef;//.nativeElement;
+       // const ta = this.divAreaRef.nativeElement;
+       // const ta2 = this.myExRef;//.nativeElement;
 
        //ta2.expandHeight = ta.offsetHeight;
        //this.itemExpandHeight = ta.offsetHeight;

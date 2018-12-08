@@ -13,6 +13,7 @@ import { RestApiProvider } from './../providers/rest-api/rest-api';
 import { GlobalvarProvider } from './../providers/globalvar/globalvar';
 
 import { AudioProvider,ITrackConstraint} from 'ionic-audio';
+import { Storage } from '@ionic/storage';
 
 @Component({
   templateUrl: 'app.html'
@@ -36,6 +37,7 @@ export class MyApp {
   currentTrack: ITrackConstraint;
 
   imgPadrao:boolean = true;
+  OrdenarOuRemover:boolean = false;
 
 
   constructor(
@@ -46,7 +48,8 @@ export class MyApp {
                 private restApiProvider: RestApiProvider,
                 public gvProvider: GlobalvarProvider,
                 public playEvents: Events,
-                public _audioProvider: AudioProvider)
+                public _audioProvider: AudioProvider,
+                public storage: Storage)
     {
         this.initializeApp();
 
@@ -71,11 +74,10 @@ export class MyApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      //console.log("Passou aqui1");
-      this.ObtemMenu();
-      //this.getAll();
+
+      //this.ObtemMenu();
+      this.ConfiguraEnderecoServidor();
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
@@ -94,7 +96,7 @@ export class MyApp {
     this.restApiProvider.ObterMenu(this.usuarioIde)
 
       .then((result: any) => {
-        //this.toast.create({ message: 'Usuário logado com sucesso. Token: ' + result.token, position: 'botton', duration: 3000 }).present();
+        //this.toast.create({ message: 'Menu ok.', position: 'botton', duration: 3000 }).present();
 
         console.log(this.usuarioIde);
         //console.log("Entrou no ObtemMenu()");
@@ -113,7 +115,7 @@ export class MyApp {
         //this.navCtrl.setRoot()
       })
       .catch((error: any) => {
-          console.log('Erro : ObtemMenu()' + error.erro);
+          console.log('Erro ao obter o menu esquerdo' + error.erro);
         //this.toast.create({ message: 'Erro ao efetuar login. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
       });
   }
@@ -176,5 +178,64 @@ export class MyApp {
            this.gvProvider.gvPlayListItens = [];
          }
 
+         SalvaPlayList(){}
+
+         Desabilitado(){
+           if(this.gvProvider.gvPlayListItens.length > 0) {
+             return  this.OrdenarOuRemover;
+           }
+           return true;
+         }
+
+         Vazio(){
+           if(this.gvProvider.gvPlayListItens.length > 0) {
+             return false;
+           }
+           return true;
+         }
+
+         ConfiguraEnderecoServidor() {
+           this.restApiProvider.Conectar(this.usuarioIde)
+             .then((result: any) => {
+               //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
+
+               this.gvProvider.gvStorage = 'http://' + result.ServidorDeConexao + ':81/';
+               this.gvProvider.gvHostImageResize = 'http://' + result.ServidorDeConexao + ':81/getimage.php?w=';
+               console.log("serverSet:"+this.gvProvider.gvStorage);
+               this.ObtemMenu();
+
+             })
+             .catch((error: any) => {
+               //this.toast.create({ message: 'Erro ao conectar.' + error.error, position: 'botton', duration: 3000 }).present();
+             });
+         }
+
+        reorderItems(indexes) {
+          if(this.OrdenarOuRemover){
+            let element = this.gvProvider.gvPlayListItens[indexes.from];
+            this.gvProvider.gvPlayListItens.splice(indexes.from, 1);
+            this.gvProvider.gvPlayListItens.splice(indexes.to, 0, element);
+          }
+        }
+
+        pressEvent(indexes) {
+           //this.press++
+          // let index = this.indexes.indexOf(post);
+          //
+          // if(index > -1){
+          //   this.indexes.splice(index, 1);
+          // }
+          if(this.OrdenarOuRemover){
+            console.log(indexes);
+          }
+         }
+
+        OrdenarOuRemoverChange(){
+          this.OrdenarOuRemover = !this.OrdenarOuRemover;
+        }
 
 }
+
+// export class EnderecoServidor {
+//   ServidorDeConexao: string;
+// }

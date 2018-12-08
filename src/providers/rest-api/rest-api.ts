@@ -20,6 +20,30 @@ export class RestApiProvider {
 
   constructor(public http: Http) { }
 
+
+    //ServidorDeConexao
+
+
+  Conectar(idMembro: string) {
+     return new Promise((resolve, reject) => {
+       let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
+       //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+       let options = new RequestOptions({ headers: headers });
+       let body = 'op=Conectar&idMembro=' + idMembro;
+
+       console.log("Passou o post ObterMenu()");
+
+       //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
+       this.http.post(this.API_URL, body, options)
+         .subscribe((result: any) => {
+           resolve(result.json());
+         },
+         (error) => {
+           reject(error.json());
+         });
+     });
+   }
+
   ObterMenu(idMembro: string) {
      return new Promise((resolve, reject) => {
        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });

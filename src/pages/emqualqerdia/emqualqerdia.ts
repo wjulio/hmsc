@@ -1,4 +1,5 @@
-import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
+import { Component,ChangeDetectorRef} from '@angular/core';
+// import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
@@ -13,8 +14,8 @@ import { ITrackConstraint} from 'ionic-audio';
 })
 export class EmqualqerdiaPage {
   @ViewChild(InfiniteScroll) infiniteScroll: InfiniteScroll;
-  @ViewChild('divArea') divAreaRef: ElementRef;
-  @ViewChild('myEx') myExRef: ElementRef;
+  // @ViewChild('divArea') divAreaRef: ElementRef;
+  // @ViewChild('myEx') myExRef: ElementRef;
 
   lcCalendarIcon = 'calendar';
   lcDia:any = new Date();
@@ -24,7 +25,9 @@ export class EmqualqerdiaPage {
 
   imageProvider:any = "";
 
-  itemExpandHeight: number = 500;
+  //itemExpandHeight: number = 500;
+
+  shownGroup = null;
 
   // constructor(private _cdRef: ChangeDetectorRef,private backgroundMode:BackgroundMode, public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
   constructor(
@@ -34,7 +37,7 @@ export class EmqualqerdiaPage {
     private toast: ToastController,
     private restApiProvider: RestApiProvider,
     public gvProvider: GlobalvarProvider,
-    public renderer: Renderer,
+    // public renderer: Renderer,
     public playEventGatilho: Events,
     public expandHeightGatilho: Events)
     {
@@ -48,7 +51,7 @@ export class EmqualqerdiaPage {
     }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EmqualqerdiaPage');
+    //console.log('ionViewDidLoad EmqualqerdiaPage');
 
     this.gvProvider.gvPaginaAtual = 1;
     this.gvProvider.gvItensPorPagina = 10;
@@ -99,15 +102,41 @@ export class EmqualqerdiaPage {
     }
 
     click(){
-      console.log('click image button');
+      //console.log('click image button');
     }
 
     addTocaColetanea(item){
-      console.log('click image addTocaColetanea')
+      //console.log('click image addTocaColetanea');
+      for (var i = 0; i < this.gvProvider.gvColetaneas.ListaDeObjetos[item].Obras.length; i++) {
+        var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[item].Obras[i];
+        this.gvProvider.gvPlayListItens.push({
+          IdeObra: obra.IdeObra,
+          Nome: obra.Nome,
+          Autores: obra.Autores,
+          Artes: this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + obra.Artes,
+          Duracao: obra.Duracao,
+          ArquivoPreview: this.gvProvider.gvStorage + 'Preview/' + obra.Arquivo.substring(8, obra.Arquivo.length),
+          ArquivoStorage: this.gvProvider.gvStorage + obra.Arquivo,
+          DtCriacao: obra.DtCriacao,
+          ehPreview:true,
+          track:{
+            src: this.gvProvider.gvStorage + obra.Arquivo,
+            artist: obra.Autores,
+            title: obra.Nome,
+            art: this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + obra.Artes,
+            preload: 'metadata' // tell the plugin to preload metadata such as duration for this track,  set to 'none' to turn off
+          }
+        });
+      }
+      if(this.gvProvider.gvColetaneas.ListaDeObjetos[item].Obras.length==1){
+        this.toast.create({ message: '1 item foi adicionado! ', position: 'botton', duration: 3000 }).present();
+      }else{
+        this.toast.create({ message: this.gvProvider.gvColetaneas.ListaDeObjetos[item].Obras.length + ' foram adicionados! ', position: 'botton', duration: 3000 }).present();
+      }
     }
 
     addToPlayList(itemColetanea,itemObra){
-      console.log('click image addToPlayList');
+      //console.log('click image addToPlayList');
       var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemColetanea].Obras[itemObra];
       //console.log('arq: ' + obra.Arquivo.substring(8, obra.Arquivo.length));
       //console.log('arte: ' + this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + obra.Artes);
@@ -129,10 +158,11 @@ export class EmqualqerdiaPage {
           preload: 'metadata' // tell the plugin to preload metadata such as duration for this track,  set to 'none' to turn off
         }
       });
+      this.toast.create({ message: '' + obra.Nome + ' foi adicionado! ', position: 'botton', duration: 3000 }).present();
     }
 
     addTocaPreview(itemColetanea,itemObra){
-       console.log('click image addTocaPreview');
+       //console.log('click image addTocaPreview');
        var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemColetanea].Obras[itemObra];
 
        this.gvProvider.singleTrack = {
@@ -144,39 +174,40 @@ export class EmqualqerdiaPage {
          };
 
        this.playEventGatilho.publish('play-preview');
+       this.toast.create({ message: 'Reproduzindo a prévia de :' + obra.Nome , position: 'botton', duration: 3000 }).present();
     }
 
     melog(val){
-      console.log(val);
+      //console.log(val);
     }
 
-    expandItem(item){
-
-       this.adjust();
-        this.gvProvider.gvColetaneas.ListaDeObjetos.map((listItem) => {
-            if(item == listItem){
-                //console.log(listItem);
-                this.expandHeightGatilho.publish('setExpandHeight');
-                listItem.expanded = !listItem.expanded;
-            } else {
-                this.expandHeightGatilho.publish('setExpandHeight');
-                listItem.expanded = false;
-            }
-            return listItem;
-
-        });
-
-    }
-
-    adjust() {
-
-      const ta = this.divAreaRef.nativeElement;
-      const ta2 = this.myExRef;//.nativeElement;
-
-      ta2.expandHeight = ta.offsetHeight;
-      this.itemExpandHeight = ta.offsetHeight;
-
-    }
+    // expandItem(item){
+    //
+    //    this.adjust();
+    //     this.gvProvider.gvColetaneas.ListaDeObjetos.map((listItem) => {
+    //         if(item == listItem){
+    //             //console.log(listItem);
+    //             this.expandHeightGatilho.publish('setExpandHeight');
+    //             listItem.expanded = !listItem.expanded;
+    //         } else {
+    //             this.expandHeightGatilho.publish('setExpandHeight');
+    //             listItem.expanded = false;
+    //         }
+    //         return listItem;
+    //
+    //     });
+    //
+    // }
+    //
+    // adjust() {
+    //
+    //   const ta = this.divAreaRef.nativeElement;
+    //   const ta2 = this.myExRef;//.nativeElement;
+    //
+    //   ta2.expandHeight = ta.offsetHeight;
+    //   this.itemExpandHeight = ta.offsetHeight;
+    //
+    // }
 
 
     toggleGroup(group) {

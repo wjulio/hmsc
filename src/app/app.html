@@ -58,6 +58,7 @@
     <ion-toolbar>
       <ion-title>Menu</ion-title>
     </ion-toolbar>
+
   </ion-header>
 
   <ion-content>
@@ -96,13 +97,21 @@
 
       <ion-list>
         <ion-list-header no-lines inset>
-          Na Lista
-          <ion-badge item-end>{{gvProvider.gvPlayListItens.length}}</ion-badge><button ion-button clear item-right (click)="clear()">zerar</button>
+          <!-- Na Lista Há: -->
+
+          <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="SalvaPlayList()">Editar</button> -->
+          <button ion-button clear item-right [disabled]="Vazio()" (click)="OrdenarOuRemoverChange()"><ion-icon name="reorder"></ion-icon></button>
+          <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="SalvaPlayList()">Salvar</button> -->
+          <button ion-button clear item-right [disabled]="Desabilitado()"><ion-icon name="magnet"></ion-icon></button>
+          <button ion-button clear item-right [disabled]="Desabilitado()"><ion-icon name="download"></ion-icon></button>
+          <button ion-button clear item-right [disabled]="Desabilitado()" (click)="clear()"><ion-icon name="remove-circle"></ion-icon></button>
+          <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="clear()">zerar</button> -->
+          <ion-badge item-end>{{gvProvider.gvPlayListItens.length}}</ion-badge>
         </ion-list-header>
       </ion-list>
 
-      <ion-item-group reorder="true">
-        <ion-item *ngFor="let item of gvProvider.gvPlayListItens; let i = index">
+      <ion-item-group reorder="true"  (ionItemReorder)="reorderItems($event)">
+        <ion-item *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (press)="pressEvent($event)">
           <ion-thumbnail item-start>
             <img src="{{item.Artes}}">
           </ion-thumbnail>

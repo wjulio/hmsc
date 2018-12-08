@@ -1,136 +1,67 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Em Qualquer Dia
+      <!-- Em Qualquer Dia -->
+      Todos os Lançamentos
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
-  <!-- <timeline endIcon="call">
-    <timeline-item *ngFor="let item of gvProvider.gvMinhaLista.ListaDeObjetos">
-      <timeline-time [time]="{subtitle:'item.DtCriacao',title:'item.Nome'}"></timeline-time>
-      <ion-icon [name]="lcCalendarIcon"></ion-icon>
-      <ion-card>
-        <ion-card-header>
-          {{item.Nome}}
-        </ion-card-header>
-        <ion-card-content>
-          <span>
-            <img *ngIf="item.Artes"  [src]="item.Artes" />
-          </span>
-        </ion-card-content>
-      </ion-card>
-    </timeline-item>
-  </timeline> -->
-
-  <!-- <flash-card *ngFor="let item of gvProvider.gvMinhaLista.ListaDeObjetos" >
-    <div class="fc-front">
-      <img *ngIf="item.Artes"  [src]="item.Artes" />
-      <h2 text-center>{{item.Nome}}</h2>
-      <h3 text-center>{{item.DtCriacao}}</h3>
-      <hr />
-      <p *ngIf="item.Nome" >{{item.Nome}}</p>
-    </div>
-    <div class="fc-back">
-        <ion-list>
-          <ion-item *ngFor="let obra of item.Obras">
-            <ion-thumbnail item-start>
-              <img *ngIf="obra.Artes" src="http://placehold.it/94">
-            </ion-thumbnail>
-            <h2>{{obra.Nome}}</h2>
-            <p>{{obra.DtCriacao}}</p>
-          </ion-item>
-        </ion-list>
-        <ion-item>
-          <ion-avatar item-start>
-            <img *ngIf="item.Artes"  [src]="item.Artes" />
-          </ion-avatar>
-          <small>{{item.Nome}}</small>
-          <p><small>{{item.DtCriacao}}</small></p>
-        </ion-item>
-
-      </div>
-  </flash-card> -->
-
   <div class="pins">
     <ion-card class="pin" *ngFor="let item of gvProvider.gvColetaneas.ListaDeObjetos; let i = index;let lst = last;">
-
       <ion-item>
         <h2>{{i+1}}</h2>
         <button (click)="addTocaColetanea(i)" clear>
+          <p><small></small></p>
+          <p><small></small></p>
         <div style="position: absolute;">
-          <img *ngIf="item.Artes" src="{{imgPlay}}">
+          <!-- <img *ngIf="item.Artes" src="{{imgPlay}}"> -->
+          <img src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
         </div>
         <div>
           <img *ngIf="item.Artes"  [src]="item.Artes" />
         </div>
+        <div>
+          <p><small>{{item.Nome}}</small></p>
+        </div>
         </button>
       </ion-item>
-      <div>
-        <p><small>{{item.Nome}}</small></p>
-      </div>
-<div #divArea>
-      <ion-list>
-        <ion-item-sliding *ngFor="let obra of item.Obras  | slice:0:3; let x = index;let lstx = last;">
-        <!-- <ion-item-sliding *ngFor="let obra of item.Obras; let x = index;let lstx = last;"> -->
 
-          <ion-item>
-            <!-- <button (click)="addTocaPreview(i,x)" clear> -->
-              <ion-thumbnail (click)="addTocaPreview(i,x)"  item-start>
-                <div>
-                  <div style="position: absolute;width: 100%;height: 100%;">
-                    <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
-                  </div>
-                  <img *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}">
-                   <!-- {{melog(imageProvider+obra.Artes)}} -->
-                </div>
-                <!-- <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png"> -->
-                <!-- <img *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}"> -->
-              </ion-thumbnail>
-              <h2>{{obra.Nome}}</h2>
-              <p>{{obra.Autores}}</p>
-            <!-- </button> -->
-            <!-- <p><small>{{obra.Nome}}</small></p> -->
-          </ion-item>
 
-          <ion-item-options side="right">
-            <button ion-button  (click)="addToPlayList(i,x)"><ion-icon name="add">TAG</ion-icon></button>
-            <button ion-button icon-only (click)="addToPlayList(i,x)"><ion-icon name="play"></ion-icon></button>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
+      <div #SempreMostra>
+            <ion-list>
+              <!-- <ion-item-sliding *ngFor="let obra of item.Obras  | slice:0:3; let x = index;let lstx = last;"> -->
+              <ion-item-sliding *ngFor="let obra of item.Obras; let x = index;let lstx = last;"  [ngClass]="{active: isGroupShown(i)}">
 
-      <button detail-none (click)="expandItem(item)" ion-item>View</button>
-
-      <ion-list>
-        <ion-item-sliding *ngFor="let obra of item.Obras; let x = index;let lstx = last;">
-          <!-- <div #divArea *ngIf="x>=3"> -->
-
-            <expandable #myEx [expandHeight]="itemExpandHeight" [expanded]="item.expanded">
-                <ion-item>
-                  <button (click)="addTocaPreview(i,x)" clear>
-                    <ion-thumbnail>
-                      <div style="position: absolute;width: 100%;height: 100%;">
-                        <img *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
-                      </div>
+                <ion-item *ngIf="x<3 || isGroupShown(i)">
+                    <ion-thumbnail  item-start>
                       <div>
+                        <div style="position: absolute;width: 100%;height: 100%;">
+                          <img (click)="addTocaPreview(i,x)" *ngIf="obra.Artes" src="{{gvProvider.gvStorage}}Storage/capa/play-button-icon-png-280x280.png">
+                        </div>
                         <img *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}">
-                        <!-- {{melog(imageProvider+obra.Artes)}} -->
+                         <!-- {{melog(imageProvider+obra.Artes)}} -->
                       </div>
                     </ion-thumbnail>
-                  </button>
-                  <p><small>{{obra.Nome}}</small></p>
+                    <h2>{{obra.Nome}}</h2>
+                    <p>{{obra.Autores}}</p>
                 </ion-item>
-                <ion-item-options side="right">
-                  <button ion-button icon-only (click)="addToPlayList(i,x)"><ion-icon name="play"></ion-icon></button>
-                </ion-item-options>
-            </expandable>
 
-        </ion-item-sliding>
-      </ion-list>
-</div>
+                <ion-item-options side="right">
+                  <button icon-only><ion-icon name="download"></ion-icon></button>
+                  <button icon-only><ion-icon name="pricetags"></ion-icon></button>
+                  <button icon-only (click)="addToPlayList(i,x)"><ion-icon name="return-right"></ion-icon></button>
+                </ion-item-options>
+              </ion-item-sliding>
+            </ion-list>
+      </div>
+      <div text-center>
+        <button (click)="toggleGroup(i)" ion-button clear item-end>
+          <div *ngIf="!isGroupShown(i) && item.Obras.length > 3">Mais</div>
+          <div *ngIf="isGroupShown(i)">Menos</div>
+        </button>
+      </div>
     </ion-card>
   </div>
 
