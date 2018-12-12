@@ -164,6 +164,7 @@ export class MyApp {
              this.currentTrack = track;
              this.currentIndex = -1;
              this.imgPadrao = false;
+             this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
          }
 
          next() {
@@ -179,6 +180,7 @@ export class MyApp {
                this.gvProvider.gvPlayListItens[0].Selecionado = false;
              }
              this.gvProvider.gvPlayListItens[i].Selecionado = true;
+             //this.currentTrack.stop();
              this.play(track, i);
              this._cdRef.detectChanges();  // needed to ensure UI update
            } else if (this.currentIndex == -1 && this.gvProvider.gvPlayListItens.length > 0) {
@@ -267,11 +269,11 @@ export class MyApp {
          }
 
          DownloadLista(){
-           this.toast.create({ message:this.gvProvider.gvPlayListItens.length + 'itens marcados para download', position: 'botton', duration: 3000 }).present();
+           this.toast.create({ message:this.gvProvider.gvPlayListItens.length + ' itens serão marcados para download', position: 'botton', duration: 3000 }).present();
          }
 
          SalvaLista(){
-           this.toast.create({ message: ' foi criada', position: 'botton', duration: 3000 }).present();
+           this.toast.create({ message: ' será criada', position: 'botton', duration: 3000 }).present();
          }
 
          selectCP(index){
@@ -312,9 +314,9 @@ export class MyApp {
          }
 
         reorderItems(indexes) {
-          let nome = this.gvProvider.gvPlayListItens[index].Nome;
-          if(this.OrdenarOuRemover){
+          if(this.flgOrdenar){
             let element = this.gvProvider.gvPlayListItens[indexes.from];
+            let nome = this.gvProvider.gvPlayListItens[indexes.from].Nome;
             this.gvProvider.gvPlayListItens.splice(indexes.from, 1);
             this.gvProvider.gvPlayListItens.splice(indexes.to, 0, element);
             this.gvProvider.gvPlayListUltimoIndexTocado = -1;
@@ -334,7 +336,7 @@ export class MyApp {
 
         RemoveItem(index){
           let nome = this.gvProvider.gvPlayListItens[index].Nome;
-          if(this.Remover){
+          if(this.flgRemover){
             this.gvProvider.gvPlayListItens.splice(index, 1);
             this.gvProvider.gvPlayListUltimoIndexTocado = -1;
             this.toast.create({ message: nome + ' foi removido', position: 'botton', duration: 3000 }).present();

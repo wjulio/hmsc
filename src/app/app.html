@@ -114,8 +114,8 @@
           <ion-thumbnail item-start>
             <img src="{{item.Artes}}">
           </ion-thumbnail>
-          <h2>{{ item.Nome }}</h2>
           <p>{{ item.Autores }}</p>
+          <h2>{{ item.Nome }}</h2>
           <button *ngIf="!flgOrdenar" ion-button clear item-right  [disabled]="true"><ion-icon name="reorder"></ion-icon></button>
         </ion-item>
       </ion-item-group>
