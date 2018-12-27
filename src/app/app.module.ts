@@ -20,6 +20,7 @@ import { IonicAudioModule, WebAudioProvider, CordovaMediaProvider, defaultAudioP
 // import { TimelineTimeComponent } from '../components/timeline/timeline';
 // import { TimelineItemComponent } from '../components/timeline/timeline';
 // import { FlashCardComponent } from '../components/flash-card/flash-card';
+import { ExpandableHeaderComponent } from '../components/expandable-header/expandable-header';
 
 import { RestApiProvider } from '../providers/rest-api/rest-api';
 import { GlobalvarProvider } from '../providers/globalvar/globalvar';
@@ -37,7 +38,8 @@ export function myCustomAudioProviderFactory() {
     // ExpandableComponent,
     ListPage,
     MinhaplaylistPage,
-    EmqualqerdiaPage
+    EmqualqerdiaPage,
+    ExpandableHeaderComponent
     // FlashCardComponent,
     // TimelineComponent,
     // TimelineItemComponent,

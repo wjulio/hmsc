@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
 export class RestApiProvider {
 
   private API_URL = 'http://disclosure-001-site1.gtempurl.com/jpservico.aspx'
-  //private API_URL = 'http://localhost:26223/wscloud/jpservico.aspx/'
+  //private API_URL = 'http://localhost:26223/wscloud/jpservico.aspx'
   //private API_URL = 'http://127.0.0.1/clouddj/jpservico.asmx/'
   //private API_URL = 'http://179.218.153.242/clouddj/jpservico.aspx';
   private urlPost = '';
@@ -77,13 +77,13 @@ export class RestApiProvider {
         //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
         let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
-        let body = 'op=ObterColetaneasTodasPrivadasPaginadaComTag&' + busca + 'busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
+        let body = 'op=ObterColetaneasTodasPrivadasPaginadaComTag&busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
 
         //this.urlPost = this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag';
 
         console.log(body);
         //console.log("Passou o post ObterColetaneasPrivadas()");
-        console.log("urlPost:"+this.urlPost);
+        //console.log("urlPost:"+this.urlPost);
 
         //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
         this.http.post(this.API_URL, body, options)
@@ -102,11 +102,11 @@ export class RestApiProvider {
             //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
             let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
             let options = new RequestOptions({ headers: headers });
-            let body = 'op=' + op + '&' + busca + 'busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
+            let body = 'op=' + op + '&busca=' + busca + '&idsTags=' + idsTags + '&idMembro=' + idMembro + '&nrPagina=' + nrPagina + '&numItems=' + numItems;
 
-            //this.urlPost = this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag';
+            this.urlPost = this.API_URL+'?'+body;
 
-            console.log(body);
+            //console.log(body);
             //console.log("Passou o post ObterColetaneasPrivadas()");
             console.log("urlPost:"+this.urlPost);
 

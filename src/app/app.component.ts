@@ -277,6 +277,11 @@ export class MyApp {
          }
 
          selectCP(index){
+
+          if(this.flgRemover){
+            return;
+          }
+
            this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
            this.gvProvider.gvPlayListIndexSelecionado = index;
            this.currentTrack = this.gvProvider.gvPlayListItens[index].track;;
@@ -335,8 +340,9 @@ export class MyApp {
         //  }
 
         RemoveItem(index){
-          let nome = this.gvProvider.gvPlayListItens[index].Nome;
+          //console.log('index:'+index);
           if(this.flgRemover){
+            let nome = this.gvProvider.gvPlayListItens[index].Nome;
             this.gvProvider.gvPlayListItens.splice(index, 1);
             this.gvProvider.gvPlayListUltimoIndexTocado = -1;
             this.toast.create({ message: nome + ' foi removido', position: 'botton', duration: 3000 }).present();

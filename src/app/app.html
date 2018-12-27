@@ -58,7 +58,6 @@
     <ion-toolbar>
       <ion-title>Menu</ion-title>
     </ion-toolbar>
-
   </ion-header>
 
   <ion-content>
@@ -80,7 +79,7 @@
         <audio-track #audioTrack [track]="currentTrack" [autoplay]="true" (onFinish)="onTrackFinished($event)">
           <div style="display: flex; justify-content: center; height: 20px; width: 100%">
           </div>
-          <audio-track-progress-bar duration progress [audioTrack]="audioTrack" style="width: 100%; margin: 0 10px"></audio-track-progress-bar>
+          <audio-track-progress-bar duration progress [audioTrack]="audioTrack" style="width: 98%; margin: 0 10px"></audio-track-progress-bar>
           <div style="display: flex; justify-content: center; height: 30px; width: 100%">
             <div *ngIf="audioTrack && audioTrack.hasLoaded"><em>{{ audioTrack?.artist }} - {{ audioTrack?.title }}</em></div>
             <ion-spinner *ngIf="audioTrack && audioTrack.isLoading"></ion-spinner>
@@ -109,8 +108,8 @@
         </ion-list-header>
       </ion-list>
 
-      <ion-item-group [reorder]="flgOrdenar" (press)="RemoveItem(i)"  (ionItemReorder)="reorderItems($event)">
-        <ion-item [class.highlight]="item.Selecionado" *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (click)="selectCP(i)">
+      <ion-item-group [reorder]="flgOrdenar" (ionItemReorder)="reorderItems($event)">
+        <ion-item [class.highlight]="item.Selecionado" *ngFor="let item of gvProvider.gvPlayListItens; let i = index" (press)="RemoveItem(i)" (click)="selectCP(i)">
           <ion-thumbnail item-start>
             <img src="{{item.Artes}}">
           </ion-thumbnail>

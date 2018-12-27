@@ -22,6 +22,7 @@ export class EmqualqerdiaPage {
   imgPlay:string = "Storage/capa/play-button-icon-png-280x280.png";
   str:any = "";
   isClear: boolean = true;
+  //Buscar:string = '';
 
   imageProvider:any = "";
 
@@ -60,12 +61,16 @@ export class EmqualqerdiaPage {
     this.infiniteScroll.enable(true);
     //console.log('chamou carregaColetaneas');
     //this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
-    this.carregaColetaneas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+    this.carregaColetaneas(this.gvProvider.gvBuscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
   }
 
 
-    carregaColetaneas(PaginaAtual: number,ItensPorPagina: number) {
-      this.restApiProvider.ObterColetaneas('ObterColetaneasTodasPaginadaComTag','', '', '1', ''+PaginaAtual, ''+ItensPorPagina)
+    carregaColetaneas(Busca:string,PaginaAtual: number,ItensPorPagina: number) {
+      this.gvProvider.gvPaginaAtual = 1;
+      this.gvProvider.gvItensPorPagina = 10;
+      //ObterColetaneas(op:string,busca: string, idsTags:string, idMembro: string, nrPagina:string, numItems:string)
+      console.log(Busca);
+      this.restApiProvider.ObterColetaneas('ObterColetaneasTodasPaginadaComTag',Busca, '', ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
         .then((result: any) => {
           //console.log('carregaColetaneas emqualquuerdia tem resposta');
           for (var i = 0; i < result.ListaDeObjetos.length; i++) {
@@ -89,15 +94,15 @@ export class EmqualqerdiaPage {
 
         })
         .catch((error: any) => {
-          //console.log('Erro na chamada de: carregaColetaneas emqualquuerdia');
-          this.toast.create({ message: 'Erro ao carregar emqualquuerdia ', position: 'botton', duration: 3000 }).present();
+          console.log('Erro na chamada de: carregaColetaneas emqualquuerdia'+ error.error);
+          this.toast.create({ message: 'Erro ao carregar emqualquuerdia '+ error.error, position: 'botton', duration: 3000 }).present();
         });
     }
 
     pegaMaisItens() {
       setTimeout(() => {
         this.gvProvider.gvPaginaAtual += 1;
-        this.carregaColetaneas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+        this.carregaColetaneas(this.gvProvider.gvBuscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
       }, 500);
     }
 
@@ -222,5 +227,33 @@ export class EmqualqerdiaPage {
     isGroupShown(group) {
       return this.shownGroup === group;
     };
+
+    handleLogin(){
+      this.navCtrl.popToRoot();
+    }
+
+    handler(ev) {
+
+      //console.log(ev.keyCode);
+       if(ev.keyCode==13 && this.gvProvider.gvBuscar.length>=3){
+         this.gvProvider.gvColetaneas = [];
+         //>this.navCtrl.goToRoot();
+         //this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+      //     console.log(this.Buscar);
+      //     this.gvProvider.gvColetaneas = [];
+      //     console.log('Buscando....'+this.Buscar);
+      //     this.gvProvider.gvPaginaAtual = 1;
+      //     this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+       }
+      //
+       if(ev.keyCode==13 && this.gvProvider.gvBuscar==''){
+         this.gvProvider.gvColetaneas = [];
+         //this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+      //   this.gvProvider.gvPaginaAtual = 1;
+      //   this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+        //#this.navCtrl.goToRoot();
+       }
+
+    }
 
 }
