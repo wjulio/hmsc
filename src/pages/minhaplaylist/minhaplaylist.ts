@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll } from 'ionic-angular';
-import { ViewChild } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
+// import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
+import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController,ViewController } from 'ionic-angular';
+import { Input,ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+
+import { ITrackConstraint} from 'ionic-audio';
 
 @IonicPage()
 @Component({
@@ -11,44 +14,73 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 })
 export class MinhaplaylistPage {
   @ViewChild(InfiniteScroll) infiniteScroll: InfiniteScroll;
+  @ViewChild('search') myInput;
+  // @ViewChild('divArea') divAreaRef: ElementRef;
+  // @ViewChild('myEx') myExRef: ElementRef;
+
   lcCalendarIcon = 'calendar';
   lcDia:any = new Date();
-
+  imgPlay:string = "Storage/capa/play-button-icon-png-280x280.png";
   str:any = "";
+  isClear: boolean = true;
+  //Buscar:string = '';
 
   imageProvider:any = "";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
-    console.log('ListaDeObjetos:'+ gvProvider.gvMinhaLista.ListaDeObjetos.length);
+  //itemExpandHeight: number = 500;
 
-    this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
+  shownGroup = null;
+  loader:any;
+  constructor(
+    private _cdRef: ChangeDetectorRef,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private toast: ToastController,
+    private restApiProvider: RestApiProvider,
+    public gvProvider: GlobalvarProvider,
+    // public renderer: Renderer,
+    public playEventGatilho: Events,
+    public expandHeightGatilho: Events,
+    public loadingController: LoadingController)
+    {
 
-    // var date_string = '/Date(1233323754523)/';
-    // var lcDia = new Date(parseInt(/\/Date\((\d+).*/.exec(date_string)[1]));
-    //var lcDia = new Date(1233323754523);
-    //console.log('ListaDeObjetos:'+lcDia);
-    //console.log(platform.width());
-    //MaxWidth = platform.width();
-    //console.log('MaxWidth:'+MaxWidth);
+      this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
+      //console.log(this.imageProvider);
+      this.imgPlay = this.gvProvider.gvStorage+'getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename='+this.gvProvider.gvStorage+'Storage/capa/play-button-icon-png-280x280.png';
+      //console.log(this.imgPlay);
 
-  }
+
+    }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MinhaplaylistPage');
+    //console.log('ionViewDidLoad EmqualqerdiaPage');
+
+     this.loader = this.loadingController.create({content: "Carregando...."});
+
+    this.loader.present();
 
     this.gvProvider.gvPaginaAtual = 1;
     this.gvProvider.gvItensPorPagina = 10;
-    this.gvProvider.gvMinhaLista.ListaDeObjetos = [];
+    this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+
+    if(this.gvProvider.gvBuscar.length>=3){
+      setTimeout(() => {
+        this.myInput.setFocus();
+      },150);
+    }
+
+
 
     this.infiniteScroll.enable(true);
-    console.log('chamou carregaColetaneasPrivadas');
-    //this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
-    this.carregaColetaneasPrivadas(1,10);
+    //console.log('chamou carregaColetaneas');
+    //this.carregaColetaneasPrivadas(this.gvProvider.gvBuscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+    //this.carregaColetaneas(this.gvProvider.gvBuscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+
 
   }
 
-  carregaColetaneasPrivadas(PaginaAtual: number,ItensPorPagina: number) {
-    this.restApiProvider.ObterColetaneasPrivadas('', '', '1', ''+PaginaAtual, ''+ItensPorPagina)
+  carregaColetaneasPrivadas(Busca:string, PaginaAtual: number,ItensPorPagina: number) {
+    this.restApiProvider.ObterColetaneasPrivadas(Busca, '', ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
       .then((result: any) => {
         console.log('carregaColetaneasPrivadas tem resposta');
         for (var i = 0; i < result.ListaDeObjetos.length; i++) {
@@ -60,6 +92,7 @@ export class MinhaplaylistPage {
         }
 
           console.log(this.str);
+          this.loader.dismiss();
 
 
         if (this.infiniteScroll) {
@@ -72,6 +105,7 @@ export class MinhaplaylistPage {
       })
       .catch((error: any) => {
         console.log('Erro na chamada de: carregaColetaneasPrivadas');
+        this.loader.dismiss();
         this.toast.create({ message: 'Erro ao carregar minha lista ', position: 'botton', duration: 3000 }).present();
       });
   }
@@ -79,7 +113,7 @@ export class MinhaplaylistPage {
   pegaMaisItens() {
     setTimeout(() => {
       this.gvProvider.gvPaginaAtual += 1;
-      this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+      //this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
     }, 500);
   }
 

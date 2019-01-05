@@ -55,8 +55,18 @@
 //   }
 // }
 
+  ion-menu[side=right] .menu-inner {
+      width: calc(100%-10) !important;
+  }
+
 @media (min-width: 480px) {
   ion-menu[side=right] .menu-inner {
-      width: calc(100% - 55px) !important;
+      width: calc(100% - 25px) !important;
+  }
+}
+
+@media (min-width: 640px) {
+  ion-menu[side=right] .menu-inner {
+      width: calc(100% - 50px) !important;
   }
 }

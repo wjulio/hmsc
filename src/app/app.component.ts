@@ -1,5 +1,5 @@
 import { Component, ViewChild,ChangeDetectorRef } from '@angular/core';
-import { Nav, Platform,Events,ToastController} from 'ionic-angular';
+import { Nav, Platform,Events,ToastController,ModalController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
+// import { SalvarListaColetanea } from '../pages/salva-coletanea-modal/salva-coletanea-modal';
 
 import { RestApiProvider } from './../providers/rest-api/rest-api';
 import { GlobalvarProvider } from './../providers/globalvar/globalvar';
@@ -20,6 +21,7 @@ import { Storage } from '@ionic/storage';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  @ViewChild('NomeDaLista') myNomeDaLista;
 
   //rootPage: any = HomePage;
   //rootPage: any = MinhaplaylistPage;
@@ -27,7 +29,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
   playerItems:any = [];
-  usuarioIde:string= '1';
+  //usuarioIde:string= '1';
   listaMenu:any = [];
 
   myTracks: ITrackConstraint[];
@@ -39,6 +41,7 @@ export class MyApp {
   imgPadrao:boolean = true;
   flgOrdenar:boolean = false;
   flgRemover:boolean = false;
+  flgSalvar:boolean = false;
 
 
   constructor(
@@ -93,14 +96,14 @@ export class MyApp {
   }
 
   ObtemMenu() {
-    console.log(this.usuarioIde);
+    console.log(this.gvProvider.gvIdMembroLogin);
     this.gvProvider.gvListaMenu = [];
-    this.restApiProvider.ObterMenu(this.usuarioIde)
+    this.restApiProvider.ObterMenu(this.gvProvider.gvIdMembroLogin.toString())
 
       .then((result: any) => {
         //this.toast.create({ message: 'Menu ok.', position: 'botton', duration: 3000 }).present();
 
-        //console.log(this.usuarioIde);
+        //console.log(this.gvProvider.gvIdMembroLogin);
         //console.log("Entrou no ObtemMenu()");
         console.log(result.length);
         for (var i = 0; i < result.length; i++) {
@@ -134,7 +137,17 @@ export class MyApp {
     //console.log('Executa Consulta'+JSON.stringify(itemMenu));
 
     if(itemMenu.Ordem==5){
+      this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+      this.gvProvider.gvOpAtual = 'ObterColetaneasTodasPaginadaComTag';
       //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.nav.setRoot(EmqualqerdiaPage);
+    }
+
+    if(itemMenu.Ordem==6){
+      //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+      this.gvProvider.gvOpAtual = 'ObterColetaneasTodasPrivadasPaginadaComTag';
+      //this.nav.setRoot(MinhaplaylistPage);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -208,16 +221,15 @@ export class MyApp {
            this.flgOrdenar = false;
          }
 
-         SalvaPlayList(){}
 
          Desabilitado(origem){
            if(this.gvProvider.gvPlayListItens.length > 0) {
              //return  this.OrdenarOuRemover;
              //console.log(origem);
 
-             if(!this.flgOrdenar && !this.flgRemover){
-               return false;
-              }
+             // if(!this.flgOrdenar && !this.flgRemover){
+             //   return false;
+             //  }
 
              if(this.flgOrdenar){
                switch (origem) {
@@ -247,16 +259,27 @@ export class MyApp {
               }
              }
 
-           }
-           return true;
-         }
+             if(this.flgSalvar){
+               switch (origem) {
+                case 'ordenar':
+                    return true;
+                case 'salvar':
+                    return false;
+                case 'down':
+                    return true;
+                case 'remover':
+                    return true;
+                default: return false;
+              }
+             }
 
-         // Vazio(){
-         //   if(this.gvProvider.gvPlayListItens.length > 0) {
-         //     return false;
-         //   }
-         //   return true;
-         // }
+             return false;
+
+           }
+
+           return true;
+
+         }
 
          HabilitaOrdenar(){
            this.flgOrdenar = !this.flgOrdenar;
@@ -272,8 +295,27 @@ export class MyApp {
            this.toast.create({ message:this.gvProvider.gvPlayListItens.length + ' itens serão marcados para download', position: 'botton', duration: 3000 }).present();
          }
 
+         CancelaSalvaLista(){
+           this.flgSalvar = false;
+         }
+
          SalvaLista(){
-           this.toast.create({ message: ' será criada', position: 'botton', duration: 3000 }).present();
+           this.flgSalvar = !this.flgSalvar;
+
+           if(this.flgSalvar){
+             setTimeout(() => {
+               this.myNomeDaLista.setFocus();
+             },150);
+           }
+
+            //let profileModal = this.modalCtrl.create(SalvarListaColetanea);
+            //profileModal.present();
+
+           // profileModal.onDidDismiss(data => {
+           //   console.log(data);
+           // });
+
+           //this.toast.create({ message: ' será criada', position: 'botton', duration: 3000 }).present();
          }
 
          selectCP(index){
@@ -303,7 +345,7 @@ export class MyApp {
          // }
 
          ConfiguraEnderecoServidor() {
-           this.restApiProvider.Conectar(this.usuarioIde)
+           this.restApiProvider.Conectar(this.gvProvider.gvIdMembroLogin.toString())
              .then((result: any) => {
                //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
 
@@ -329,16 +371,6 @@ export class MyApp {
           }
         }
 
-        // pressEvent(indexes) {
-        //   if(this.OrdenarOuRemover){
-        //     let index = this.indexes.indexOf(post);
-        //     if(index > -1){
-        //       this.indexes.splice(index, 1);
-        //     }
-        //     //console.log(indexes);
-        //   }
-        //  }
-
         RemoveItem(index){
           //console.log('index:'+index);
           if(this.flgRemover){
@@ -347,6 +379,22 @@ export class MyApp {
             this.gvProvider.gvPlayListUltimoIndexTocado = -1;
             this.toast.create({ message: nome + ' foi removido', position: 'botton', duration: 3000 }).present();
           }
+        }
+
+        SalvarLista() {
+          //let lsIdsObras = this.gvProvider.gvPlayListItens.toString();
+          let lsIdsObras = this.gvProvider.gvPlayListItens.map(function(v){return v.IdeObra;});
+          console.log(lsIdsObras);
+          this.restApiProvider.SalvarColetaneaPrivada(this.gvProvider.gvIdMembroLogin, lsIdsObras, this.gvProvider.gvPlayListColetanea.IdeColetanea, this.gvProvider.gvPlayListColetanea.Nome)
+            .then((result: any) => {
+              this.toast.create({ message: this.gvProvider.gvPlayListColetanea.Nome + ' foi salvo. ', position: 'botton', duration: 3000 }).present();
+
+              this.gvProvider.gvPlayListColetanea = result;
+
+            })
+            .catch((error: any) => {
+              this.toast.create({ message: 'Erro ao salvar.' + error.error, position: 'botton', duration: 3000 }).present();
+            });
         }
 }
 

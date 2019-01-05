@@ -1,7 +1,7 @@
-import { Component,ChangeDetectorRef} from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 // import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events } from 'ionic-angular';
-import { ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController,ViewController } from 'ionic-angular';
+import { Input,ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
@@ -14,6 +14,7 @@ import { ITrackConstraint} from 'ionic-audio';
 })
 export class EmqualqerdiaPage {
   @ViewChild(InfiniteScroll) infiniteScroll: InfiniteScroll;
+  @ViewChild('search') myInput;
   // @ViewChild('divArea') divAreaRef: ElementRef;
   // @ViewChild('myEx') myExRef: ElementRef;
 
@@ -29,7 +30,7 @@ export class EmqualqerdiaPage {
   //itemExpandHeight: number = 500;
 
   shownGroup = null;
-
+  loader:any;
   // constructor(private _cdRef: ChangeDetectorRef,private backgroundMode:BackgroundMode, public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
   constructor(
     private _cdRef: ChangeDetectorRef,
@@ -40,7 +41,8 @@ export class EmqualqerdiaPage {
     public gvProvider: GlobalvarProvider,
     // public renderer: Renderer,
     public playEventGatilho: Events,
-    public expandHeightGatilho: Events)
+    public expandHeightGatilho: Events,
+    public loadingController: LoadingController)
     {
 
       this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
@@ -54,14 +56,28 @@ export class EmqualqerdiaPage {
   ionViewDidLoad() {
     //console.log('ionViewDidLoad EmqualqerdiaPage');
 
+     this.loader = this.loadingController.create({content: "Carregando...."});
+
+    this.loader.present();
+
     this.gvProvider.gvPaginaAtual = 1;
     this.gvProvider.gvItensPorPagina = 10;
     this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+
+    if(this.gvProvider.gvBuscar.length>=3){
+      setTimeout(() => {
+        this.myInput.setFocus();
+      },150);
+    }
+
+
 
     this.infiniteScroll.enable(true);
     //console.log('chamou carregaColetaneas');
     //this.carregaColetaneasPrivadas(this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
     this.carregaColetaneas(this.gvProvider.gvBuscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+
+
   }
 
 
@@ -69,20 +85,27 @@ export class EmqualqerdiaPage {
       this.gvProvider.gvPaginaAtual = 1;
       this.gvProvider.gvItensPorPagina = 10;
       //ObterColetaneas(op:string,busca: string, idsTags:string, idMembro: string, nrPagina:string, numItems:string)
-      console.log(Busca);
-      this.restApiProvider.ObterColetaneas('ObterColetaneasTodasPaginadaComTag',Busca, '', ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
+      //console.log(Busca);
+      this.restApiProvider.ObterColetaneas(this.gvProvider.gvOpAtual,Busca, '', ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
         .then((result: any) => {
           //console.log('carregaColetaneas emqualquuerdia tem resposta');
+          //console.log(result);
           for (var i = 0; i < result.ListaDeObjetos.length; i++) {
             var itemColetaneaPrivada = result.ListaDeObjetos[i];
             //"{{gvProvider.gvHostImageResize}}{{gvProvider.gvMaxWidth}}{{gvProvider.gvParamImgFile}}{{gvProvider.gvStorage}}{{item.Artes}}"
-            itemColetaneaPrivada.Artes = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + itemColetaneaPrivada.Artes;
+            //console.log(itemColetaneaPrivada.ehPrivada);
+            if (itemColetaneaPrivada.ehPrivada){
+              itemColetaneaPrivada.Artes = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStoragePrivate + itemColetaneaPrivada.Artes;
+            }else{
+              itemColetaneaPrivada.Artes = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + itemColetaneaPrivada.Artes;
+            }
             this.str = itemColetaneaPrivada.Artes;
             this.gvProvider.gvColetaneas.ListaDeObjetos.push(itemColetaneaPrivada);
             //console.log(itemColetaneaPrivada.Artes);
           }
 
-            //console.log(this.str);
+            console.log(this.str);
+            this.loader.dismiss();
 
 
           if (this.infiniteScroll) {
@@ -95,6 +118,7 @@ export class EmqualqerdiaPage {
         })
         .catch((error: any) => {
           console.log('Erro na chamada de: carregaColetaneas emqualquuerdia'+ error.error);
+          this.loader.dismiss();
           this.toast.create({ message: 'Erro ao carregar emqualquuerdia '+ error.error, position: 'botton', duration: 3000 }).present();
         });
     }
@@ -229,29 +253,47 @@ export class EmqualqerdiaPage {
     };
 
     handleLogin(){
-      this.navCtrl.popToRoot();
+      //this.navCtrl.popToRoot();
+    }
+
+    ionClearEvent(ev) {
+      this.gvProvider.gvBuscar = '';
+      this.gvProvider.gvColetaneas = [];
+      this.gvProvider.gvPaginaAtual = 1;
+      this.navCtrl.goToRoot(null);
+      //this.navCtrl.popToRoot();
     }
 
     handler(ev) {
 
-      //console.log(ev.keyCode);
+      console.log(this.gvProvider.gvBuscar);
+
+      if(this.gvProvider.gvBuscar.length>=3){
+        this.gvProvider.gvColetaneas = [];
+        this.gvProvider.gvPaginaAtual = 1;
+        //this.navCtrl.popToRoot();
+        this.navCtrl.goToRoot(null);
+      }
+
        if(ev.keyCode==13 && this.gvProvider.gvBuscar.length>=3){
-         this.gvProvider.gvColetaneas = [];
-         //>this.navCtrl.goToRoot();
-         //this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
-      //     console.log(this.Buscar);
-      //     this.gvProvider.gvColetaneas = [];
-      //     console.log('Buscando....'+this.Buscar);
-      //     this.gvProvider.gvPaginaAtual = 1;
-      //     this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
+         //this.gvProvider.gvColetaneas = [];
+         this.gvProvider.gvPaginaAtual = 1;
+         //this.navCtrl.popToRoot();
+         this.navCtrl.goToRoot(null);
        }
-      //
+
        if(ev.keyCode==13 && this.gvProvider.gvBuscar==''){
-         this.gvProvider.gvColetaneas = [];
-         //this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
-      //   this.gvProvider.gvPaginaAtual = 1;
-      //   this.carregaColetaneas(this.Buscar,this.gvProvider.gvPaginaAtual,this.gvProvider.gvItensPorPagina);
-        //#this.navCtrl.goToRoot();
+         //this.gvProvider.gvColetaneas = [];
+         this.gvProvider.gvPaginaAtual = 1;
+         //this.navCtrl.popToRoot();
+         this.navCtrl.goToRoot(null);
+       }
+
+       if( this.gvProvider.gvBuscar==''){
+         //this.gvProvider.gvColetaneas = [];
+         this.gvProvider.gvPaginaAtual = 1;
+         //this.navCtrl.popToRoot();
+         this.navCtrl.goToRoot(null);
        }
 
     }

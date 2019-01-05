@@ -121,4 +121,32 @@ export class RestApiProvider {
           });
         }
 
+        //SalvarColetaneaDoUsuario(ByVal _IdUsuario As String, ByVal _IdObras As List(Of String), ByVal _IdColetaneaDoUsuario As String, ByVal _NmColetaneaDoUsuario As String)
+        SalvarColetaneaPrivada(idMembro:string, lsIdsObras:string, idColetanea:string, nmColetaneaDoUsuario:string) {
+           return new Promise((resolve, reject) => {
+
+             //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET, OPTIONS, PUT' });
+             let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+             let options = new RequestOptions({ headers: headers });
+             let body = 'op=SalvarColetaneaDoUsuario&idMembro=' + idMembro + '&lsIdsObras=' + lsIdsObras + '&idColetanea='+ idColetanea + '&nmColetaneaDoUsuario=' + nmColetaneaDoUsuario ;
+
+
+
+             console.log("Postou SalvarColetaneaPrivada()");
+             console.log(body);
+
+             this.urlPost = this.API_URL+'?'+body;
+             console.log("urlPost:"+this.urlPost);
+
+             //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
+             this.http.post(this.API_URL, body, options)
+               .subscribe((result: any) => {
+                 resolve(result.json());
+               },
+               (error) => {
+                 reject(error.json());
+               });
+           });
+         }
+
 }

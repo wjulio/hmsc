@@ -56,7 +56,8 @@
 <ion-menu side="right" [content]="content" id="mRight">
   <ion-header>
     <ion-toolbar>
-      <ion-title>Menu</ion-title>
+      <ion-title *ngIf="gvProvider.gvPlayListColetanea.Nome==''">#SemNome</ion-title>
+      <ion-title *ngIf="gvProvider.gvPlayListColetanea.Nome!=''">{{gvProvider.gvPlayListColetanea.Nome}}</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -99,6 +100,10 @@
           <!-- Na Lista Há: -->
 
           <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="SalvaPlayList()">Editar</button> -->
+
+          <ion-input item-right placeholder="Insira um nome" name="NomeDaLista" #NomeDaLista *ngIf="flgSalvar" [disabled]="Desabilitado('salvar')" type="text"  [(ngModel)]="gvProvider.gvPlayListColetanea.Nome"></ion-input>
+          <button ion-button clear item-right [disabled]="Desabilitado('salvar')" *ngIf="flgSalvar" (click)="SalvarLista()">salvar</button>
+          <!-- <button ion-button clear item-right [disabled]="Desabilitado('salvar')" *ngIf="flgSalvar" (click)="CancelaSalvaLista()">cancelar</button> -->
           <button ion-button clear item-right [disabled]="Desabilitado('ordenar')" (click)="HabilitaOrdenar()"><ion-icon name="reorder"></ion-icon></button>
           <button ion-button clear item-right [disabled]="Desabilitado('salvar')" (click)="SalvaLista()"><ion-icon name="magnet"></ion-icon></button>
           <button ion-button clear item-right [disabled]="Desabilitado('down')" (click)="DownloadLista()"><ion-icon name="download"></ion-icon></button>
