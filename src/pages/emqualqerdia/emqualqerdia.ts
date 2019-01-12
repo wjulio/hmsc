@@ -147,6 +147,9 @@ export class EmqualqerdiaPage {
              text: 'Adicionar',
              handler: () => {
                console.log('Adicionar clicked');
+               if(!this.gvProvider.gvPlayListColetanea.ehPrivada){
+                 this.gvProvider.gvPlayListColetanea = {IdeColetanea:0,Nome:'',ehPrivada:false};
+               }
                this.addTocaColetanea(item);
              }
            },
@@ -156,8 +159,11 @@ export class EmqualqerdiaPage {
                console.log('Substituir clicked');
                this.gvProvider.gvPlayListItens = [];
                if(this.flgMinhaLista){
-                this.gvProvider.gvPlayListColetanea = {IdeColetanea:this.gvProvider.gvColetaneas.ListaDeObjetos[item].IdeColetanea,Nome:this.gvProvider.gvColetaneas.ListaDeObjetos[item].Nome,ehPrivada:false};
-               }
+                this.gvProvider.gvPlayListColetanea = {IdeColetanea:this.gvProvider.gvColetaneas.ListaDeObjetos[item].IdeColetanea,Nome:this.gvProvider.gvColetaneas.ListaDeObjetos[item].Nome,ehPrivada:true};
+              }else{
+                //this.gvProvider.gvPlayListColetanea = {IdeColetanea:0,Nome:'',ehPrivada:false};
+                this.gvProvider.gvPlayListColetanea = {IdeColetanea:0,Nome:this.gvProvider.gvColetaneas.ListaDeObjetos[item].Nome,ehPrivada:false};
+              }
                this.addTocaColetanea(item);
                this.gvProvider.gvEhPlayPreview = false;
                this.gvProvider.gvPlayListUltimoIndexTocado = -1;
@@ -230,6 +236,9 @@ export class EmqualqerdiaPage {
           preload: 'metadata' // tell the plugin to preload metadata such as duration for this track,  set to 'none' to turn off
         }
       });
+      if(!this.gvProvider.gvPlayListColetanea.ehPrivada){
+        this.gvProvider.gvPlayListColetanea = {IdeColetanea:0,Nome:'',ehPrivada:false};
+      }
       this.toast.create({ message: '' + obra.Nome + ' foi adicionado! ', position: 'botton', duration: 3000 }).present();
     }
 

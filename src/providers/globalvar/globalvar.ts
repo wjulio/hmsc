@@ -13,7 +13,7 @@ export class GlobalvarProvider {
   public gvIdMembroLogin:string = '7';
   public myGlobalVar: string;
   public gvListaMenu:any = [];
-  public gvMinhaLista:any;
+  public gvMinhaLista:boolean=false;
   public gvColetaneas:any = [];
   public gvMaxWidth:any = "300";
   //public gvStorage:any = 'http://127.0.0.1:81/';
@@ -31,7 +31,7 @@ export class GlobalvarProvider {
   public gvPlayListUltimoIndexTocado:number = -1;
   public gvPlayListIndexSelecionado:number = -1;
   public gvPlayListColetanea:any = {IdeColetanea:0,Nome:'',ehPrivada:false};
-  public gvEhPlayPreview:boolean = false; 
+  public gvEhPlayPreview:boolean = false;
 
   public gvOpAtual:string = 'ObterColetaneasTodasPaginadaComTag';
 
