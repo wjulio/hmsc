@@ -1,5 +1,5 @@
 import { Component, ViewChild,ChangeDetectorRef } from '@angular/core';
-import { Nav, Platform,Events,ToastController,ModalController} from 'ionic-angular';
+import { Nav, Platform,Events,ToastController,AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -42,6 +42,7 @@ export class MyApp {
   flgOrdenar:boolean = false;
   flgRemover:boolean = false;
   flgSalvar:boolean = false;
+  flgMinhaLista:boolean = false;
 
 
   constructor(
@@ -54,7 +55,8 @@ export class MyApp {
                 public gvProvider: GlobalvarProvider,
                 public playEvents: Events,
                 public _audioProvider: AudioProvider,
-                public storage: Storage)
+                public storage: Storage,
+                public alertCtrl: AlertController)
     {
         this.initializeApp();
 
@@ -70,7 +72,16 @@ export class MyApp {
         ];
 
         this.playEvents.subscribe('play-preview', () =>{
+          console.log("Entrou no play-preview");
+          if(this.gvProvider.gvEhPlayPreview){
             this.playPreview(this.gvProvider.singleTrack);
+            console.log("eh preview");
+          }else{
+            let track = this.gvProvider.gvPlayListItens[0].track;
+            this.play(track, 0);
+            console.log("nao eh preview");
+          }
+
           });
 
 
@@ -217,6 +228,7 @@ export class MyApp {
 
          clear() {
            this.gvProvider.gvPlayListItens = [];
+           this.gvProvider.gvPlayListColetanea =  {IdeColetanea:0,Nome:'',ehPrivada:false};
            this.flgRemover = false;
            this.flgOrdenar = false;
          }
@@ -299,25 +311,6 @@ export class MyApp {
            this.flgSalvar = false;
          }
 
-         SalvaLista(){
-           this.flgSalvar = !this.flgSalvar;
-
-           if(this.flgSalvar){
-             setTimeout(() => {
-               this.myNomeDaLista.setFocus();
-             },150);
-           }
-
-            //let profileModal = this.modalCtrl.create(SalvarListaColetanea);
-            //profileModal.present();
-
-           // profileModal.onDidDismiss(data => {
-           //   console.log(data);
-           // });
-
-           //this.toast.create({ message: ' será criada', position: 'botton', duration: 3000 }).present();
-         }
-
          selectCP(index){
 
           if(this.flgRemover){
@@ -379,6 +372,85 @@ export class MyApp {
             this.gvProvider.gvPlayListUltimoIndexTocado = -1;
             this.toast.create({ message: nome + ' foi removido', position: 'botton', duration: 3000 }).present();
           }
+        }
+
+        SalvaLista(){
+          this.flgSalvar = !this.flgSalvar;
+            this.salvarViaPrompt();
+          // if(this.flgSalvar){
+          //   setTimeout(() => {
+          //     this.myNomeDaLista.setFocus();
+          //   },150);
+          // }
+          //this.toast.create({ message: ' será criada', position: 'botton', duration: 3000 }).present();
+        }
+
+        SelectorDePrompt(){
+          if(this.gvProvider.gvPlayListColetanea.IdeColetanea>0){
+            this.salvarViaComCopiaPrompt();
+          }else{
+            this.salvarViaPrompt();
+          }
+        }
+
+        salvarViaPrompt() {
+          console.log('salvarViaPrompt');
+          let prompt = this.alertCtrl.create({
+            title: 'Salvar',
+            message: "Entre com um nome para salvar em sua lista pessoal",
+            inputs: [{name: 'nomeColetanea',placeholder: 'Título',value:this.gvProvider.gvPlayListColetanea.Nome},],
+            buttons: [{text: 'Cancelar',handler: data => {
+                                                            console.log('Cancel clicked');
+                                                            //return false;
+                                                            //this.flgSalvar = !this.flgSalvar;
+                                                            this.flgSalvar = false;
+                                                          }},
+                      {text: 'Salvar', handler: data => {
+                        console.log('Saved clicked');
+                        if(data.nomeColetanea.length>=3){
+                          this.gvProvider.gvPlayListColetanea.Nome = data.nomeColetanea;
+                          //this.flgSalvar = !this.flgSalvar;
+                          this.flgSalvar = false;
+                          this.SalvarLista();
+                        }
+                      }}]
+           });
+           //prompt.data.nomeColetanea = this.gvProvider.gvPlayListColetanea.Nome;
+           prompt.present();
+        }
+
+        salvarViaComCopiaPrompt() {
+          console.log('salvarViaPrompt');
+          let prompt = this.alertCtrl.create({
+            title: 'Salvar',
+            message: "Entre com um nome para salvar em sua lista pessoal",
+            inputs: [{name: 'nomeColetanea',placeholder: 'Título',value:this.gvProvider.gvPlayListColetanea.Nome},],
+            buttons: [{text: 'Cancelar',handler: data => {
+                                                            console.log('Cancel clicked');
+                                                            //return false;
+                                                            //this.flgSalvar = !this.flgSalvar;
+                                                            this.flgSalvar = false;
+                                                          }},
+                      {text: 'Salvar',handler: data => {
+                        if(data.nomeColetanea.length>=3){
+                          this.gvProvider.gvPlayListColetanea.Nome = data.nomeColetanea;
+                          //this.flgSalvar = !this.flgSalvar;
+                          this.flgSalvar = false;
+                          this.SalvarLista();}
+                                                          }},
+                      {text: 'Salvar Novo', handler: data => {
+                        console.log('Saved clicked');
+                        if(data.nomeColetanea.length>=3){
+                          this.gvProvider.gvPlayListColetanea.Nome = data.nomeColetanea;
+                          this.gvProvider.gvPlayListColetanea.IdeColetanea = 0;
+                          //this.flgSalvar = !this.flgSalvar;
+                          this.flgSalvar = false;
+                          this.SalvarLista();
+                        }
+                      }}]
+           });
+           //prompt.data.nomeColetanea = this.gvProvider.gvPlayListColetanea.Nome;
+           prompt.present();
         }
 
         SalvarLista() {

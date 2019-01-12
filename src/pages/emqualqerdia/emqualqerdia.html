@@ -13,7 +13,7 @@
       </ion-item>
   </expandable-header> -->
   <ion-searchbar name="search" #search
-     placeholder="Todos os Lançamentos"
+     placeholder="{{strPlaceHold}}"
      debounce="700"
      [(ngModel)]="gvProvider.gvBuscar"
     [showCancelButton]="shouldShowCancel"
@@ -36,7 +36,7 @@
     <ion-card class="pin" *ngFor="let item of gvProvider.gvColetaneas.ListaDeObjetos; let i = index;let lst = last;">
       <ion-item>
         <h2>{{i+1}}</h2>
-        <button (click)="addTocaColetanea(i)" clear>
+        <button (click)="showConfirm(i)" clear>
           <p><small></small></p>
           <p><small></small></p>
         <div style="position: absolute;">

@@ -42,6 +42,7 @@
     <ion-list>
       <button menuClose detail-push ion-item *ngFor="let p of gvProvider.gvListaMenu" (click)="ExecutaConsulta(p)">
         <ion-label>{{p.Descricao}}</ion-label>
+        <ion-badge item-end>{{p.Contador}}</ion-badge>
         <ion-select okText="Confirma" cancelText="Cancela" *ngIf="p.TipoMenuAppJsonDto==1" (ionChange)="onEmpSelected(lsMarcadores)"  [(ngModel)]="lsMarcadores" multiple="true">
           <ion-option menuClose *ngFor="let tag of p.Tags" [value]="tag">{{tag.NomeTag}}</ion-option>
         </ion-select>
@@ -101,11 +102,11 @@
 
           <!-- <button ion-button clear item-right [disabled]="isEmptyPlayList()" (click)="SalvaPlayList()">Editar</button> -->
 
-          <ion-input item-right placeholder="Insira um nome" name="NomeDaLista" #NomeDaLista *ngIf="flgSalvar" [disabled]="Desabilitado('salvar')" type="text"  [(ngModel)]="gvProvider.gvPlayListColetanea.Nome"></ion-input>
-          <button ion-button clear item-right [disabled]="Desabilitado('salvar')" *ngIf="flgSalvar" (click)="SalvarLista()">salvar</button>
+          <!-- <ion-input item-right placeholder="Insira um nome" name="NomeDaLista" #NomeDaLista *ngIf="flgSalvar" [disabled]="Desabilitado('salvar')" type="text"  [(ngModel)]="gvProvider.gvPlayListColetanea.Nome"></ion-input> -->
+          <!-- <button ion-button clear item-right [disabled]="Desabilitado('salvar')" *ngIf="flgSalvar" (click)="SalvarLista()">salvar</button> -->
           <!-- <button ion-button clear item-right [disabled]="Desabilitado('salvar')" *ngIf="flgSalvar" (click)="CancelaSalvaLista()">cancelar</button> -->
           <button ion-button clear item-right [disabled]="Desabilitado('ordenar')" (click)="HabilitaOrdenar()"><ion-icon name="reorder"></ion-icon></button>
-          <button ion-button clear item-right [disabled]="Desabilitado('salvar')" (click)="SalvaLista()"><ion-icon name="magnet"></ion-icon></button>
+          <button ion-button clear item-right [disabled]="Desabilitado('salvar')" (click)="SelectorDePrompt()"><ion-icon name="magnet"></ion-icon></button>
           <button ion-button clear item-right [disabled]="Desabilitado('down')" (click)="DownloadLista()"><ion-icon name="download"></ion-icon></button>
           <button ion-button clear item-right [disabled]="Desabilitado('remover')" (click)="HabilitaRemover()"><ion-icon name="remove-circle"></ion-icon></button>
           <button ion-button clear item-right *ngIf="flgRemover" (click)="clear()">zerar</button>

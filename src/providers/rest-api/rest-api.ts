@@ -130,8 +130,6 @@ export class RestApiProvider {
              let options = new RequestOptions({ headers: headers });
              let body = 'op=SalvarColetaneaDoUsuario&idMembro=' + idMembro + '&lsIdsObras=' + lsIdsObras + '&idColetanea='+ idColetanea + '&nmColetaneaDoUsuario=' + nmColetaneaDoUsuario ;
 
-
-
              console.log("Postou SalvarColetaneaPrivada()");
              console.log(body);
 

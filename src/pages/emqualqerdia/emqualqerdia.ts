@@ -1,6 +1,6 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
 // import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController,ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController,ViewController,AlertController } from 'ionic-angular';
 import { Input,ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
@@ -24,9 +24,9 @@ export class EmqualqerdiaPage {
   str:any = "";
   isClear: boolean = true;
   //Buscar:string = '';
-
+  flgMinhaLista:boolean = false;
   imageProvider:any = "";
-
+  strPlaceHold:any = "Todos os Lançamentos";
   //itemExpandHeight: number = 500;
 
   shownGroup = null;
@@ -42,7 +42,8 @@ export class EmqualqerdiaPage {
     // public renderer: Renderer,
     public playEventGatilho: Events,
     public expandHeightGatilho: Events,
-    public loadingController: LoadingController)
+    public loadingController: LoadingController,
+    public alertCtrl: AlertController)
     {
 
       this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
@@ -70,7 +71,10 @@ export class EmqualqerdiaPage {
       },150);
     }
 
-
+    if(this.gvProvider.gvOpAtual == 'ObterColetaneasTodasPrivadasPaginadaComTag'){
+      this.flgMinhaLista = true;
+      this.strPlaceHold = "Playlists";
+    }
 
     this.infiniteScroll.enable(true);
     //console.log('chamou carregaColetaneas');
@@ -134,8 +138,45 @@ export class EmqualqerdiaPage {
       //console.log('click image button');
     }
 
+    showConfirm(item) {
+       const confirm = this.alertCtrl.create({
+         title: 'Playlist',
+         message: '',
+         buttons: [
+           {
+             text: 'Adicionar',
+             handler: () => {
+               console.log('Adicionar clicked');
+               this.addTocaColetanea(item);
+             }
+           },
+           {
+             text: 'Substituir',
+             handler: () => {
+               console.log('Substituir clicked');
+               this.gvProvider.gvPlayListItens = [];
+               if(this.flgMinhaLista){
+                this.gvProvider.gvPlayListColetanea = {IdeColetanea:this.gvProvider.gvColetaneas.ListaDeObjetos[item].IdeColetanea,Nome:this.gvProvider.gvColetaneas.ListaDeObjetos[item].Nome,ehPrivada:false};
+               }
+               this.addTocaColetanea(item);
+               this.gvProvider.gvEhPlayPreview = false;
+               this.gvProvider.gvPlayListUltimoIndexTocado = -1;
+               this.gvProvider.gvPlayListItens[0].Selecionado = true;
+               this.playEventGatilho.publish('play-preview');
+             }
+           }
+         ]
+       });
+       confirm.present();
+     }
+
+
     addTocaColetanea(item){
       //console.log('click image addTocaColetanea');
+      // if(this.gvProvider.gvColetaneas.gvPlayListColetanea.ehPrivada){
+      //
+      // }
+
       for (var i = 0; i < this.gvProvider.gvColetaneas.ListaDeObjetos[item].Obras.length; i++) {
         var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[item].Obras[i];
         this.gvProvider.gvPlayListItens.push({
@@ -194,6 +235,7 @@ export class EmqualqerdiaPage {
 
     addTocaPreview(itemColetanea,itemObra){
        //console.log('click image addTocaPreview');
+
        var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemColetanea].Obras[itemObra];
 
        this.gvProvider.singleTrack = {
@@ -203,9 +245,9 @@ export class EmqualqerdiaPage {
            art: this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + obra.Artes,
            preload: 'metadata' // tell the plugin to preload metadata such as duration for this track,  set to 'none' to turn off
          };
-
-       this.playEventGatilho.publish('play-preview');
-       this.toast.create({ message: 'Reproduzindo a prévia de :' + obra.Nome , position: 'botton', duration: 3000 }).present();
+         this.gvProvider.gvEhPlayPreview = true;
+         this.playEventGatilho.publish('play-preview');
+         this.toast.create({ message: 'Reproduzindo a prévia de :' + obra.Nome , position: 'botton', duration: 3000 }).present();
     }
 
     melog(val){

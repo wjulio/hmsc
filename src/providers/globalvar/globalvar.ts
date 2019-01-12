@@ -31,6 +31,7 @@ export class GlobalvarProvider {
   public gvPlayListUltimoIndexTocado:number = -1;
   public gvPlayListIndexSelecionado:number = -1;
   public gvPlayListColetanea:any = {IdeColetanea:0,Nome:'',ehPrivada:false};
+  public gvEhPlayPreview:boolean = false; 
 
   public gvOpAtual:string = 'ObterColetaneasTodasPaginadaComTag';
 
