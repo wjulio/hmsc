@@ -1,16 +1,23 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
 // import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController,ViewController,AlertController } from 'ionic-angular';
-import { Input,ViewChild } from '@angular/core';
+import { IonicPage, NavController,
+  NavParams, ToastController, InfiniteScroll,
+  Events,LoadingController,
+  AlertController,ModalController } from 'ionic-angular';
+import { ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
-import { ITrackConstraint} from 'ionic-audio';
+// import { MarcadoresPage } from '../pages/marcadores/marcadores';
+import { MarcadoresPage } from '../marcadores/marcadores';
+// import { ModalPage } from '../modal-page/modal-page'
+
+//import { ITrackConstraint} from 'ionic-audio'; 
 
 @IonicPage()
 @Component({
   selector: 'page-emqualqerdia',
-  templateUrl: 'emqualqerdia.html',
+  templateUrl: 'emqualqerdia.html'
 })
 export class EmqualqerdiaPage {
   @ViewChild(InfiniteScroll) infiniteScroll: InfiniteScroll;
@@ -28,7 +35,7 @@ export class EmqualqerdiaPage {
   imageProvider:any = "";
   strPlaceHold:any = "Todos os Lançamentos";
   //itemExpandHeight: number = 500;
-
+  //modalMarcadores:any = MarcadoresPage;
   shownGroup = null;
   loader:any;
   // constructor(private _cdRef: ChangeDetectorRef,private backgroundMode:BackgroundMode, public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
@@ -43,7 +50,9 @@ export class EmqualqerdiaPage {
     public playEventGatilho: Events,
     public expandHeightGatilho: Events,
     public loadingController: LoadingController,
-    public alertCtrl: AlertController)
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController
+   )
     {
 
       this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
@@ -175,6 +184,40 @@ export class EmqualqerdiaPage {
        });
        confirm.present();
      }
+
+      meusMarcadores(itemCol,itemObra) {
+        const modal = this.modalCtrl.create(MarcadoresPage);
+        modal.present();
+      }
+
+     // meusMarcadores(itemCol,itemObra) {
+     //     let alert = this.alertCtrl.create();
+     //     alert.setTitle('Which planets have you visited?');
+     //
+     //     alert.addInput({
+     //       type: 'checkbox',
+     //       label: 'Alderaan',
+     //       value: 'value1',
+     //       checked: true
+     //     });
+     //
+     //     alert.addInput({
+     //       type: 'checkbox',
+     //       label: 'Bespin',
+     //       value: 'value2'
+     //     });
+     //
+     //     alert.addButton('Cancel');
+     //     alert.addButton({
+     //       text: 'Okay',
+     //       handler: data => {
+     //         console.log('Checkbox data:', data);
+     //         this.testCheckboxOpen = false;
+     //         this.testCheckboxResult = data;
+     //       }
+     //     });
+     //     alert.present();
+     // }
 
 
     addTocaColetanea(item){

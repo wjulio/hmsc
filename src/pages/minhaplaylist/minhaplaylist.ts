@@ -44,10 +44,10 @@ export class MinhaplaylistPage {
     public loadingController: LoadingController)
     {
 
-      this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
-      //console.log(this.imageProvider);
-      this.imgPlay = this.gvProvider.gvStorage+'getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename='+this.gvProvider.gvStorage+'Storage/capa/play-button-icon-png-280x280.png';
-      //console.log(this.imgPlay);
+      // this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
+      // //console.log(this.imageProvider);
+      // this.imgPlay = this.gvProvider.gvStorage+'getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename='+this.gvProvider.gvStorage+'Storage/capa/play-button-icon-png-280x280.png';
+      // //console.log(this.imgPlay);
 
 
     }
@@ -88,19 +88,19 @@ export class MinhaplaylistPage {
           //"{{gvProvider.gvHostImageResize}}{{gvProvider.gvMaxWidth}}{{gvProvider.gvParamImgFile}}{{gvProvider.gvStorage}}{{item.Artes}}"
           itemColetaneaPrivada.Artes = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage + itemColetaneaPrivada.Artes;
           this.str = itemColetaneaPrivada.Artes;
-          this.gvProvider.gvMinhaLista.ListaDeObjetos.push(itemColetaneaPrivada);
+          // this.gvProvider.gvMinhaLista.ListaDeObjetos.push(itemColetaneaPrivada);
         }
 
           console.log(this.str);
           this.loader.dismiss();
 
 
-        if (this.infiniteScroll) {
-          this.infiniteScroll.complete();
-          if (this.gvProvider.gvMinhaLista.ListaDeObjetos.length == result.TotalDeRegistros) {
-            this.infiniteScroll.enable(false);
-          }
-        }
+        // if (this.infiniteScroll) {
+        //   this.infiniteScroll.complete();
+        //   if (this.gvProvider.gvMinhaLista.ListaDeObjetos.length == result.TotalDeRegistros) {
+        //     this.infiniteScroll.enable(false);
+        //   }
+        // }
 
       })
       .catch((error: any) => {

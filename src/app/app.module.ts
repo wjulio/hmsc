@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import { MarcadoresPage } from '../pages/marcadores/marcadores';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
 
@@ -39,6 +40,7 @@ export function myCustomAudioProviderFactory() {
     ListPage,
     MinhaplaylistPage,
     EmqualqerdiaPage,
+    MarcadoresPage,
     ExpandableHeaderComponent
     // FlashCardComponent,
     // TimelineComponent,
@@ -58,6 +60,7 @@ export function myCustomAudioProviderFactory() {
     HomePage,
     ListPage,
     MinhaplaylistPage,
+    MarcadoresPage,
     EmqualqerdiaPage
   ],
   providers: [
