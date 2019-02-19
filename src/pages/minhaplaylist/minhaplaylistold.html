@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Minha Lista
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <!-- <timeline endIcon="call">
+    <timeline-item *ngFor="let item of gvProvider.gvMinhaLista.ListaDeObjetos">
+      <timeline-time [time]="{subtitle:'item.DtCriacao',title:'item.Nome'}"></timeline-time>
+      <ion-icon [name]="lcCalendarIcon"></ion-icon>
+      <ion-card>
+        <ion-card-header>
+          {{item.Nome}}
+        </ion-card-header>
+        <ion-card-content>
+          <span>
+            <img *ngIf="item.Artes"  [src]="item.Artes" />
+          </span>
+        </ion-card-content>
+      </ion-card>
+    </timeline-item>
+  </timeline> -->
+
+  <!-- <flash-card *ngFor="let item of gvProvider.gvMinhaLista.ListaDeObjetos" >
+    <div class="fc-front">
+      <img *ngIf="item.Artes"  [src]="item.Artes" />
+      <h2 text-center>{{item.Nome}}</h2>
+      <h3 text-center>{{item.DtCriacao}}</h3>
+      <hr />
+      <p *ngIf="item.Nome" >{{item.Nome}}</p>
+    </div>
+    <div class="fc-back">
+        <ion-list>
+          <ion-item *ngFor="let obra of item.Obras">
+            <ion-thumbnail item-start>
+              <img *ngIf="obra.Artes" src="http://placehold.it/94">
+            </ion-thumbnail>
+            <h2>{{obra.Nome}}</h2>
+            <p>{{obra.DtCriacao}}</p>
+          </ion-item>
+        </ion-list>
+        <ion-item>
+          <ion-avatar item-start>
+            <img *ngIf="item.Artes"  [src]="item.Artes" />
+          </ion-avatar>
+          <small>{{item.Nome}}</small>
+          <p><small>{{item.DtCriacao}}</small></p>
+        </ion-item>
+
+      </div>
+  </flash-card> -->
+
+  <div class="pins">
+    <ion-card class="pin" *ngFor="let item of gvProvider.gvMinhaLista.ListaDeObjetos">
+
+      <ion-item>
+        <ion-thumbnail item-start>
+          <img *ngIf="item.Artes"  [src]="item.Artes" />
+        </ion-thumbnail>
+      </ion-item>
+      <div>
+        <!-- <small>{{item.Nome}}</small> -->
+        <p><small>{{item.Nome}}</small></p>
+        <!-- <p><small>{{item.DtCriacao}}</small></p> -->
+      </div>
+
+      <!--<ion-list>
+         <ion-item *ngFor="let obra of item.Obras">
+          <ion-thumbnail item-start>
+            <img item-start *ngIf="obra.Artes" src="http://placehold.it/30">
+          </ion-thumbnail>
+          <h2>{{obra.Nome}}</h2>
+          <p>{{obra.DtCriacao}}</p>
+        </ion-item>
+      </ion-list> -->
+      <ion-list>
+        <ion-item *ngFor="let obra of item.Obras">
+          <ion-avatar item-start>
+            <img item-start *ngIf="obra.Artes" src="{{imageProvider}}{{obra.Artes}}">
+          </ion-avatar>
+          <!-- <h2>{{obra.Nome}}</h2> -->
+          <p><small>{{obra.Nome}}</small></p>
+        </ion-item>
+      </ion-list>
+      <!-- <div *ngFor="let obra of item.Obras" >
+        <img item-start *ngIf="obra.Artes" src="http://placehold.it/30">
+        <h2>{{obra.Nome}}</h2>
+      </div> -->
+
+    </ion-card>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="pegaMaisItens($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando mais...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

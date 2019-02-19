@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Salvar Coletanea
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <h1>{{gvProvider.gvPlayListColetanea.Nome}}</h1>
+
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Nome</ion-label>
+      <ion-input type="text" name="nmColetanea" [(ngModel)]="gvProvider.gvPlayListColetanea.Nome"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label stacked>Senha</ion-label>
+      <ion-input type="password" name="password" [(ngModel)]="model.password"></ion-input>
+    </ion-item> -->
+  </ion-list>
+
+  <button ion-button block (click)="Salvar()" color="primary">Salvar</button>
+
+</ion-content>

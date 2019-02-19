@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="viewCtrl.dismiss()">
+          <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+      Meus Marcadores
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">OK</span>
+        <span ion-text color="primary" showWhen="android,windows">Concluir</span>
+        <!-- <ion-icon name="md-close" showWhen="android,windows"></ion-icon> -->
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+      <ion-item [class.highlight]="item.Selected" *ngFor="let item of marcadoresLocais; let i = index" (click)="selecionaMarcador(i)">
+        {{item.NomeTag}}
+      </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-input start [(ngModel)]="novoMarcador" placeholder="Add Novo Marcador"></ion-input>
+    <ion-buttons start>
+      <button ion-button (click)="CriarNovoMarcador(novoMarcador)">
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
