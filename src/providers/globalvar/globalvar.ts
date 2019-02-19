@@ -17,10 +17,11 @@ export class GlobalvarProvider {
   public gvColetaneas:any = [];
   public gvMaxWidth:any = "300";
   //public gvStorage:any = 'http://127.0.0.1:81/';
-  public gvStorage:any = 'http://179.218.160.17:81/';
+  public gvStorage:any = 'http://189.60.35.35:81/';
   public gvStoragePrivate:any = 'http://disclosure-001-site1.gtempurl.com/';
   //public gvHostImageResize:any = 'http://127.0.0.1/CloudDj/fx/getimage.aspx?w=';
-  public gvHostImageResize:any = 'http://179.218.160.17:81/getimage.php?w=';
+  //public gvHostImageResize:any = 'http://179.218.160.17:81/getimage.php?w=';
+  public gvHostImageResize:any = 'http://189.60.35.35:81/getimage.php?w=';
 
   public gvParamImgFile = '&filename=';
   public gvPaginaAtual:any = 1;

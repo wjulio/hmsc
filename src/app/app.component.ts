@@ -344,8 +344,11 @@ export class MyApp {
 
                this.gvProvider.gvStorage = 'http://' + result.ServidorDeConexao + ':81/';
                this.gvProvider.gvHostImageResize = 'http://' + result.ServidorDeConexao + ':81/getimage.php?w=';
-               console.log("serverSet:"+this.gvProvider.gvStorage);
+               //console.log("serverSet:"+this.gvProvider.gvStorage);
+               //console.log("serverSet:"+this.gvProvider.gvStorage);
                this.ObtemMenu();
+               //this.nav.setRoot(EmqualqerdiaPage);
+               //this.navCtrl.goToRoot(null);
 
              })
              .catch((error: any) => {

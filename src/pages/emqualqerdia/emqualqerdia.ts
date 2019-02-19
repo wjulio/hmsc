@@ -12,7 +12,7 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 import { MarcadoresPage } from '../marcadores/marcadores';
 // import { ModalPage } from '../modal-page/modal-page'
 
-//import { ITrackConstraint} from 'ionic-audio'; 
+//import { ITrackConstraint} from 'ionic-audio';
 
 @IonicPage()
 @Component({
@@ -38,6 +38,8 @@ export class EmqualqerdiaPage {
   //modalMarcadores:any = MarcadoresPage;
   shownGroup = null;
   loader:any;
+  indexDosMarcadores:any=0;
+
   // constructor(private _cdRef: ChangeDetectorRef,private backgroundMode:BackgroundMode, public navCtrl: NavController, public navParams: NavParams, private toast: ToastController, private restApiProvider: RestApiProvider, public gvProvider: GlobalvarProvider) {
   constructor(
     private _cdRef: ChangeDetectorRef,
@@ -117,7 +119,7 @@ export class EmqualqerdiaPage {
             //console.log(itemColetaneaPrivada.Artes);
           }
 
-            console.log(this.str);
+            //console.log(this.str);
             this.loader.dismiss();
 
 
@@ -186,8 +188,65 @@ export class EmqualqerdiaPage {
      }
 
       meusMarcadores(itemCol,itemObra) {
-        const modal = this.modalCtrl.create(MarcadoresPage);
+        //console.log(itemCol);
+        //console.log(itemObra);
+
+        //console.log(this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras);
+
+
+        //let _str = this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds;
+        //console.log(this.gvProvider.gvColetaneas.ListaDeObjetos);
+        let idsTagsObra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds.split(',');
+
+        for (var i = 0; i < this.gvProvider.gvListaMenu.length; i++) {
+            if(this.gvProvider.gvListaMenu[i].TipoMenuAppJsonDto==1){
+              this.indexDosMarcadores = i;
+            }
+        }
+
+         let marcLocal:any = this.gvProvider.gvListaMenu[this.indexDosMarcadores].Tags;
+         let obraTags:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra];
+
+        //console.log(marcLocal);
+        //console.log(obraTags);
+        //console.log(idsTagsObra);
+
+        //let oTags:any = [];
+
+        let oTags = marcLocal.filter(function (item) {
+        	return item.Sistema == false;
+        });
+
+        //console.log(oTags);
+
+         let dTags:any = [];
+
+        for(var x = 0; x < oTags.length; x++){
+
+          let ehselecioado = idsTagsObra.filter(function (itemz) {
+          	return itemz == oTags[x].IdeMembroTag;
+          });
+
+          //console.log(ehselecioado);
+
+            if(ehselecioado.length > 0){
+              //console.log('ehselecioado');
+              dTags.push({IdeMembroTag: oTags[x].IdeMembroTag,NomeTag: oTags[x].NomeTag,Selected: true,Sistema: oTags[x].Sistema,Visivel: oTags[x].Visivel,flagNova: oTags[x].flagNova});
+            }else{
+              //console.log('nao ehselecioado');
+              dTags.push({IdeMembroTag: oTags[x].IdeMembroTag,NomeTag: oTags[x].NomeTag,Selected: false,Sistema: oTags[x].Sistema,Visivel: oTags[x].Visivel,flagNova: oTags[x].flagNova});
+            }
+
+        }
+
+        console.log(dTags);
+        const modal = this.modalCtrl.create(MarcadoresPage,{paramTags:dTags,itemCol:itemCol,itemObra:itemObra,indexDosMarcadores:this.indexDosMarcadores});
         modal.present();
+
+        modal.onDidDismiss(data => {
+          console.log(data);
+        });
+
       }
 
      // meusMarcadores(itemCol,itemObra) {
@@ -217,7 +276,7 @@ export class EmqualqerdiaPage {
      //       }
      //     });
      //     alert.present();
-     // }
+     //}
 
 
     addTocaColetanea(item){

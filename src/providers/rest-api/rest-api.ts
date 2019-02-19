@@ -64,6 +64,26 @@ export class RestApiProvider {
      });
    }
 
+   CriarMarcador(idMembro: string, nmMarcador: string) {
+      return new Promise((resolve, reject) => {
+        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
+        //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+        let options = new RequestOptions({ headers: headers });
+        let body = 'op=NovoMarcador&idMembro=' + idMembro + '&nmMarcador=' + nmMarcador;
+
+        console.log("Passou o post CriarMarcador()");
+
+        //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
+        this.http.post(this.API_URL, body, options)
+          .subscribe((result: any) => {
+            resolve(result.json());
+          },
+          (error) => {
+            reject(error.json());
+          });
+      });
+    }
+
    /*
    _busca As String,
    _idsTags As List(Of String),
@@ -108,7 +128,7 @@ export class RestApiProvider {
 
             //console.log(body);
             //console.log("Passou o post ObterColetaneasPrivadas()");
-            console.log("urlPost:"+this.urlPost);
+            //console.log("urlPost:"+this.urlPost);
 
             //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
             this.http.post(this.API_URL, body, options)
@@ -134,7 +154,7 @@ export class RestApiProvider {
              console.log(body);
 
              this.urlPost = this.API_URL+'?'+body;
-             console.log("urlPost:"+this.urlPost);
+             //console.log("urlPost:"+this.urlPost);
 
              //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
              this.http.post(this.API_URL, body, options)
@@ -146,5 +166,25 @@ export class RestApiProvider {
                });
            });
          }
+
+         AderirMarcadores(idMembro:string, lsIdsObras:string, idsTags:string) {
+            return new Promise((resolve, reject) => {
+
+              let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+              let options = new RequestOptions({ headers: headers });
+              let body = 'op=AderirTagNaObra&idMembro=' + idMembro + '&lsIdsObras=' + lsIdsObras + '&idsTags='+ idsTags;
+
+              this.urlPost = this.API_URL+'?'+body;
+              //console.log("urlPost:"+this.urlPost);
+
+              this.http.post(this.API_URL, body, options)
+                .subscribe((result: any) => {
+                  resolve(result.json());
+                },
+                (error) => {
+                  reject(error.json());
+                });
+            });
+          }
 
 }
