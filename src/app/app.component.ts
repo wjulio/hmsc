@@ -8,6 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
+import { ConfigurarPage } from '../pages/configurar/configurar';
 // import { SalvarListaColetanea } from '../pages/salva-coletanea-modal/salva-coletanea-modal';
 
 import { RestApiProvider } from './../providers/rest-api/rest-api';
@@ -25,7 +26,8 @@ export class MyApp {
 
   //rootPage: any = HomePage;
   //rootPage: any = MinhaplaylistPage;
-  rootPage: any = EmqualqerdiaPage;
+  //rootPage: any = EmqualqerdiaPage;
+  rootPage: any = ConfigurarPage;
 
   pages: Array<{title: string, component: any}>;
   playerItems:any = [];
@@ -91,8 +93,8 @@ export class MyApp {
   initializeApp() {
     this.platform.ready().then(() => {
 
-      //this.ObtemMenu();
-      this.ConfiguraEnderecoServidor();
+      this.ObtemMenu();
+      //this.ConfiguraEnderecoServidor();
 
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -139,6 +141,14 @@ export class MyApp {
   onEmpSelected(_lsMarcadores:any) {
 
     console.log(_lsMarcadores);
+    //let lcIds:any = [];
+    let lcIds = _lsMarcadores.map(function (item) {return item.IdeMembroTag;});
+
+    if(lcIds.length > 0){
+      this.gvProvider.gvFiltroTag = lcIds.toString();
+    }else{
+      this.gvProvider.gvFiltroTag= '';
+    }
     //this.nav.setRoot(this.pages[1].component);
 
   }
@@ -146,6 +156,34 @@ export class MyApp {
   ExecutaConsulta(itemMenu) {
 
     //console.log('Executa Consulta'+JSON.stringify(itemMenu));
+
+    if(itemMenu.Ordem==1){
+      this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+      this.gvProvider.gvOpAtual = 'ObterColetaneasHojePaginadaComTag';
+      //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.nav.setRoot(EmqualqerdiaPage);
+    }
+
+    if(itemMenu.Ordem==2){
+      this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+      this.gvProvider.gvOpAtual = 'ObterColetaneas7DiasPaginadaComTag';
+      //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.nav.setRoot(EmqualqerdiaPage);
+    }
+
+    if(itemMenu.Ordem==3){
+      this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+      this.gvProvider.gvOpAtual = 'ObterColetaneas30DiasPaginadaComTag';
+      //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.nav.setRoot(EmqualqerdiaPage);
+    }
+
+    if(itemMenu.Ordem==4){
+      this.gvProvider.gvColetaneas.ListaDeObjetos = [];
+      this.gvProvider.gvOpAtual = 'ObterColetaneasDoAnoAtualAnteriorPaginadaComTag';
+      //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.nav.setRoot(EmqualqerdiaPage);
+    }
 
     if(itemMenu.Ordem==5){
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
@@ -337,24 +375,25 @@ export class MyApp {
          //   }
          // }
 
-         ConfiguraEnderecoServidor() {
-           this.restApiProvider.Conectar(this.gvProvider.gvIdMembroLogin.toString())
-             .then((result: any) => {
-               //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
-
-               this.gvProvider.gvStorage = 'http://' + result.ServidorDeConexao + ':81/';
-               this.gvProvider.gvHostImageResize = 'http://' + result.ServidorDeConexao + ':81/getimage.php?w=';
-               //console.log("serverSet:"+this.gvProvider.gvStorage);
-               //console.log("serverSet:"+this.gvProvider.gvStorage);
-               this.ObtemMenu();
-               //this.nav.setRoot(EmqualqerdiaPage);
-               //this.navCtrl.goToRoot(null);
-
-             })
-             .catch((error: any) => {
-               this.toast.create({ message: 'Erro ao conectar.' + error.error, position: 'botton', duration: 3000 }).present();
-             });
-         }
+         //transferido para a ConfigurarPage
+         // ConfiguraEnderecoServidor() {
+         //   this.restApiProvider.Conectar(this.gvProvider.gvIdMembroLogin.toString())
+         //     .then((result: any) => {
+         //       //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
+         //
+         //       this.gvProvider.gvStorage = 'http://' + result.ServidorDeConexao + ':81/';
+         //       this.gvProvider.gvHostImageResize = 'http://' + result.ServidorDeConexao + ':81/getimage.php?w=';
+         //       //console.log("serverSet:"+this.gvProvider.gvStorage);
+         //       //console.log("serverSet:"+this.gvProvider.gvStorage);
+         //       this.ObtemMenu();
+         //       //this.nav.setRoot(EmqualqerdiaPage);
+         //       //this.navCtrl.goToRoot(null);
+         //
+         //     })
+         //     .catch((error: any) => {
+         //       this.toast.create({ message: 'Erro ao conectar.' + error.error, position: 'botton', duration: 3000 }).present();
+         //     });
+         // }
 
         reorderItems(indexes) {
           if(this.flgOrdenar){

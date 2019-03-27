@@ -84,8 +84,33 @@ export class EmqualqerdiaPage {
 
     if(this.gvProvider.gvOpAtual == 'ObterColetaneasTodasPrivadasPaginadaComTag'){
       this.flgMinhaLista = true;
-      this.strPlaceHold = "Playlists";
+      this.strPlaceHold = "Minha Lista";
     }
+
+    if(this.gvProvider.gvOpAtual == 'ObterColetaneasHojePaginadaComTag'){
+      this.flgMinhaLista = false;
+      this.strPlaceHold = "Lançados Hoje";
+    }
+
+    if(this.gvProvider.gvOpAtual == 'ObterColetaneas7DiasPaginadaComTag'){
+      this.flgMinhaLista = false;
+      this.strPlaceHold = "Em 7 Dias";
+    }
+
+    if(this.gvProvider.gvOpAtual == 'ObterColetaneas30DiasPaginadaComTag'){
+      this.flgMinhaLista = false;
+      this.strPlaceHold = "Em 30 Dias";
+    }
+
+    if(this.gvProvider.gvOpAtual == 'ObterColetaneasDoAnoAtualAnteriorPaginadaComTag'){
+      this.flgMinhaLista = false;
+      var today = new Date();
+      //var dd = today.getDate();
+      //var mm = today.getMonth() + 1; //January is 0!
+      var yyyy = today.getFullYear();
+      this.strPlaceHold = "Em "+yyyy.toString()+'/'+(yyyy-1).toString();
+    }
+
 
     this.infiniteScroll.enable(true);
     //console.log('chamou carregaColetaneas');
@@ -101,7 +126,7 @@ export class EmqualqerdiaPage {
       this.gvProvider.gvItensPorPagina = 10;
       //ObterColetaneas(op:string,busca: string, idsTags:string, idMembro: string, nrPagina:string, numItems:string)
       //console.log(Busca);
-      this.restApiProvider.ObterColetaneas(this.gvProvider.gvOpAtual,Busca, '', ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
+      this.restApiProvider.ObterColetaneas(this.gvProvider.gvOpAtual,Busca, this.gvProvider.gvFiltroTag, ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
         .then((result: any) => {
           //console.log('carregaColetaneas emqualquuerdia tem resposta');
           //console.log(result);

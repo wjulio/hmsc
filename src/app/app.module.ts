@@ -9,6 +9,7 @@ import { ListPage } from '../pages/list/list';
 import { MarcadoresPage } from '../pages/marcadores/marcadores';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
+import { ConfigurarPage } from '../pages/configurar/configurar';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -39,7 +40,7 @@ export function myCustomAudioProviderFactory() {
     // ExpandableComponent,
     ListPage,
     MinhaplaylistPage,
-    EmqualqerdiaPage,
+    EmqualqerdiaPage,ConfigurarPage,
     MarcadoresPage,
     ExpandableHeaderComponent
     // FlashCardComponent,
@@ -61,7 +62,7 @@ export function myCustomAudioProviderFactory() {
     ListPage,
     MinhaplaylistPage,
     MarcadoresPage,
-    EmqualqerdiaPage
+    EmqualqerdiaPage,ConfigurarPage
   ],
   providers: [
     StatusBar,
