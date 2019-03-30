@@ -1,26 +1,31 @@
 <ion-header>
 
-  <!-- <ion-navbar>
-    <ion-title>
-      Todos os Lançamentos
-    </ion-title>
-  </ion-navbar> -->
-
   <!-- <expandable-header [scrollArea]="mycontent" headerHeight="50">
       <ion-item>
           <ion-label><ion-icon name="search"></ion-icon></ion-label>
           <ion-input type="search"  [(ngModel)]="gvProvider.gvBuscar" (keydown)="handler($event)"></ion-input>
       </ion-item>
   </expandable-header> -->
-  <ion-searchbar name="search" #search
-     placeholder="{{strPlaceHold}}"
-     debounce="700"
-     [(ngModel)]="gvProvider.gvBuscar"
-    [showCancelButton]="shouldShowCancel"
-    (ionInput)="handler($event)"
-    (ionCancel)="handler($event)"
-    (ionClear)="ionClearEvent($event)">
-  </ion-searchbar>
+
+  <ion-toolbar>
+    <button ion-button menuToggle item-start>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-searchbar name="search" #search
+       placeholder="{{strPlaceHold}}"
+       debounce="700"
+       [(ngModel)]="gvProvider.gvBuscar"
+      [showCancelButton]="shouldShowCancel"
+      (ionInput)="handler($event)"
+      (ionCancel)="handler($event)"
+      (ionClear)="ionClearEvent($event)">
+    </ion-searchbar>
+    <button ion-button menuToggle end>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+</ion-toolbar>
+
+
 
   <!-- <ion-navbar>
     <ion-title>

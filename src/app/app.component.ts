@@ -64,6 +64,7 @@ export class MyApp {
 
         console.log('platform.width:'+platform.width());
         gvProvider.gvMaxWidth = platform.width()<300?platform.width()-(platform.width()*0.25):300;
+        //gvProvider.platformWidth = platform.width();
         //console.log('gvProvider.gvMaxWidth:'+gvProvider.gvMaxWidth);
 
         this.pages = [

@@ -16,6 +16,37 @@
 // automatically applied to the <body> element in the app.
 
 // Menu user profile
+
+//@media screen and (min-width: 1241px){
+@media screen and (min-width: 1000px){
+  ion-app {
+    //background-image: url('../assets/bricks.jpg');
+    //background-size: cover;
+  }
+  ion-app .app-root{
+    border-radius: 3px;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+    width: 800px;
+    max-height: 895px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 2%;
+    height: 95%;
+  }
+  ion-app.md {
+    background-color: #d9dbd6;
+  }
+  ion-menu[side=right] .menu-inner {
+      width:480px !important;
+  }
+}
+
+// body {
+//   background-color: #d9dbd6;
+// }
+
 .user-profile {
   .user-avatar {
     width: 68px;
@@ -47,17 +78,6 @@
 .split-pane-visible > ion-menu {
   max-width: 304px!important;
 }
-
-// Media queries
-// @media (min-width: 330px) {
-//   ion-menu[side=right] .menu-inner {
-//       width: calc(100%) !important;
-//   }
-// }
-
-  // ion-menu[side=right] .menu-inner {
-  //     width: calc(100%-10) !important;
-  // }
 
   @media (min-width: 300px) {
     ion-menu[side=right] .menu-inner {

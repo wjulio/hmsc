@@ -1,11 +1,11 @@
 import { Component,ChangeDetectorRef } from '@angular/core';
 // import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController,ViewController } from 'ionic-angular';
-import { Input,ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll, Events,LoadingController } from 'ionic-angular';
+import { ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
-import { ITrackConstraint} from 'ionic-audio';
+//import { ITrackConstraint} from 'ionic-audio';
 
 @IonicPage()
 @Component({
@@ -32,7 +32,7 @@ export class MinhaplaylistPage {
   shownGroup = null;
   loader:any;
   constructor(
-    private _cdRef: ChangeDetectorRef,
+    //private _cdRef: ChangeDetectorRef,
     public navCtrl: NavController,
     public navParams: NavParams,
     private toast: ToastController,

@@ -18,7 +18,7 @@ export class RestApiProvider {
   //private API_URL = 'http://179.218.153.242/clouddj/jpservico.aspx';
   private urlPost = '';
 
-  constructor(public http: Http) { }
+  constructor(public http: Http) { this.urlPost = ''}
 
 
     //ServidorDeConexao
