@@ -7,8 +7,8 @@
       </ion-item>
   </expandable-header> -->
 
-  <ion-toolbar>
-    <button ion-button menuToggle item-start>
+  <!-- <ion-toolbar>
+    <button *ngIf="gvProvider.platformWidth > 1000" (click)="toggleRightMenu()" ion-button menuToggle item-start>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-searchbar name="search" #search
@@ -20,12 +20,34 @@
       (ionCancel)="handler($event)"
       (ionClear)="ionClearEvent($event)">
     </ion-searchbar>
-    <button ion-button menuToggle end>
+    <button *ngIf="gvProvider.platformWidth > 1000" (click)="toggleRightMenu()" ion-button [hidden]="gvProvider.platformWidth > 1000" menuToggle end>
       <ion-icon name="menu"></ion-icon>
     </button>
-</ion-toolbar>
+</ion-toolbar> -->
 
-
+<ion-header>
+  <ion-toolbar class="user-profile">
+    <ion-buttons left>
+        <button color="light" ion-button icon-only (click)="toggleLeftMenu()">
+            <ion-icon name="menu"></ion-icon>
+        </button>
+    </ion-buttons>
+    <ion-searchbar name="search" #search
+       placeholder="{{strPlaceHold}}"
+       debounce="700"
+       [(ngModel)]="gvProvider.gvBuscar"
+      [showCancelButton]="shouldShowCancel"
+      (ionInput)="handler($event)"
+      (ionCancel)="handler($event)"
+      (ionClear)="ionClearEvent($event)">
+    </ion-searchbar>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="toggleRightMenu()">
+            <ion-icon name="more"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
   <!-- <ion-navbar>
     <ion-title>

@@ -2,7 +2,7 @@ import { Component,ChangeDetectorRef } from '@angular/core';
 // import { Component,ChangeDetectorRef,ElementRef, Renderer} from '@angular/core';
 import { IonicPage, NavController,
   NavParams, ToastController, InfiniteScroll,
-  Events,LoadingController,
+  Events,LoadingController,MenuController ,
   AlertController,ModalController } from 'ionic-angular';
 import { ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
@@ -53,7 +53,8 @@ export class EmqualqerdiaPage {
     public expandHeightGatilho: Events,
     public loadingController: LoadingController,
     public alertCtrl: AlertController,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public menuCtrl: MenuController
    )
     {
 
@@ -64,6 +65,17 @@ export class EmqualqerdiaPage {
 
 
     }
+
+    toggleLeftMenu() {
+      this.menuCtrl.open('mLeft');
+      console.log('toggleLeftMenu');
+    }
+
+    toggleRightMenu() {
+      this.menuCtrl.open('mRight');
+      console.log('toggleRightMenu');
+    }
+
 
   ionViewDidLoad() {
     //console.log('ionViewDidLoad EmqualqerdiaPage');

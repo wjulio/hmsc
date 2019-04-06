@@ -26,7 +26,7 @@
   ion-app .app-root{
     border-radius: 3px;
     box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-    width: 800px;
+    width: 750px;
     max-height: 895px;
     margin-left: auto;
     margin-right: auto;
@@ -37,6 +37,7 @@
   }
   ion-app.md {
     background-color: #d9dbd6;
+    //background-color: #0000ff;
   }
   ion-menu[side=right] .menu-inner {
       width:480px !important;

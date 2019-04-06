@@ -64,7 +64,7 @@ export class MyApp {
 
         console.log('platform.width:'+platform.width());
         gvProvider.gvMaxWidth = platform.width()<300?platform.width()-(platform.width()*0.25):300;
-        //gvProvider.platformWidth = platform.width();
+        gvProvider.platformWidth = platform.width();
         //console.log('gvProvider.gvMaxWidth:'+gvProvider.gvMaxWidth);
 
         this.pages = [
@@ -100,6 +100,16 @@ export class MyApp {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+
+  toggleLeftMenu() {
+    this.menuCtrl.open('mLeft');
+    console.log('toggleLeftMenu');
+  }
+
+  toggleRightMenu() {
+    this.menuCtrl.open('mRight');
+    console.log('toggleRightMenu');
   }
 
   openRootPage(page) {

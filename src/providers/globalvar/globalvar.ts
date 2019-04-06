@@ -38,6 +38,7 @@ export class GlobalvarProvider {
   public gvOpAtual:string = 'ObterColetaneasTodasPaginadaComTag';
 
   public singleTrack: ITrackConstraint;
+  public platformWidth:any = 0;
 
   constructor() {
     //console.log('Hello GlobalvarProvider Provider');
