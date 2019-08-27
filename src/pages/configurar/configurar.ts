@@ -3,9 +3,10 @@ import { IonicPage, NavController, NavParams,ToastController,LoadingController }
 
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
+import { BancoDeDadosProvider, MembroLocal, MembroList } from './../../providers/banco-de-dados/banco-de-dados';
 
 import { EmqualqerdiaPage } from '../emqualqerdia/emqualqerdia';
-
+import { LoginPage } from '../login/login';
 
 /**
  * Generated class for the ConfigurarPage page.
@@ -21,6 +22,7 @@ import { EmqualqerdiaPage } from '../emqualqerdia/emqualqerdia';
 })
 export class ConfigurarPage {
 
+  membros: MembroList[];
   imageProvider:any = "";
   imgPlay:string = "Storage/capa/play-button-icon-png-280x280.png";
   loader:any;
@@ -31,7 +33,9 @@ export class ConfigurarPage {
       private restApiProvider: RestApiProvider,
       public gvProvider: GlobalvarProvider,
       public loadingController: LoadingController,
-      private toast: ToastController)
+      private toast: ToastController,
+      private bancoDados:BancoDeDadosProvider
+    )
       {
 
         this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
@@ -45,6 +49,7 @@ export class ConfigurarPage {
     console.log('ionViewDidLoad ConfigurarPage');
     this.loader = this.loadingController.create({content: "Configurando...."});
     this.loader.present();
+
     this.ConfiguraEnderecoServidor();
   }
 
@@ -59,12 +64,28 @@ export class ConfigurarPage {
         //console.log("serverSet:"+this.gvProvider.gvStorage);
         //this.nav.setRoot(EmqualqerdiaPage);
         this.loader.dismiss();
-        this.navCtrl.setRoot(EmqualqerdiaPage);
+        this.Registrar();
+        //this.navCtrl.setRoot(EmqualqerdiaPage);
         //this.navCtrl.goToRoot(null);
 
       })
       .catch((error: any) => {
         this.toast.create({ message: 'Erro ao conectar.' + error.error, position: 'botton', duration: 3000 }).present();
+      });
+  }
+
+  Registrar(){
+    this.bancoDados.getAllMembro()
+      .then((result) => {
+        this.membros = result;
+        console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
+        console.log(this.membros);
+        if(this.membros.length > 0){
+          this.navCtrl.setRoot(LoginPage);
+        }else{
+          //this.navCtrl.setRoot(EmqualqerdiaPage);
+          this.navCtrl.setRoot(LoginPage);
+        }
       });
   }
 

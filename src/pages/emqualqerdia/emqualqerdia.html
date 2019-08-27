@@ -26,9 +26,9 @@
 </ion-toolbar> -->
 
 <ion-header>
-  <ion-toolbar class="user-profile">
+   <ion-toolbar><!--<ion-toolbar class="user-profile"> -->
     <ion-buttons left>
-        <button color="light" ion-button icon-only (click)="toggleLeftMenu()">
+        <button ion-button icon-only (click)="toggleLeftMenu()">
             <ion-icon name="menu"></ion-icon>
         </button>
     </ion-buttons>
@@ -57,7 +57,7 @@
 
 </ion-header>
 
-<ion-content padding #mycontent>
+<ion-content  padding #mycontent>
   <!-- <div class="pins"> -->
   <div class="pins">
     <ion-card class="pin" *ngFor="let item of gvProvider.gvColetaneas.ListaDeObjetos; let i = index;let lst = last;">

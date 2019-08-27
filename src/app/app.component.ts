@@ -1,5 +1,5 @@
 import { Component, ViewChild,ChangeDetectorRef } from '@angular/core';
-import { Nav, Platform,Events,ToastController,AlertController } from 'ionic-angular';
+import { Nav, Platform,Events,ToastController,AlertController,MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -58,7 +58,8 @@ export class MyApp {
                 public playEvents: Events,
                 public _audioProvider: AudioProvider,
                 public storage: Storage,
-                public alertCtrl: AlertController)
+                public alertCtrl: AlertController,
+                public menuCtrl: MenuController)
     {
         this.initializeApp();
 

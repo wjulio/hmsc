@@ -10,9 +10,12 @@ import { MarcadoresPage } from '../pages/marcadores/marcadores';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
 import { ConfigurarPage } from '../pages/configurar/configurar';
+import { LoginPage } from '../pages/login/login';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+import { DatePipe } from '@angular/common';
 
 // import { BackgroundMode } from '@ionic-native/background-mode';
 import { IonicAudioModule, WebAudioProvider, CordovaMediaProvider, defaultAudioProviderFactory } from 'ionic-audio';
@@ -28,6 +31,7 @@ import { RestApiProvider } from '../providers/rest-api/rest-api';
 import { GlobalvarProvider } from '../providers/globalvar/globalvar';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { BancoDeDadosProvider } from '../providers/banco-de-dados/banco-de-dados';
 
 export function myCustomAudioProviderFactory() {
   return (window.hasOwnProperty('cordova')) ? new CordovaMediaProvider() : new WebAudioProvider();
@@ -41,7 +45,7 @@ export function myCustomAudioProviderFactory() {
     ListPage,
     MinhaplaylistPage,
     EmqualqerdiaPage,ConfigurarPage,
-    MarcadoresPage,
+    MarcadoresPage,LoginPage,
     ExpandableHeaderComponent
     // FlashCardComponent,
     // TimelineComponent,
@@ -62,14 +66,16 @@ export function myCustomAudioProviderFactory() {
     ListPage,
     MinhaplaylistPage,
     MarcadoresPage,
-    EmqualqerdiaPage,ConfigurarPage
+    EmqualqerdiaPage,ConfigurarPage,LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestApiProvider,
-    GlobalvarProvider
+    GlobalvarProvider,
+    DatePipe,
+    BancoDeDadosProvider
   ]
 })
 export class AppModule {}
