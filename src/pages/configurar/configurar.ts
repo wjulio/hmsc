@@ -81,9 +81,10 @@ export class ConfigurarPage {
         console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
         console.log(this.membros);
         if(this.membros.length > 0){
-          this.navCtrl.setRoot(LoginPage);
+          console.log('this.membros.length > 0');
+          this.bancoDados.remove('7');
+          this.navCtrl.setRoot(EmqualqerdiaPage);
         }else{
-          //this.navCtrl.setRoot(EmqualqerdiaPage);
           this.navCtrl.setRoot(LoginPage);
         }
       });
