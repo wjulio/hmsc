@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ITrackConstraint} from 'ionic-audio';
-
+import {Events} from 'ionic-angular';
 /*
   Generated class for the GlobalvarProvider provider.
 
@@ -22,7 +22,8 @@ export class GlobalvarProvider {
   //public gvHostImageResize:any = 'http://127.0.0.1/CloudDj/fx/getimage.aspx?w=';
   //public gvHostImageResize:any = 'http://179.218.160.17:81/getimage.php?w=';
   public gvHostImageResize:any = 'http://189.60.42.131:81/getimage.php?w=';
-
+  public gvUrlGA = 'http://disclosure-001-site1.gtempurl.com/ga.html?';//Titulo=Entrou&Comando=Entrou-10';
+  public gvUrlGAPadrao = 'http://disclosure-001-site1.gtempurl.com/ga.html?';
   public gvParamImgFile = '&filename=';
   public gvPaginaAtual:any = 1;
   public gvItensPorPagina:any = 10;
@@ -40,10 +41,16 @@ export class GlobalvarProvider {
   public singleTrack: ITrackConstraint;
   public platformWidth:any = 0;
 
-  constructor() {
+  constructor(public eventGatilho: Events,) {
     //console.log('Hello GlobalvarProvider Provider');
 
 
+  }
+
+
+  public RegistrarGA(titulos:string,comando:string){
+    this.gvUrlGA = this.gvUrlGAPadrao+ 'Titulo='+titulos+'&Comando='+comando;
+    this.eventGatilho.publish('RegistrarGA');
   }
 
 }

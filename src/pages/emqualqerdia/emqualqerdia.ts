@@ -8,6 +8,8 @@ import { ViewChild } from '@angular/core';
 import { GlobalvarProvider } from './../../providers/globalvar/globalvar';
 import { RestApiProvider } from './../../providers/rest-api/rest-api';
 
+//import { GoogleAnalytics } from '@ionic-native/google-analytics';
+
 // import { MarcadoresPage } from '../pages/marcadores/marcadores';
 import { MarcadoresPage } from '../marcadores/marcadores';
 // import { ModalPage } from '../modal-page/modal-page'
@@ -54,7 +56,9 @@ export class EmqualqerdiaPage {
     public loadingController: LoadingController,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
+    //private ga: GoogleAnalytics,
     public menuCtrl: MenuController
+
    )
     {
 
@@ -63,17 +67,16 @@ export class EmqualqerdiaPage {
       this.imgPlay = this.gvProvider.gvStorage+'getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename='+this.gvProvider.gvStorage+'Storage/capa/play-button-icon-png-280x280.png';
       //console.log(this.imgPlay);
 
-
     }
 
     toggleLeftMenu() {
       this.menuCtrl.open('mLeft');
-      console.log('toggleLeftMenu');
+      //console.log('toggleLeftMenu');
     }
 
     toggleRightMenu() {
       this.menuCtrl.open('mRight');
-      console.log('toggleRightMenu');
+      //console.log('toggleRightMenu');
     }
 
 
@@ -81,6 +84,7 @@ export class EmqualqerdiaPage {
     //console.log('ionViewDidLoad EmqualqerdiaPage');
 
      this.loader = this.loadingController.create({content: "Carregando...."});
+     //this.ga.trackView(this.strPlaceHold).then(() => {}).catch(e => console.log(e));
 
     this.loader.present();
 
@@ -97,21 +101,26 @@ export class EmqualqerdiaPage {
     if(this.gvProvider.gvOpAtual == 'ObterColetaneasTodasPrivadasPaginadaComTag'){
       this.flgMinhaLista = true;
       this.strPlaceHold = "Minha Lista";
+      //this.gvProvider.RegistrarGA('Busca','Busca-'+this.strPlaceHold);
+
     }
 
     if(this.gvProvider.gvOpAtual == 'ObterColetaneasHojePaginadaComTag'){
       this.flgMinhaLista = false;
       this.strPlaceHold = "Lançados Hoje";
+      //this.gvProvider.RegistrarGA('Busca','Busca-'+this.strPlaceHold);
     }
 
     if(this.gvProvider.gvOpAtual == 'ObterColetaneas7DiasPaginadaComTag'){
       this.flgMinhaLista = false;
       this.strPlaceHold = "Em 7 Dias";
+      //this.gvProvider.RegistrarGA('Busca','Busca-'+this.strPlaceHold);
     }
 
     if(this.gvProvider.gvOpAtual == 'ObterColetaneas30DiasPaginadaComTag'){
       this.flgMinhaLista = false;
       this.strPlaceHold = "Em 30 Dias";
+      //this.gvProvider.RegistrarGA('Busca','Busca-'+this.strPlaceHold);
     }
 
     if(this.gvProvider.gvOpAtual == 'ObterColetaneasDoAnoAtualAnteriorPaginadaComTag'){
@@ -121,6 +130,7 @@ export class EmqualqerdiaPage {
       //var mm = today.getMonth() + 1; //January is 0!
       var yyyy = today.getFullYear();
       this.strPlaceHold = "Em "+yyyy.toString()+'/'+(yyyy-1).toString();
+      //this.gvProvider.RegistrarGA('Busca','Busca-'+this.strPlaceHold);
     }
 
 
@@ -134,8 +144,8 @@ export class EmqualqerdiaPage {
 
 
     carregaColetaneas(Busca:string,PaginaAtual: number,ItensPorPagina: number) {
-      this.gvProvider.gvPaginaAtual = 1;
-      this.gvProvider.gvItensPorPagina = 10;
+      //this.gvProvider.gvPaginaAtual = 1;
+      //this.gvProvider.gvItensPorPagina = 10;
       //ObterColetaneas(op:string,busca: string, idsTags:string, idMembro: string, nrPagina:string, numItems:string)
       //console.log(Busca);
       this.restApiProvider.ObterColetaneas(this.gvProvider.gvOpAtual,Busca, this.gvProvider.gvFiltroTag, ''+this.gvProvider.gvIdMembroLogin, ''+PaginaAtual, ''+ItensPorPagina)
@@ -153,7 +163,7 @@ export class EmqualqerdiaPage {
             }
             this.str = itemColetaneaPrivada.Artes;
             this.gvProvider.gvColetaneas.ListaDeObjetos.push(itemColetaneaPrivada);
-            //console.log(itemColetaneaPrivada.Artes);
+            //console.log(itemColetaneaPrivada);
           }
 
             //console.log(this.str);
@@ -169,7 +179,7 @@ export class EmqualqerdiaPage {
 
         })
         .catch((error: any) => {
-          console.log('Erro na chamada de: carregaColetaneas emqualquuerdia'+ error.error);
+          //console.log('Erro na chamada de: carregaColetaneas emqualquuerdia'+ error.error);
           this.loader.dismiss();
           this.toast.create({ message: 'Erro ao carregar emqualquuerdia '+ error.error, position: 'botton', duration: 3000 }).present();
         });
@@ -199,12 +209,13 @@ export class EmqualqerdiaPage {
                  this.gvProvider.gvPlayListColetanea = {IdeColetanea:0,Nome:'',ehPrivada:false};
                }
                this.addTocaColetanea(item);
+               //this.ga.trackEvent('Play Capa', this.strPlaceHold, 'Adicionar: '+ item.Nome, 0);
              }
            },
            {
              text: 'Substituir',
              handler: () => {
-               console.log('Substituir clicked');
+               //console.log('Substituir clicked');
                this.gvProvider.gvPlayListItens = [];
                if(this.flgMinhaLista){
                 this.gvProvider.gvPlayListColetanea = {IdeColetanea:this.gvProvider.gvColetaneas.ListaDeObjetos[item].IdeColetanea,Nome:this.gvProvider.gvColetaneas.ListaDeObjetos[item].Nome,ehPrivada:true};
@@ -213,6 +224,7 @@ export class EmqualqerdiaPage {
                 this.gvProvider.gvPlayListColetanea = {IdeColetanea:0,Nome:this.gvProvider.gvColetaneas.ListaDeObjetos[item].Nome,ehPrivada:false};
               }
                this.addTocaColetanea(item);
+               //this.ga.trackEvent('Play Capa', this.strPlaceHold, 'Substituir: '+ item.Nome, 0);
                this.gvProvider.gvEhPlayPreview = false;
                this.gvProvider.gvPlayListUltimoIndexTocado = -1;
                this.gvProvider.gvPlayListItens[0].Selecionado = true;
@@ -249,10 +261,15 @@ export class EmqualqerdiaPage {
         //console.log(idsTagsObra);
 
         //let oTags:any = [];
+        let oTags:any;
 
-        let oTags = marcLocal.filter(function (item) {
-        	return item.Sistema == false;
-        });
+        if(this.gvProvider.gvIdMembroLogin != "1"){
+           oTags = marcLocal.filter(function (item) {return item.Sistema == false;});
+        }else{
+           oTags = marcLocal.filter(function (item) {return item.Sistema == true;});
+        }
+
+
 
         //console.log(oTags);
 
@@ -276,12 +293,12 @@ export class EmqualqerdiaPage {
 
         }
 
-        console.log(dTags);
+        //console.log(dTags);
         const modal = this.modalCtrl.create(MarcadoresPage,{paramTags:dTags,itemCol:itemCol,itemObra:itemObra,indexDosMarcadores:this.indexDosMarcadores});
         modal.present();
 
         modal.onDidDismiss(data => {
-          console.log(data);
+          //console.log(data);
         });
 
       }
@@ -385,6 +402,8 @@ export class EmqualqerdiaPage {
        //console.log('click image addTocaPreview');
 
        var obra:any = this.gvProvider.gvColetaneas.ListaDeObjetos[itemColetanea].Obras[itemObra];
+
+       //this.ga.trackEvent('Preview', this.strPlaceHold, 'Preview Item: '+ obra.Nome, 0);
 
        this.gvProvider.singleTrack = {
            src: this.gvProvider.gvStorage + 'Preview/' + obra.Arquivo.substring(8, obra.Arquivo.length),

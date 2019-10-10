@@ -13,6 +13,7 @@ import 'rxjs/add/operator/map';
 export class RestApiProvider {
 
   private API_URL = 'http://disclosure-001-site1.gtempurl.com/jpservico.aspx'
+  //private API_URL_GA = 'http://disclosure-001-site1.gtempurl.com/ga.html'
   //private API_URL = 'http://localhost:26223/wscloud/jpservico.aspx'
   //private API_URL = 'http://127.0.0.1/clouddj/jpservico.asmx/'
   //private API_URL = 'http://179.218.153.242/clouddj/jpservico.aspx';
@@ -24,6 +25,14 @@ export class RestApiProvider {
     //ServidorDeConexao
 
 
+    // RegistraGA(url:strinng titulo:string,comando:string){
+    //   //console.log(this.API_URL_GA+'?Titulo='+titulo+'&Comando='+comando);
+    //   //this.http.get(this.API_URL_GA+'?Titulo='+titulo+'&Comando='+comando);
+    //
+    // }
+
+
+
   Conectar(idMembro: string) {
      return new Promise((resolve, reject) => {
        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
@@ -31,7 +40,7 @@ export class RestApiProvider {
        let options = new RequestOptions({ headers: headers });
        let body = 'op=Conectar&idMembro=' + idMembro;
 
-       console.log("Passou o post ObterMenu()");
+       //console.log("Passou o post ObterMenu()");
 
        //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
        this.http.post(this.API_URL, body, options)
@@ -44,6 +53,32 @@ export class RestApiProvider {
      });
    }
 
+   ObterRegistro(email: string) {
+      return new Promise((resolve, reject) => {
+        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
+        //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
+
+        var today = new Date();
+        var dd = today.getDate();
+        //var mm = today.getMonth() + 1; //January is 0!
+        //var yyyy = today.getFullYear();
+
+        let options = new RequestOptions({ headers: headers });
+        let body = 'op=Registrar&email=' + email + '&senha=' + dd.toString();
+
+        //console.log(this.API_URL + body);
+
+        //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
+        this.http.post(this.API_URL, body, options)
+          .subscribe((result: any) => {
+            resolve(result.json());
+          },
+          (error) => {
+            reject(error.json());
+          });
+      });
+    }
+
   ObterMenu(idMembro: string) {
      return new Promise((resolve, reject) => {
        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
@@ -51,7 +86,7 @@ export class RestApiProvider {
        let options = new RequestOptions({ headers: headers });
        let body = 'op=ObterListaDeComandos&idMembro=' + idMembro;
 
-       console.log("Passou o post ObterMenu()");
+       //console.log("Passou o post ObterMenu()");
 
        //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
        this.http.post(this.API_URL, body, options)
@@ -71,7 +106,7 @@ export class RestApiProvider {
         let options = new RequestOptions({ headers: headers });
         let body = 'op=NovoMarcador&idMembro=' + idMembro + '&nmMarcador=' + nmMarcador;
 
-        console.log("Passou o post CriarMarcador()");
+        //console.log("Passou o post CriarMarcador()");
 
         //this.http.post(this.API_URL + 'ObterListaDeComandos', body, options)
         this.http.post(this.API_URL, body, options)
@@ -105,7 +140,7 @@ export class RestApiProvider {
         //console.log('idsTags');
         //console.log(idsTags);
         //console.log("Passou o post ObterColetaneasPrivadas()");
-        console.log("urlPost:"+this.urlPost);
+        //console.log("urlPost:"+this.urlPost);
 
         //this.http.post(this.API_URL + 'ObterColetaneasTodasPrivadasPaginadaComTag', body, options)
         this.http.post(this.API_URL, body, options)
@@ -130,7 +165,7 @@ export class RestApiProvider {
 
             //console.log(body);
             //console.log("Passou o post ObterColetaneasPrivadas()");
-            console.log("urlPost:"+this.urlPost);
+            //console.log("urlPost:"+this.urlPost);
             //console.log('idsTags');
             //console.log(idsTags);
 
@@ -154,8 +189,8 @@ export class RestApiProvider {
              let options = new RequestOptions({ headers: headers });
              let body = 'op=SalvarColetaneaDoUsuario&idMembro=' + idMembro + '&lsIdsObras=' + lsIdsObras + '&idColetanea='+ idColetanea + '&nmColetaneaDoUsuario=' + nmColetaneaDoUsuario ;
 
-             console.log("Postou SalvarColetaneaPrivada()");
-             console.log(body);
+             //console.log("Postou SalvarColetaneaPrivada()");
+             //console.log(body);
 
              this.urlPost = this.API_URL+'?'+body;
              //console.log("urlPost:"+this.urlPost);

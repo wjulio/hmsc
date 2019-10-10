@@ -36,8 +36,8 @@ export class MarcadoresPage {
                 this.marcadoresLocais = this.navParams.get('paramTags');
                 this.indexDosMarcadores = this.navParams.get('indexDosMarcadores');
                 this.itemChanged = false;
-                console.log('indexDosMarcadores');
-                console.log(this.indexDosMarcadores);
+                //console.log('indexDosMarcadores');
+                //console.log(this.indexDosMarcadores);
 
 
     }
@@ -76,7 +76,7 @@ export class MarcadoresPage {
     //console.log(this.marcadoresLocais);
 
     if(!this.itemChanged){
-      console.log('this.itemChanged = false');
+      //console.log('this.itemChanged = false');
       this.viewCtrl.dismiss();
       return;
     }
@@ -91,10 +91,10 @@ export class MarcadoresPage {
     }
 
     if(ids.length>0){
-      console.log(ids.toString());
+      //console.log(ids.toString());
       this.AderirMarcadores(ids.toString());
     }else{
-      console.log('tags removidas');
+      //console.log('tags removidas');
       //se _lsMembroTags.count = 0 todas as tags aderidas pelo usuario serao apagadas
       this.AderirMarcadores('');
       //this.viewCtrl.dismiss();
@@ -104,8 +104,8 @@ export class MarcadoresPage {
 
   CriarNovoMarcador(strMarcador){
     //console.log(this.novoMarcador);
-    console.log(strMarcador);
-    console.log(this.indexDosMarcadores);
+    //console.log(strMarcador);
+    //console.log(this.indexDosMarcadores);
     //return;
     this.loader = this.loadingController.create({content: "Salvando...."});
     this.loader.present();
@@ -117,7 +117,7 @@ export class MarcadoresPage {
 
         if(result.flagNova){
           this.marcadoresLocais.push(result);
-          console.log(this.gvProvider.gvListaMenu);
+          //console.log(this.gvProvider.gvListaMenu);
           //this.gvProvider.gvListaMenu[this.indexDosMarcadores].Tags.push(result);
           //this.gvProvider.gvListaMenu[this.indexDosMarcadores].Contador = this.gvProvider.gvListaMenu[this.indexDosMarcadores].Tags.length;
         }else{
@@ -143,10 +143,10 @@ export class MarcadoresPage {
     //console.log(idObra);
     this.restApiProvider.AderirMarcadores(this.gvProvider.gvIdMembroLogin,idObra,idsTags)
       .then((result: any) => {
-        console.log(result);
+        //console.log(result);
         if(result.RetornoComSucesso){
           this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds = idsTags.toString() //idsTags.split(',');
-          console.log(this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds);
+          //console.log(this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds);
           this.loader.dismiss();
           this.viewCtrl.dismiss();
         }else{

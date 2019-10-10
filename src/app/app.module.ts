@@ -15,6 +15,8 @@ import { LoginPage } from '../pages/login/login';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
+
 import { DatePipe } from '@angular/common';
 
 // import { BackgroundMode } from '@ionic-native/background-mode';
@@ -74,6 +76,7 @@ export function myCustomAudioProviderFactory() {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestApiProvider,
     GlobalvarProvider,
+    GoogleAnalytics,
     DatePipe,
     BancoDeDadosProvider
   ]

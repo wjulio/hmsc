@@ -8,6 +8,8 @@ import { BancoDeDadosProvider, MembroLocal, MembroList } from './../../providers
 import { EmqualqerdiaPage } from '../emqualqerdia/emqualqerdia';
 import { LoginPage } from '../login/login';
 
+//import { GoogleAnalytics } from '@ionic-native/google-analytics';
+
 /**
  * Generated class for the ConfigurarPage page.
  *
@@ -34,22 +36,23 @@ export class ConfigurarPage {
       public gvProvider: GlobalvarProvider,
       public loadingController: LoadingController,
       private toast: ToastController,
+      //private ga: GoogleAnalytics,
       private bancoDados:BancoDeDadosProvider
     )
       {
 
         this.imageProvider = this.gvProvider.gvHostImageResize + this.gvProvider.gvMaxWidth + this.gvProvider.gvParamImgFile + this.gvProvider.gvStorage ;
-        console.log(this.imageProvider);
+        //console.log(this.imageProvider);
         this.imgPlay = this.gvProvider.gvStorage+'getimagepng.php?w='+ (this.gvProvider.gvMaxWidth/2) +'&filename='+this.gvProvider.gvStorage+'Storage/capa/play-button-icon-png-280x280.png';
-        console.log(this.imgPlay);
+        //console.log(this.imgPlay);
 
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ConfigurarPage');
+    //console.log('ionViewDidLoad ConfigurarPage');
     this.loader = this.loadingController.create({content: "Configurando...."});
     this.loader.present();
-
+    //this.ga.trackView('Home').then(() => {}).catch(e => console.log(e));
     this.ConfiguraEnderecoServidor();
   }
 
@@ -60,11 +63,18 @@ export class ConfigurarPage {
 
         this.gvProvider.gvStorage = 'http://' + result.ServidorDeConexao + ':81/';
         this.gvProvider.gvHostImageResize = 'http://' + result.ServidorDeConexao + ':81/getimage.php?w=';
-        console.log("serverSet:"+this.gvProvider.gvStorage);
+        //console.log("serverSet:"+this.gvProvider.gvStorage);
         //console.log("serverSet:"+this.gvProvider.gvStorage);
         //this.nav.setRoot(EmqualqerdiaPage);
-        this.loader.dismiss();
-        this.Registrar();
+
+        if(result.Status == "0"){
+          this.loader.dismiss();
+          this.toast.create({ message: 'Conta sem permissão.' + error.error, position: 'botton', duration: 3000 }).present();
+        }else{
+          this.loader.dismiss();
+          this.Registrar();
+        }
+
         //this.navCtrl.setRoot(EmqualqerdiaPage);
         //this.navCtrl.goToRoot(null);
 
@@ -78,11 +88,17 @@ export class ConfigurarPage {
     this.bancoDados.getAllMembro()
       .then((result) => {
         this.membros = result;
-        console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
-        console.log(this.membros);
+        //console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
+        //console.log(this.membros);
         if(this.membros.length > 0){
-          console.log('this.membros.length > 0');
-          this.bancoDados.remove('7');
+          //console.log('this.membros.length > 0');
+          //this.bancoDados.remove(this.gvProvider.gvIdMembroLogin);
+          this.bancoDados.remove('0');
+          this.bancoDados.remove('1');
+          //this.bancoDados.remove('3');
+          //this.bancoDados.remove('7');
+          //this.restApiProvider.RegistraGA('Entrou','Entrou-'+this.gvProvider.gvIdMembroLogin);
+          this.gvProvider.RegistrarGA('Entrou','Entrou-'+this.gvProvider.gvIdMembroLogin);
           this.navCtrl.setRoot(EmqualqerdiaPage);
         }else{
           this.navCtrl.setRoot(LoginPage);

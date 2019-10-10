@@ -12,10 +12,13 @@ import { ConfigurarPage } from '../pages/configurar/configurar';
 // import { SalvarListaColetanea } from '../pages/salva-coletanea-modal/salva-coletanea-modal';
 
 import { RestApiProvider } from './../providers/rest-api/rest-api';
+import { BancoDeDadosProvider, MembroLocal, MembroList } from './../providers/banco-de-dados/banco-de-dados';
 import { GlobalvarProvider } from './../providers/globalvar/globalvar';
 
 import { AudioProvider,ITrackConstraint} from 'ionic-audio';
 import { Storage } from '@ionic/storage';
+
+import { GoogleAnalytics } from '@ionic-native/google-analytics';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,6 +26,7 @@ import { Storage } from '@ionic/storage';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild('NomeDaLista') myNomeDaLista;
+  @ViewChild('urlGA') myUrlGARef;
 
   //rootPage: any = HomePage;
   //rootPage: any = MinhaplaylistPage;
@@ -36,6 +40,8 @@ export class MyApp {
 
   myTracks: ITrackConstraint[];
   playlist: ITrackConstraint[] = [];
+
+  membros: MembroList[];
 
   currentIndex: number = -1;
   currentTrack: ITrackConstraint;
@@ -56,14 +62,18 @@ export class MyApp {
                 private restApiProvider: RestApiProvider,
                 public gvProvider: GlobalvarProvider,
                 public playEvents: Events,
+                public registroEvents: Events,
                 public _audioProvider: AudioProvider,
                 public storage: Storage,
+                private bancoDados:BancoDeDadosProvider,
                 public alertCtrl: AlertController,
+                public ga: GoogleAnalytics,
                 public menuCtrl: MenuController)
     {
-        this.initializeApp();
 
-        console.log('platform.width:'+platform.width());
+        this.RegistradoEh();
+
+        //console.log('platform.width:'+platform.width());
         gvProvider.gvMaxWidth = platform.width()<300?platform.width()-(platform.width()*0.25):300;
         gvProvider.platformWidth = platform.width();
         //console.log('gvProvider.gvMaxWidth:'+gvProvider.gvMaxWidth);
@@ -79,38 +89,79 @@ export class MyApp {
           console.log("Entrou no play-preview");
           if(this.gvProvider.gvEhPlayPreview){
             this.playPreview(this.gvProvider.singleTrack);
-            console.log("eh preview");
+            //console.log("eh preview");
           }else{
             let track = this.gvProvider.gvPlayListItens[0].track;
             this.play(track, 0);
-            console.log("nao eh preview");
+            //console.log("nao eh preview");
           }
 
           });
 
+          this.registroEvents.subscribe('registrou', () =>{
+            //console.log("constroi menu pq usu registrou!");
 
+            this.ObtemMenu();
+
+            });
+
+
+            this.registroEvents.subscribe('RegistrarGA', () =>{
+              //console.log("constroi menu pq usu registrou!");
+
+              this.RegGA();
+
+              });
 
       }
 
   initializeApp() {
     this.platform.ready().then(() => {
 
+      if (this.platform.is('cordova')) {
+        // make your native API calls
+        //this.ga.startTrackerWithId('UA-148028646-1').then(() => {}).catch(e => alert('Error starting GoogleAnalytics == '+ e));
+      } else {
+        // fallback to browser APIs
+      }
+
       this.ObtemMenu();
       //this.ConfiguraEnderecoServidor();
-
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
     });
+  }
+
+  RegistradoEh(){
+    this.bancoDados.getAllMembro()
+      .then((result) => {
+        this.membros = result;
+        //console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
+        //console.log(this.membros);
+        if(this.membros.length > 0){
+          //console.log('init this.membros.length > 0');
+          //this.bancoDados.remove(this.gvProvider.gvIdMembroLogin);
+          //this.bancoDados.remove('0');
+          //this.bancoDados.remove('3');
+          //this.bancoDados.remove('7');
+          //this.navCtrl.setRoot(EmqualqerdiaPage);
+          this.gvProvider.gvIdMembroLogin = this.membros[0].ideMembro;
+
+          this.initializeApp();
+
+        }
+      });
   }
 
   toggleLeftMenu() {
     this.menuCtrl.open('mLeft');
-    console.log('toggleLeftMenu');
+    //console.log('toggleLeftMenu');
   }
 
   toggleRightMenu() {
     this.menuCtrl.open('mRight');
-    console.log('toggleRightMenu');
+    //console.log('toggleRightMenu');
   }
 
   openRootPage(page) {
@@ -120,8 +171,18 @@ export class MyApp {
     //this.nav.setRoot(this.pages[0].component)
   }
 
+  Logout(){
+
+  }
+
+  RegGA(){
+    //console.log(this.myUrlGARef.nativeElement.src);
+    this.myUrlGARef.nativeElement.src = this.gvProvider.gvUrlGA;
+    //console.log(this.mylblRef.nativeElement.innerText);
+  }
+
   ObtemMenu() {
-    console.log(this.gvProvider.gvIdMembroLogin);
+    //console.log(this.gvProvider.gvIdMembroLogin);
     this.gvProvider.gvListaMenu = [];
     this.restApiProvider.ObterMenu(this.gvProvider.gvIdMembroLogin.toString())
 
@@ -130,15 +191,15 @@ export class MyApp {
 
         //console.log(this.gvProvider.gvIdMembroLogin);
         //console.log("Entrou no ObtemMenu()");
-        console.log(result.length);
+        //console.log(result.length);
         for (var i = 0; i < result.length; i++) {
-          console.log(result[i].TipoMenuAppJsonDto);
+          //console.log(result[i].TipoMenuAppJsonDto);
           //var _listaDeObjetos = result.ListaDeObjetos[i];
           //this.listaMenu.push(result[i]);
           this.gvProvider.gvListaMenu.push(result[i]);
             //this.sendSMS(interessado.numero,interessado.chave);
         }
-        console.log(this.listaMenu.length);
+        //console.log(this.listaMenu.length);
         //Salvar o token no Ionic Storage para usar em futuras requisições.
         //Redirecionar o usuario para outra tela usando o navCtrl
         //this.navCtrl.pop();
@@ -152,7 +213,7 @@ export class MyApp {
 
   onEmpSelected(_lsMarcadores:any) {
 
-    console.log(_lsMarcadores);
+    //console.log(_lsMarcadores);
     //let lcIds:any = [];
     let lcIds = _lsMarcadores.map(function (item) {return item.IdeMembroTag;});
 
@@ -173,6 +234,7 @@ export class MyApp {
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
       this.gvProvider.gvOpAtual = 'ObterColetaneasHojePaginadaComTag';
       //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.gvProvider.RegistrarGA('Busca','Busca-'+this.gvProvider.gvOpAtual);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -180,6 +242,7 @@ export class MyApp {
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
       this.gvProvider.gvOpAtual = 'ObterColetaneas7DiasPaginadaComTag';
       //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.gvProvider.RegistrarGA('Busca','Busca-'+this.gvProvider.gvOpAtual);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -187,6 +250,7 @@ export class MyApp {
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
       this.gvProvider.gvOpAtual = 'ObterColetaneas30DiasPaginadaComTag';
       //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.gvProvider.RegistrarGA('Busca','Busca-'+this.gvProvider.gvOpAtual);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -194,6 +258,7 @@ export class MyApp {
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
       this.gvProvider.gvOpAtual = 'ObterColetaneasDoAnoAtualAnteriorPaginadaComTag';
       //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.gvProvider.RegistrarGA('Busca','Busca-'+this.gvProvider.gvOpAtual);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -201,6 +266,7 @@ export class MyApp {
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
       this.gvProvider.gvOpAtual = 'ObterColetaneasTodasPaginadaComTag';
       //console.log('Executa Consulta:EmqualqerdiaPage');
+      this.gvProvider.RegistrarGA('Busca','Busca-'+this.gvProvider.gvOpAtual);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -209,6 +275,7 @@ export class MyApp {
       this.gvProvider.gvColetaneas.ListaDeObjetos = [];
       this.gvProvider.gvOpAtual = 'ObterColetaneasTodasPrivadasPaginadaComTag';
       //this.nav.setRoot(MinhaplaylistPage);
+      this.gvProvider.RegistrarGA('Busca','Busca-'+this.gvProvider.gvOpAtual);
       this.nav.setRoot(EmqualqerdiaPage);
     }
 
@@ -232,6 +299,7 @@ export class MyApp {
              this.gvProvider.gvPlayListItens[index].Selecionado = true;
 
              this.imgPadrao = false;
+             this.gvProvider.RegistrarGA('play','play');
          }
 
          playPreview(track: ITrackConstraint) {
@@ -239,6 +307,7 @@ export class MyApp {
              this.currentIndex = -1;
              this.imgPadrao = false;
              this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
+             this.gvProvider.RegistrarGA('playPreview','playPreview');
          }
 
          next() {
@@ -448,7 +517,7 @@ export class MyApp {
         }
 
         salvarViaPrompt() {
-          console.log('salvarViaPrompt');
+          //console.log('salvarViaPrompt');
           let prompt = this.alertCtrl.create({
             title: 'Salvar',
             message: "Entre com um nome para salvar em sua lista pessoal",
@@ -460,7 +529,7 @@ export class MyApp {
                                                             this.flgSalvar = false;
                                                           }},
                       {text: 'Salvar', handler: data => {
-                        console.log('Saved clicked');
+                        //console.log('Saved clicked');
                         if(data.nomeColetanea.length>=3){
                           this.gvProvider.gvPlayListColetanea.Nome = data.nomeColetanea;
                           //this.flgSalvar = !this.flgSalvar;
@@ -474,7 +543,7 @@ export class MyApp {
         }
 
         salvarViaComCopiaPrompt() {
-          console.log('salvarViaPrompt');
+          //console.log('salvarViaPrompt');
           let prompt = this.alertCtrl.create({
             title: 'Salvar',
             message: "Entre com um nome para salvar em sua lista pessoal",
@@ -493,7 +562,7 @@ export class MyApp {
                           this.SalvarLista();}
                                                           }},
                       {text: 'Salvar Novo', handler: data => {
-                        console.log('Saved clicked');
+                        //console.log('Saved clicked');
                         if(data.nomeColetanea.length>=3){
                           this.gvProvider.gvPlayListColetanea.Nome = data.nomeColetanea;
                           this.gvProvider.gvPlayListColetanea.IdeColetanea = 0;
@@ -510,7 +579,7 @@ export class MyApp {
         SalvarLista() {
           //let lsIdsObras = this.gvProvider.gvPlayListItens.toString();
           let lsIdsObras = this.gvProvider.gvPlayListItens.map(function(v){return v.IdeObra;});
-          console.log(lsIdsObras);
+          //console.log(lsIdsObras);
           this.restApiProvider.SalvarColetaneaPrivada(this.gvProvider.gvIdMembroLogin, lsIdsObras, this.gvProvider.gvPlayListColetanea.IdeColetanea, this.gvProvider.gvPlayListColetanea.Nome)
             .then((result: any) => {
               this.toast.create({ message: this.gvProvider.gvPlayListColetanea.Nome + ' foi salvo. ', position: 'botton', duration: 3000 }).present();
