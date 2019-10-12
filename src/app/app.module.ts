@@ -9,6 +9,7 @@ import { ListPage } from '../pages/list/list';
 import { MarcadoresPage } from '../pages/marcadores/marcadores';
 import { MinhaplaylistPage } from '../pages/minhaplaylist/minhaplaylist';
 import { EmqualqerdiaPage } from '../pages/emqualqerdia/emqualqerdia';
+import { SemAcessoPage } from '../pages/sem-acesso/sem-acesso';
 import { ConfigurarPage } from '../pages/configurar/configurar';
 import { LoginPage } from '../pages/login/login';
 
@@ -47,7 +48,7 @@ export function myCustomAudioProviderFactory() {
     ListPage,
     MinhaplaylistPage,
     EmqualqerdiaPage,ConfigurarPage,
-    MarcadoresPage,LoginPage,
+    MarcadoresPage,LoginPage,SemAcessoPage,
     ExpandableHeaderComponent
     // FlashCardComponent,
     // TimelineComponent,
@@ -67,7 +68,7 @@ export function myCustomAudioProviderFactory() {
     HomePage,
     ListPage,
     MinhaplaylistPage,
-    MarcadoresPage,
+    MarcadoresPage,SemAcessoPage,
     EmqualqerdiaPage,ConfigurarPage,LoginPage
   ],
   providers: [

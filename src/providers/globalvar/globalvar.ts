@@ -41,6 +41,8 @@ export class GlobalvarProvider {
   public singleTrack: ITrackConstraint;
   public platformWidth:any = 0;
 
+  public gvToken = 'StarmanSpaceX18';
+
   constructor(public eventGatilho: Events,) {
     //console.log('Hello GlobalvarProvider Provider');
 

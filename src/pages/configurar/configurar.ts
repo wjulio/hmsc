@@ -6,6 +6,7 @@ import { RestApiProvider } from './../../providers/rest-api/rest-api';
 import { BancoDeDadosProvider, MembroLocal, MembroList } from './../../providers/banco-de-dados/banco-de-dados';
 
 import { EmqualqerdiaPage } from '../emqualqerdia/emqualqerdia';
+import { SemAcessoPage } from '../sem-acesso/sem-acesso';
 import { LoginPage } from '../login/login';
 
 //import { GoogleAnalytics } from '@ionic-native/google-analytics';
@@ -57,7 +58,7 @@ export class ConfigurarPage {
   }
 
   ConfiguraEnderecoServidor() {
-    this.restApiProvider.Conectar(this.gvProvider.gvIdMembroLogin.toString())
+    this.restApiProvider.Conectar(this.gvProvider.gvToken)
       .then((result: any) => {
         //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
 
@@ -69,7 +70,10 @@ export class ConfigurarPage {
 
         if(result.Status == "0"){
           this.loader.dismiss();
-          this.toast.create({ message: 'Conta sem permissão.' + error.error, position: 'botton', duration: 3000 }).present();
+          //this.toast.create({ message: 'Conta sem permissão.', position: 'botton', duration: 3000 }).present();
+          console.log(result.Status);
+          //this.navCtrl.setRoot(SemAcessoPage);
+          this.Registrar();
         }else{
           this.loader.dismiss();
           this.Registrar();
