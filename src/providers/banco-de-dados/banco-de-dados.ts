@@ -50,6 +50,10 @@ export class BancoDeDadosProvider {
      return this.storage.remove(key);
    }
 
+   public removeAll() {
+     return this.storage.clear();
+   }
+
 /*   public getAll() {
 
      let contacts: ContactList[] = [];

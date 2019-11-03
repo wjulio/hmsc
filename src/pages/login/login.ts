@@ -57,6 +57,8 @@ export class LoginPage {
           //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
           if(result.Chave > 0 ){
             this.key = result.Chave;
+            this.model.token = result.Permissao;
+            this.gvProvider.gvToken = result.Permissao;
             this.gvProvider.gvIdMembroLogin = this.key;
             this.save();
             this.gvProvider.RegistrarGA('PedeRegistroAutorizado','PedeRegistro-'+this.inputEmail);

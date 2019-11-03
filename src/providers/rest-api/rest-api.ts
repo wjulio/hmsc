@@ -33,12 +33,12 @@ export class RestApiProvider {
 
 
 
-  Conectar(idMembro: string) {
+  Conectar(idMembro: string,token:string) {
      return new Promise((resolve, reject) => {
        let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'*','Access-Control-Allow-Methods':'POST, GET' });
        //let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded'});
        let options = new RequestOptions({ headers: headers });
-       let body = 'op=Conectar&idMembro=' + idMembro;
+       let body = 'op=Conectar&idMembro=' + idMembro + '&token=' + token;
 
        //console.log("Passou o post ObterMenu()");
 

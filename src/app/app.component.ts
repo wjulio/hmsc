@@ -51,6 +51,7 @@ export class MyApp {
   flgRemover:boolean = false;
   flgSalvar:boolean = false;
   flgMinhaLista:boolean = false;
+  gvIdMembroLogin:number=0;
 
 
   constructor(
@@ -134,24 +135,7 @@ export class MyApp {
   }
 
   RegistradoEh(){
-    this.bancoDados.getAllMembro()
-      .then((result) => {
-        this.membros = result;
-        //console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
-        //console.log(this.membros);
-        if(this.membros.length > 0){
-          //console.log('init this.membros.length > 0');
-          //this.bancoDados.remove(this.gvProvider.gvIdMembroLogin);
-          //this.bancoDados.remove('0');
-          //this.bancoDados.remove('3');
-          //this.bancoDados.remove('7');
-          //this.navCtrl.setRoot(EmqualqerdiaPage);
-          this.gvProvider.gvIdMembroLogin = this.membros[0].ideMembro;
-
-          this.initializeApp();
-
-        }
-      });
+      this.initializeApp();
   }
 
   toggleLeftMenu() {
@@ -172,7 +156,26 @@ export class MyApp {
   }
 
   Logout(){
+    this.bancoDados.getAllMembro()
+      .then((result) => {
+        this.membros = result;
+        //console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
+        //console.log(this.membros);
+        if(this.membros.length > 0){
+          //console.log('init this.membros.length > 0');
+          //this.bancoDados.remove(this.gvProvider.gvIdMembroLogin);
+          //this.bancoDados.remove('0');
+          //this.bancoDados.remove('3');
+          //this.bancoDados.remove('7');
+          //this.navCtrl.setRoot(EmqualqerdiaPage);
+          console.log('membros:'+this.membros[0].ideMembro);
+          this.bancoDados.remove(this.membros[0].ideMembro);
 
+          //this.navCtrl.setRoot(thist.rootPage);
+          this.nav.setRoot(this.rootPage);
+
+        }
+      });
   }
 
   RegGA(){
@@ -287,6 +290,7 @@ export class MyApp {
          // }
 
          play(track: ITrackConstraint, index: number) {
+
              this.currentTrack = track;
              this.currentIndex = index;
              this.gvProvider.gvPlayListUltimoIndexTocado = this.gvProvider.gvPlayListIndexSelecionado;
@@ -303,6 +307,7 @@ export class MyApp {
          }
 
          playPreview(track: ITrackConstraint) {
+
              this.currentTrack = track;
              this.currentIndex = -1;
              this.imgPadrao = false;

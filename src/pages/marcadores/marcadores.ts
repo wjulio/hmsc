@@ -125,6 +125,7 @@ export class MarcadoresPage {
         }
 
         this.novoMarcador = '';
+        this.ObtemMenu();
         this.loader.dismiss();
 
       })
@@ -147,6 +148,7 @@ export class MarcadoresPage {
         if(result.RetornoComSucesso){
           this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds = idsTags.toString() //idsTags.split(',');
           //console.log(this.gvProvider.gvColetaneas.ListaDeObjetos[itemCol].Obras[itemObra].TagsIds);
+          this.ObtemMenu();
           this.loader.dismiss();
           this.viewCtrl.dismiss();
         }else{
@@ -166,6 +168,37 @@ export class MarcadoresPage {
 
       });
   }
+
+  ObtemMenu() {
+    //console.log(this.gvProvider.gvIdMembroLogin);
+    this.gvProvider.gvListaMenu = [];
+    this.restApiProvider.ObterMenu(this.gvProvider.gvIdMembroLogin.toString())
+
+      .then((result: any) => {
+        //this.toast.create({ message: 'Menu ok.', position: 'botton', duration: 3000 }).present();
+
+        //console.log(this.gvProvider.gvIdMembroLogin);
+        //console.log("Entrou no ObtemMenu()");
+        //console.log(result.length);
+        for (var i = 0; i < result.length; i++) {
+          //console.log(result[i].TipoMenuAppJsonDto);
+          //var _listaDeObjetos = result.ListaDeObjetos[i];
+          //this.listaMenu.push(result[i]);
+          this.gvProvider.gvListaMenu.push(result[i]);
+            //this.sendSMS(interessado.numero,interessado.chave);
+        }
+        //console.log(this.listaMenu.length);
+        //Salvar o token no Ionic Storage para usar em futuras requisições.
+        //Redirecionar o usuario para outra tela usando o navCtrl
+        //this.navCtrl.pop();
+        //this.navCtrl.setRoot()
+      })
+      .catch((error: any) => {
+          console.log('Erro ao obter o menu esquerdo' + error.erro);
+        //this.toast.create({ message: 'Erro ao efetuar login. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
+      });
+  }
+
 
 
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { BancoDeDadosProvider, MembroLocal, MembroList } from './../../providers/banco-de-dados/banco-de-dados';
 /**
  * Generated class for the SemAcessoPage page.
  *
@@ -15,7 +15,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class SemAcessoPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,private bancoDados:BancoDeDadosProvider) {
+    //this.bancoDados.removeAll();
   }
 
   ionViewDidLoad() {

@@ -29,6 +29,8 @@ export class ConfigurarPage {
   imageProvider:any = "";
   imgPlay:string = "Storage/capa/play-button-icon-png-280x280.png";
   loader:any;
+  idMembroLogin:string;
+  token:string;
 
   constructor(
       public navCtrl: NavController,
@@ -54,11 +56,30 @@ export class ConfigurarPage {
     this.loader = this.loadingController.create({content: "Configurando...."});
     this.loader.present();
     //this.ga.trackView('Home').then(() => {}).catch(e => console.log(e));
+
+    this.bancoDados.getAllMembro()
+      .then((result) => {
+        this.membros = result;
+        //console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
+        console.log(this.membros);
+        if(this.membros.length > 0){
+
+          this.gvProvider.gvIdMembroLogin = this.membros[0].ideMembro;
+          this.idMembroLogin = this.membros[0].ideMembro;
+          this.token = this.membros[0].membroLocal.token;
+
+        }
+      });
+    console.log('this.token='+this.token);
     this.ConfiguraEnderecoServidor();
   }
 
   ConfiguraEnderecoServidor() {
-    this.restApiProvider.Conectar(this.gvProvider.gvToken)
+
+      console.log('this.idMembroLogin='+this.idMembroLogin);
+      console.log('this.token='+this.token);
+
+    this.restApiProvider.Conectar(this.idMembroLogin,this.token)
       .then((result: any) => {
         //this.toast.create({ message: 'Conexão ok! ', position: 'botton', duration: 3000 }).present();
 
@@ -67,11 +88,12 @@ export class ConfigurarPage {
         //console.log("serverSet:"+this.gvProvider.gvStorage);
         //console.log("serverSet:"+this.gvProvider.gvStorage);
         //this.nav.setRoot(EmqualqerdiaPage);
-
+        //console.log(this.gvProvider.gvStorage);
         if(result.Status == "0"){
           this.loader.dismiss();
           //this.toast.create({ message: 'Conta sem permissão.', position: 'botton', duration: 3000 }).present();
-          console.log(result.Status);
+          //console.log(result.Status);
+          //this.bancoDados.removeAll();
           //this.navCtrl.setRoot(SemAcessoPage);
           this.Registrar();
         }else{
@@ -97,13 +119,29 @@ export class ConfigurarPage {
         if(this.membros.length > 0){
           //console.log('this.membros.length > 0');
           //this.bancoDados.remove(this.gvProvider.gvIdMembroLogin);
+          this.gvProvider.gvToken = this.membros[0].membroLocal.token;
           this.bancoDados.remove('0');
           this.bancoDados.remove('1');
+          //this.bancoDados.removeAll();
           //this.bancoDados.remove('3');
           //this.bancoDados.remove('7');
           //this.restApiProvider.RegistraGA('Entrou','Entrou-'+this.gvProvider.gvIdMembroLogin);
           this.gvProvider.RegistrarGA('Entrou','Entrou-'+this.gvProvider.gvIdMembroLogin);
           this.navCtrl.setRoot(EmqualqerdiaPage);
+        }else{
+          this.navCtrl.setRoot(LoginPage);
+        }
+      });
+  }
+
+  getToken(){
+    this.bancoDados.getAllMembro()
+      .then((result) => {
+        this.membros = result;
+        //console.log('ionViewDidLoad this.bancoDados.getAllMembro()');
+        //console.log(this.membros);
+        if(this.membros.length > 0){
+          this.gvProvider.gvToken = this.membros[0].membroLocal.token;
         }else{
           this.navCtrl.setRoot(LoginPage);
         }
